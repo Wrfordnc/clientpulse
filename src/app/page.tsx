@@ -96,17 +96,17 @@ export default function ClientPulseDashboard() {
   }, [query]);
 
   return (
-    <main className="min-h-screen bg-[#f7f8fb] text-slate-950">
+    <main className="min-h-screen bg-[#eef2f5] text-slate-950">
       <div className="flex min-h-screen">
-        <aside className="hidden w-72 border-r border-slate-200 bg-white px-5 py-6 lg:block">
+        <aside className="hidden w-72 bg-[#111827] px-5 py-6 text-slate-200 lg:block">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-white">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#315cfd] text-white">
               <Activity className="h-6 w-6" />
             </div>
 
             <div>
-              <h1 className="text-lg font-semibold">ClientPulse</h1>
-              <p className="text-xs text-slate-500">
+              <h1 className="text-lg font-semibold text-white">ClientPulse</h1>
+              <p className="text-xs text-slate-400">
                 Relationship intelligence
               </p>
             </div>
@@ -119,8 +119,8 @@ export default function ClientPulseDashboard() {
                 onClick={() => setActiveTab(item)}
                 className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm transition ${
                   activeTab === item
-                    ? "bg-slate-950 text-white"
-                    : "text-slate-600 hover:bg-slate-100"
+                    ? "bg-[#315cfd] text-white"
+                    : "text-slate-300 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <span>{item}</span>
@@ -128,10 +128,22 @@ export default function ClientPulseDashboard() {
               </button>
             ))}
           </nav>
+
+          <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-4">
+            <div className="flex items-center gap-2 text-sm font-medium text-white">
+              <ShieldCheck className="h-4 w-4" />
+              Privacy controls
+            </div>
+
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Tracking limited to approved client domains. Internal-only
+              communication is excluded.
+            </p>
+          </div>
         </aside>
 
         <section className="flex-1 px-5 py-5 lg:px-8">
-          <header className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white px-5 py-4 shadow-sm md:flex-row md:items-center md:justify-between">
+          <header className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-[#fbfbfc] px-5 py-4 shadow-sm md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-sm text-slate-500">Good morning</p>
               <h2 className="text-2xl font-semibold">
@@ -140,31 +152,31 @@ export default function ClientPulseDashboard() {
             </div>
 
             <div className="flex items-center gap-3">
-              <button className="rounded-2xl border border-slate-200 p-3 text-slate-600 hover:bg-slate-50">
+              <button className="rounded-2xl border border-slate-200 bg-white p-3 text-slate-600 hover:bg-slate-50">
                 <Bell className="h-5 w-5" />
               </button>
 
-              <button className="rounded-2xl border border-slate-200 p-3 text-slate-600 hover:bg-slate-50">
+              <button className="rounded-2xl border border-slate-200 bg-white p-3 text-slate-600 hover:bg-slate-50">
                 <Settings className="h-5 w-5" />
               </button>
 
               <button
                 onClick={() => setActiveTab("Admin")}
-                className="rounded-2xl bg-slate-950 px-4 py-3 text-sm font-medium text-white hover:bg-slate-800"
+                className="rounded-2xl bg-[#315cfd] px-4 py-3 text-sm font-medium text-white hover:bg-[#2448d8]"
               >
                 Connect integration
               </button>
             </div>
           </header>
 
-          <div className="mt-5 flex gap-2 overflow-x-auto rounded-3xl border border-slate-200 bg-white p-2 shadow-sm lg:hidden">
+          <div className="mt-5 flex gap-2 overflow-x-auto rounded-3xl border border-slate-200 bg-[#fbfbfc] p-2 shadow-sm lg:hidden">
             {navigation.map((item) => (
               <button
                 key={item}
                 onClick={() => setActiveTab(item)}
                 className={`whitespace-nowrap rounded-2xl px-4 py-2 text-sm ${
                   activeTab === item
-                    ? "bg-slate-950 text-white"
+                    ? "bg-[#315cfd] text-white"
                     : "text-slate-600"
                 }`}
               >
@@ -176,7 +188,7 @@ export default function ClientPulseDashboard() {
           {activeTab === "Overview" && (
             <div className="mt-6 space-y-6">
               <section className="grid gap-5 xl:grid-cols-[1.25fr_.75fr]">
-                <div className="rounded-3xl bg-slate-950 p-8 text-white shadow-sm">
+                <div className="rounded-3xl bg-gradient-to-br from-[#111827] to-[#1e3a8a] p-8 text-white shadow-sm">
                   <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm text-white/80">
                     <Sparkles className="h-4 w-4" />
                     Calm intelligence, not dashboard noise
@@ -209,7 +221,7 @@ export default function ClientPulseDashboard() {
                   </div>
                 </div>
 
-                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="text-sm text-slate-500">
@@ -337,7 +349,7 @@ function SummaryButton({
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center justify-between rounded-2xl bg-slate-50 px-4 py-3 text-left transition hover:bg-slate-100"
+      className="flex w-full items-center justify-between rounded-2xl bg-[#eef2f5] px-4 py-3 text-left transition hover:bg-slate-200"
     >
       <span className="text-sm text-slate-500">{label}</span>
       <span className={`text-sm font-medium ${valueClassName}`}>{value}</span>
@@ -357,7 +369,7 @@ function MetricCard({
   detail: string;
 }) {
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="rounded-3xl border border-slate-200 bg-[#fbfbfc] p-5 shadow-sm">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm text-slate-500">{label}</p>
@@ -365,7 +377,7 @@ function MetricCard({
           <p className="mt-1 text-sm text-slate-500">{detail}</p>
         </div>
 
-        <div className="rounded-2xl bg-slate-100 p-3 text-slate-700">
+        <div className="rounded-2xl bg-[#e8edf4] p-3 text-[#315cfd]">
           <Icon className="h-5 w-5" />
         </div>
       </div>
@@ -381,7 +393,7 @@ function AccountsPanel({
   setSelectedClient,
 }: any) {
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h3 className="text-xl font-semibold">Accounts</h3>
@@ -397,7 +409,7 @@ function AccountsPanel({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search accounts"
-            className="w-full rounded-2xl border border-slate-200 py-2 pl-9 pr-3 text-sm outline-none focus:ring-4 focus:ring-slate-200"
+            className="w-full rounded-2xl border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm outline-none focus:ring-4 focus:ring-blue-100"
           />
         </div>
       </div>
@@ -409,7 +421,7 @@ function AccountsPanel({
             onClick={() => setSelectedClient(client)}
             className={`w-full rounded-3xl border p-4 text-left transition ${
               selectedClient.name === client.name
-                ? "border-slate-950 bg-slate-50"
+                ? "border-[#315cfd] bg-blue-50"
                 : "border-slate-200 bg-white hover:bg-slate-50"
             }`}
           >
@@ -440,16 +452,14 @@ function AccountsPanel({
 
 function ClientDetail({ client }: any) {
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
       <p className="text-sm text-slate-500">Client page with insights</p>
 
       <h3 className="mt-1 text-2xl font-semibold">{client.name}</h3>
 
-      <p className="mt-1 text-sm text-slate-500">
-        Owned by {client.owner}
-      </p>
+      <p className="mt-1 text-sm text-slate-500">Owned by {client.owner}</p>
 
-      <div className="mt-6 rounded-3xl bg-slate-50 p-5">
+      <div className="mt-6 rounded-3xl bg-[#eef2f5] p-5">
         <p className="text-sm text-slate-500">Relationship status</p>
 
         <div className="mt-2 flex items-center justify-between">
@@ -480,7 +490,7 @@ function ClientDetail({ client }: any) {
 
 function ActivityPanel() {
   return (
-    <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="mt-6 rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
       <h3 className="text-2xl font-semibold">Activity Timeline</h3>
 
       <p className="mt-2 text-slate-500">
@@ -525,8 +535,8 @@ function ActivityItem({
   time: string;
 }) {
   return (
-    <div className="flex gap-4 rounded-3xl border border-slate-200 p-4">
-      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
+    <div className="flex gap-4 rounded-3xl border border-slate-200 bg-white p-4">
+      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#e8edf4] text-[#315cfd]">
         <Icon className="h-5 w-5" />
       </div>
 
@@ -542,7 +552,7 @@ function ActivityItem({
 
 function IntelligencePanel() {
   return (
-    <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="mt-6 rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
       <h3 className="text-2xl font-semibold">Intelligence Center</h3>
 
       <p className="mt-2 text-slate-500">
@@ -571,7 +581,7 @@ function IntelligencePanel() {
 
 function TasksPanel() {
   return (
-    <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="mt-6 rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
       <h3 className="text-2xl font-semibold">Tasks</h3>
 
       <p className="mt-2 text-slate-500">
@@ -582,7 +592,7 @@ function TasksPanel() {
         {tasks.map((item) => (
           <div
             key={item.task}
-            className="rounded-3xl border border-slate-200 p-4"
+            className="rounded-3xl border border-slate-200 bg-white p-4"
           >
             <div className="flex items-start justify-between gap-3">
               <p className="font-medium">{item.client}</p>
@@ -609,35 +619,12 @@ function TasksPanel() {
 
 function ReportsPanel() {
   return (
-    <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="mt-6 rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
       <h3 className="text-2xl font-semibold">Reports</h3>
 
       <p className="mt-2 text-slate-500">
         Executive-ready trends, exceptions, and performance visibility.
       </p>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
-        <MetricCard
-          icon={Clock}
-          label="SLA compliance"
-          value="94%"
-          detail="Responses within target"
-        />
-
-        <MetricCard
-          icon={ShieldCheck}
-          label="Risk trend"
-          value="-8%"
-          detail="Fewer high-risk accounts"
-        />
-
-        <MetricCard
-          icon={Users}
-          label="Coverage gaps"
-          value="5"
-          detail="Accounts with one contact owner"
-        />
-      </div>
     </div>
   );
 }
@@ -645,7 +632,7 @@ function ReportsPanel() {
 function AdminPanel() {
   return (
     <div className="mt-6 grid gap-6 xl:grid-cols-2">
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
         <h3 className="text-2xl font-semibold">Integrations</h3>
 
         <p className="mt-2 text-slate-500">
@@ -660,7 +647,7 @@ function AdminPanel() {
         </div>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="rounded-3xl border border-slate-200 bg-[#fbfbfc] p-6 shadow-sm">
         <h3 className="text-2xl font-semibold">Data controls</h3>
 
         <p className="mt-2 text-slate-500">
@@ -678,15 +665,9 @@ function AdminPanel() {
   );
 }
 
-function InsightRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
+function InsightRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-slate-50 px-4 py-3">
+    <div className="flex items-center justify-between rounded-2xl bg-[#eef2f5] px-4 py-3">
       <span className="text-sm text-slate-500">{label}</span>
       <span className="text-sm font-medium text-slate-950">{value}</span>
     </div>
@@ -709,15 +690,9 @@ function RiskBadge({ risk }: { risk: string }) {
   );
 }
 
-function RiskItem({
-  title,
-  detail,
-}: {
-  title: string;
-  detail: string;
-}) {
+function RiskItem({ title, detail }: { title: string; detail: string }) {
   return (
-    <div className="rounded-3xl border border-slate-200 p-4">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4">
       <div className="flex gap-3">
         <div className="rounded-xl bg-amber-50 p-2 text-amber-600">
           <AlertTriangle className="h-4 w-4" />
@@ -742,9 +717,9 @@ function Integration({
   icon: any;
 }) {
   return (
-    <div className="rounded-3xl border border-slate-200 p-4">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#e8edf4] text-[#315cfd]">
           <Icon className="h-5 w-5" />
         </div>
 
