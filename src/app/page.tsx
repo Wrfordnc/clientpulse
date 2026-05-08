@@ -6,16 +6,19 @@ import {
   AlertTriangle,
   ArrowLeft,
   ArrowUpRight,
+  Bell,
   Bot,
   Calendar,
   CheckCircle2,
   ChevronRight,
   Clock,
+  Lightbulb,
   Mail,
   MessageSquare,
   Palette,
   Search,
   Settings,
+  TrendingUp,
   Users,
   Video,
 } from "lucide-react";
@@ -52,7 +55,7 @@ const clients = [
   },
   {
     name: "HarborTech Services",
-    owner: "Mia Foster",
+    owner: "Jasper Milligan",
     health: 58,
     risk: "High",
     response: "21h 05m",
@@ -97,8 +100,8 @@ const activityAccounts = [
   },
   {
     name: "HarborTech Services",
-    person: "Mia Foster",
-    aiSummary: "You should follow up with Mia Foster before end of day.",
+    person: "Jasper Milligan",
+    aiSummary: "You should follow up with Jasper Milligan before end of day.",
     upcoming: "Open callback request is approaching escalation.",
   },
 ];
@@ -120,6 +123,13 @@ const recentActivity = [
     type: "Meeting",
   },
 ];
+
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
 
 export default function PulseDashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
@@ -157,14 +167,14 @@ export default function PulseDashboard() {
     <main className="min-h-screen bg-[#17141c] text-white" style={{ fontFamily: "Satoshi, Inter, sans-serif" }}>
       <div className="flex min-h-screen">
         <aside className="fixed left-0 top-0 hidden h-screen w-72 bg-[#21142c] px-5 py-6 text-purple-100 lg:block">
-          <button onClick={goHome} className="flex items-center gap-3 rounded-2xl p-1 text-left transition hover:bg-white/5">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#4c1d5e] to-[#d946ef] text-white">
-              <Activity className="h-6 w-6" />
+          <button onClick={goHome} className="flex w-full items-center gap-4 rounded-3xl p-2 text-left transition hover:bg-white/5">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0f0617] via-[#32104b] to-[#ff3df2] text-white shadow-lg shadow-fuchsia-500/20">
+              <Activity className="h-7 w-7" />
             </div>
 
-            <div>
-              <h1 className="text-lg font-semibold text-white">Pulse</h1>
-              <p className="text-xs text-purple-200">Relationship intelligence</p>
+            <div className="leading-none">
+              <h1 className="text-2xl font-semibold tracking-[0.08em] text-white">pulse</h1>
+              <p className="mt-2 text-xs font-medium tracking-wide text-purple-200">Intelligence</p>
             </div>
           </button>
 
@@ -187,11 +197,21 @@ export default function PulseDashboard() {
         </aside>
 
         <section className="flex-1 px-5 py-5 lg:ml-72 lg:px-8">
-          <header className="mb-6">
-            <p className="text-sm text-purple-200">Good morning, Danielle.</p>
-            <h2 className="mt-1 text-3xl font-semibold tracking-tight text-white">
-              Here are a few things that might need attention soon.
-            </h2>
+          <header className="mb-6 flex items-start justify-between gap-4">
+            <div>
+              <p className="text-lg font-medium text-purple-100">
+                {getGreeting()}, Danielle.
+              </p>
+              <h2 className="mt-1 text-2xl font-semibold tracking-tight text-white">
+                Here&apos;s what we have:
+              </h2>
+            </div>
+
+            {activeTab === "Overview" && (
+              <button className="rounded-2xl border border-white/15 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-3 text-white shadow-lg shadow-black/20 transition hover:scale-[1.03] hover:bg-white/10">
+                <Bell className="h-5 w-5" />
+              </button>
+            )}
           </header>
 
           {activeTab === "Overview" && (
@@ -230,18 +250,16 @@ export default function PulseDashboard() {
                 </div>
 
                 <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-sm text-purple-100">Executive summary</p>
-                      <h3 className="mt-1 text-2xl font-semibold">Today’s focus</h3>
-                    </div>
-                    <AlertTriangle className="h-6 w-6 text-pink-200" />
+                  <div>
+                    <p className="text-sm text-purple-100">Executive summary</p>
+                    <h3 className="mt-1 text-2xl font-semibold">Today’s focus</h3>
                   </div>
 
                   <div className="mt-6 space-y-3">
                     <SummaryButton
                       label="High-risk account"
                       value="HarborTech Services"
+                      showAlert
                       onClick={() => {
                         setSelectedClient(clients[2]);
                         goToTab("Accounts");
@@ -332,13 +350,16 @@ export default function PulseDashboard() {
   );
 }
 
-function SummaryButton({ label, value, onClick }: any) {
+function SummaryButton({ label, value, onClick, showAlert = false }: any) {
   return (
     <button
       onClick={onClick}
       className="flex w-full items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left transition hover:bg-white/20"
     >
-      <span className="text-sm text-purple-100">{label}</span>
+      <span className="flex items-center gap-2 text-sm text-purple-100">
+        {showAlert && <AlertTriangle className="h-4 w-4 text-pink-200" />}
+        {label}
+      </span>
       <span className="text-sm font-medium text-white">{value}</span>
     </button>
   );
@@ -569,13 +590,6 @@ function TractionDetail({ onBack }: any) {
             Pulse recommends prioritizing Northstar Logistics today because Austyn Diller has engaged with the last two emails and has an open renewal window.
           </p>
         </div>
-
-        <div className="mt-6 rounded-3xl border border-white/10 bg-white/10 p-5">
-          <h4 className="text-xl font-semibold">Recommended next action</h4>
-          <p className="mt-3 leading-7 text-purple-50">
-            Send a concise renewal conversation opener to Austyn Diller and schedule a follow-up within 48 hours if no response is received.
-          </p>
-        </div>
       </div>
     </div>
   );
@@ -712,11 +726,35 @@ function PreferencesPanel({ setAdminPage }: any) {
 
 function IntelligencePanel() {
   return (
-    <Panel title="Intelligence Center" subtitle="AI highlights relationships and communications requiring attention.">
-      <RiskItem title="HarborTech relationship score dropped" detail="Overdue callback and declining meeting sentiment detected." />
-      <RiskItem title="Summit has unanswered implementation questions" detail="No response detected in Teams communication." />
-      <RiskItem title="Northstar is trending positive" detail="Meeting sentiment improved and proposal follow-up was completed ahead of deadline." />
-    </Panel>
+    <div className="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
+      <Panel title="Intelligence Center" subtitle="A softer view of account movement, emerging needs, and communication signals.">
+        <SignalItem icon={TrendingUp} title="Northstar is gaining momentum" detail="Engagement improved after the last proposal follow-up." />
+        <SignalItem icon={Lightbulb} title="Summit needs clarity" detail="Implementation timeline language suggests the client is waiting for a concise confirmation." />
+        <SignalItem icon={MessageSquare} title="HarborTech needs a human touchpoint" detail="A direct response from the account owner would likely reduce relationship friction." />
+      </Panel>
+
+      <Panel title="Suggested focus" subtitle="Pulse recommends the next best areas to review.">
+        <SignalItem icon={Clock} title="Respond today" detail="Two open items are still within the ideal response window." />
+        <SignalItem icon={Users} title="Relationship coverage" detail="One account appears overly dependent on a single contact." />
+        <SignalItem icon={Calendar} title="Upcoming window" detail="Northstar renewal activity should begin this week." />
+      </Panel>
+    </div>
+  );
+}
+
+function SignalItem({ icon: Icon, title, detail }: any) {
+  return (
+    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
+      <div className="flex gap-3">
+        <div className="rounded-xl bg-white/15 p-2 text-white">
+          <Icon className="h-4 w-4" />
+        </div>
+        <div>
+          <p className="font-medium">{title}</p>
+          <p className="mt-1 text-sm text-purple-100">{detail}</p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -744,9 +782,15 @@ function TasksPanel() {
 
 function ReportsPanel() {
   return (
-    <Panel title="Reports" subtitle="Executive-ready trends, exceptions, and performance visibility.">
-      <p className="text-purple-50">Reporting examples will appear here.</p>
-    </Panel>
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-8 text-white shadow-xl shadow-black/20">
+      <p className="text-sm text-purple-100">Reports</p>
+      <h3 className="text-3xl font-semibold">Describe your report.</h3>
+
+      <textarea
+        placeholder="Example: Create a report showing unanswered client requests by account owner for the last 30 days..."
+        className="mt-8 min-h-44 w-full rounded-3xl border border-white/20 bg-white/90 p-5 text-[#24112f] outline-none placeholder:text-purple-400 focus:ring-4 focus:ring-white/20"
+      />
+    </div>
   );
 }
 
@@ -768,22 +812,6 @@ function RiskBadge({ risk }: any) {
   };
 
   return <span className={`rounded-full px-3 py-1 text-xs font-medium ${styles[risk]}`}>{risk} risk</span>;
-}
-
-function RiskItem({ title, detail }: any) {
-  return (
-    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
-      <div className="flex gap-3">
-        <div className="rounded-xl bg-pink-50 p-2 text-pink-600">
-          <AlertTriangle className="h-4 w-4" />
-        </div>
-        <div>
-          <p className="font-medium">{title}</p>
-          <p className="mt-1 text-sm text-purple-100">{detail}</p>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 function Integration({ name, status, icon: Icon }: any) {
