@@ -13,7 +13,7 @@ import {
   CheckCircle2,
   ChevronRight,
   Clock,
-  HeartPulse,
+  FileText,
   Lightbulb,
   Mail,
   MessageSquare,
@@ -21,6 +21,7 @@ import {
   Plus,
   Search,
   Settings,
+  Sparkles,
   TrendingDown,
   TrendingUp,
   Users,
@@ -28,14 +29,14 @@ import {
 } from "lucide-react";
 
 const navigation = [
-  "Overview",
-  "Accounts",
-  "Activity",
-  "Intelligence",
-  "Tasks",
-  "AI Task Manager",
-  "Reports",
-  "Admin",
+  { label: "Overview", icon: Activity },
+  { label: "Accounts", icon: Users },
+  { label: "Activity", icon: Clock },
+  { label: "Intelligence", icon: Sparkles },
+  { label: "Tasks", icon: CheckCircle2 },
+  { label: "AI Task Manager", icon: Bot },
+  { label: "Reports", icon: BarChart3 },
+  { label: "Admin", icon: Settings },
 ];
 
 const clients = [
@@ -45,6 +46,7 @@ const clients = [
     health: 91,
     trend: "Improving",
     risk: "Low",
+    priority: "Good timing",
     response: "1h 12m",
     lastTouch: "Today",
     value: "$142K",
@@ -55,6 +57,10 @@ const clients = [
       "Austyn opened the renewal summary yesterday",
       "Q2 review sentiment improved after pricing clarification",
     ],
+    people: [
+      { name: "Austyn Diller", role: "VP Operations", action: "Start renewal conversation today." },
+      { name: "Marisa Kane", role: "Finance Lead", action: "Send pricing recap before Friday." },
+    ],
   },
   {
     name: "Summit Insurance Group",
@@ -62,6 +68,7 @@ const clients = [
     health: 74,
     trend: "Stable",
     risk: "Medium",
+    priority: "Follow up",
     response: "5h 44m",
     lastTouch: "Yesterday",
     value: "$98K",
@@ -72,6 +79,9 @@ const clients = [
       "Meeting accepted by Brogan Westra",
       "Timeline concern detected in Teams thread",
     ],
+    people: [
+      { name: "Brogan Westra", role: "Implementation Lead", action: "Meeting starts in 26 minutes." },
+    ],
   },
   {
     name: "HarborTech Services",
@@ -79,6 +89,7 @@ const clients = [
     health: 58,
     trend: "Declining",
     risk: "High",
+    priority: "Needs a look",
     response: "21h 05m",
     lastTouch: "4 days ago",
     value: "$185K",
@@ -89,28 +100,80 @@ const clients = [
       "Meeting sentiment declined after project delay discussion",
       "No response detected after client follow-up",
     ],
+    people: [
+      { name: "Jasper Milligan", role: "COO", action: "Callback request needs a look." },
+      { name: "Lena Ortiz", role: "Project Sponsor", action: "Send milestone recovery note." },
+    ],
+  },
+  {
+    name: "Evergreen Medical",
+    owner: "Nora Patel",
+    health: 83,
+    trend: "Improving",
+    risk: "Low",
+    priority: "Looking good",
+    response: "2h 08m",
+    lastTouch: "Today",
+    value: "$76K",
+    insight: "Stakeholder engagement increased after onboarding session.",
+    prompt: "Send a quick thank-you note and confirm next onboarding step.",
+    timeline: [
+      "Onboarding call completed",
+      "Client shared positive feedback",
+      "Next milestone scheduled for Thursday",
+    ],
+    people: [
+      { name: "Camille Reed", role: "Client Success", action: "Confirm next milestone." },
+    ],
+  },
+  {
+    name: "Atlas Retail Partners",
+    owner: "Marcus Flynn",
+    health: 66,
+    trend: "Declining",
+    risk: "Medium",
+    priority: "Keep an eye on",
+    response: "9h 18m",
+    lastTouch: "2 days ago",
+    value: "$121K",
+    insight: "Reply speed has slowed across two key contacts.",
+    prompt: "A soft check-in would help confirm whether priorities shifted.",
+    timeline: [
+      "Two delayed replies detected",
+      "Budget review mentioned in last meeting",
+      "No owner assigned to next decision",
+    ],
+    people: [
+      { name: "Tessa Brooks", role: "Director", action: "Ask if budget review changed timing." },
+    ],
+  },
+  {
+    name: "BrightPath Consulting",
+    owner: "Elaine Monroe",
+    health: 88,
+    trend: "Stable",
+    risk: "Low",
+    priority: "Looking good",
+    response: "1h 48m",
+    lastTouch: "Today",
+    value: "$64K",
+    insight: "Consistent communication and steady meeting participation.",
+    prompt: "Maintain cadence. No major action needed today.",
+    timeline: [
+      "Quarterly review completed",
+      "Meeting participation remains strong",
+      "No unresolved client questions detected",
+    ],
+    people: [
+      { name: "Drew Holland", role: "Partner", action: "Send quarterly review notes." },
+    ],
   },
 ];
 
 const tasks = [
-  {
-    client: "HarborTech Services",
-    task: "Return client call regarding delayed project milestone",
-    due: "Waiting too long",
-    priority: "Needs a look",
-  },
-  {
-    client: "Summit Insurance Group",
-    task: "Send implementation timeline confirmation",
-    due: "Today",
-    priority: "Follow up",
-  },
-  {
-    client: "Northstar Logistics",
-    task: "Confirm pricing review meeting",
-    due: "Tomorrow",
-    priority: "Good timing",
-  },
+  { client: "HarborTech Services", task: "Return client call regarding delayed project milestone", due: "Waiting too long", priority: "Needs a look" },
+  { client: "Summit Insurance Group", task: "Send implementation timeline confirmation", due: "Today", priority: "Follow up" },
+  { client: "Northstar Logistics", task: "Confirm pricing review meeting", due: "Tomorrow", priority: "Good timing" },
 ];
 
 const recentActivity = [
@@ -118,16 +181,37 @@ const recentActivity = [
     id: "email-event",
     text: "Chuck Folker sent Austyn Diller an email 8 minutes ago",
     type: "Email",
+    subject: "Invitation to Pulse Executive Event — New York City",
+    from: "Chuck Folker <chuck.folker@pulse.com>",
+    to: "Austyn Diller <austyn.diller@northstarlogistics.com>",
+    body:
+      "Hi Austyn,\n\nI wanted to personally invite you to the upcoming Pulse Executive Relationship Intelligence event in New York City. We’ll be discussing how leading teams are improving client visibility, reducing missed follow-ups, and identifying relationship risk earlier.\n\nI think this would be especially relevant based on the renewal conversations coming up with your team.\n\nBest,\nChuck",
+    summary:
+      "Chuck invited Austyn to a relationship intelligence event and connected the invitation to Northstar’s upcoming renewal timing.",
   },
   {
     id: "reply-event",
     text: "Austyn Diller replied to your email 1 hour ago",
     type: "Reply",
+    subject: "Re: Renewal Planning Conversation",
+    from: "Austyn Diller <austyn.diller@northstarlogistics.com>",
+    to: "Danielle Hart <danielle@pulse.com>",
+    body:
+      "Hi Danielle,\n\nThanks for sending this over. The renewal timing makes sense, and I’d like to review the engagement data before our next call. Could you send the latest summary of unresolved requests and meeting participation?\n\nBest,\nAustyn",
+    summary:
+      "Austyn is engaged and asking for more detail before the renewal conversation. This is a good timing signal.",
   },
   {
     id: "meeting-event",
     text: "Brogan Westra accepted the timeline review meeting",
     type: "Meeting",
+    subject: "Implementation Timeline Review Accepted",
+    from: "Brogan Westra <brogan@summitinsurance.com>",
+    to: "James Carter <james@pulse.com>",
+    body:
+      "Brogan accepted the implementation timeline review meeting scheduled for today at 2:30 PM. No additional note was included.",
+    summary:
+      "The meeting is confirmed. Pulse recommends preparing open milestones, blockers, and one clear decision request.",
   },
 ];
 
@@ -161,11 +245,16 @@ export default function PulseDashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
   const [query, setQuery] = useState("");
   const [selectedClient, setSelectedClient] = useState<any>(null);
+  const [activityView, setActivityView] = useState("Company");
   const [activityDetail, setActivityDetail] = useState<any>(null);
   const [tractionOpen, setTractionOpen] = useState(false);
   const [adminPage, setAdminPage] = useState("Admin");
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [sandboxMode, setSandboxMode] = useState(true);
+  const [density, setDensity] = useState("Comfortable");
+  const [insightStyle, setInsightStyle] = useState("Gentle narrative");
+  const [showScores, setShowScores] = useState(true);
+  const [showTimeline, setShowTimeline] = useState(true);
 
   const filteredClients = useMemo(() => {
     return clients.filter(
@@ -202,38 +291,51 @@ export default function PulseDashboard() {
 
   return (
     <main
-      className="min-h-screen bg-gradient-to-br from-[#17141c] via-[#1d1725] to-[#24162c] text-white"
+      className="min-h-screen bg-[radial-gradient(circle_at_top_left,#31233b_0%,#1d1c22_34%,#111216_100%)] text-white"
       style={{ fontFamily: "Satoshi, Inter, sans-serif" }}
     >
       <div className="flex min-h-screen">
-        <aside className="fixed left-0 top-0 hidden h-screen w-60 bg-gradient-to-b from-[#1d1725] via-[#22162d] to-[#281734] px-4 py-5 text-purple-100 lg:block">
+        <aside className="fixed left-0 top-0 hidden h-screen w-60 border-r border-white/10 bg-gradient-to-b from-[#2c1738] via-[#281735] to-[#1a171f] px-4 py-5 text-purple-100 shadow-2xl shadow-black/30 lg:block">
           <button onClick={goHome} className="flex w-full items-center gap-3 rounded-3xl p-2 text-left transition hover:bg-white/5">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0f0617] via-[#32104b] to-[#ff3df2] text-white shadow-lg shadow-fuchsia-500/20">
-              <HeartPulse className="h-6 w-6" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#16081f] via-[#4c1d5e] to-[#ff3df2] text-white shadow-lg shadow-fuchsia-500/20">
+              <Activity className="h-6 w-6" />
             </div>
             <div className="leading-none">
-              <h1 className="text-3xl font-semibold tracking-[0.025em] text-white">pulse</h1>
+              <h1
+                className="text-[2.35rem] font-semibold leading-none tracking-[0.015em] text-white"
+                style={{ fontFamily: "ui-rounded, Satoshi, Inter, sans-serif" }}
+              >
+                pulse
+              </h1>
               <p className="mt-1.5 text-[11px] font-medium tracking-wide text-purple-200">
                 Relationship Intelligence
               </p>
             </div>
           </button>
 
-          <nav className="mt-7 space-y-1.5">
-            {navigation.map((item) => (
-              <button
-                key={item}
-                onClick={() => goToTab(item)}
-                className={`flex w-full items-center justify-between rounded-2xl border px-3.5 py-2.5 text-left text-sm transition ${
-                  activeTab === item
-                    ? "border-white/35 bg-white/15 text-white"
-                    : "border-white/10 text-purple-100 hover:border-white/25 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                <span>{item}</span>
-                {activeTab === item && <ChevronRight className="h-4 w-4" />}
-              </button>
-            ))}
+          <nav className="mt-7 space-y-2">
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <button
+                  key={item.label}
+                  onClick={() => goToTab(item.label)}
+                  className={`flex w-full items-center justify-between rounded-2xl border px-3.5 py-2.5 text-left text-sm transition ${
+                    activeTab === item.label
+                      ? "border-pink-200/35 bg-white/15 text-white shadow-lg shadow-pink-950/20"
+                      : "border-white/10 bg-white/[0.03] text-purple-100 hover:border-white/25 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-white/10">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    {item.label}
+                  </span>
+                  {activeTab === item.label && <ChevronRight className="h-4 w-4" />}
+                </button>
+              );
+            })}
           </nav>
 
           <div className="absolute bottom-5 left-4 right-4 rounded-3xl border border-white/10 bg-white/10 p-3">
@@ -296,9 +398,7 @@ export default function PulseDashboard() {
                         >
                           <div className="flex items-center justify-between gap-3">
                             <p className="font-medium text-white">{item.title}</p>
-                            <span className="rounded-full bg-white/15 px-2 py-1 text-xs text-purple-100">
-                              {item.urgency}
-                            </span>
+                            <StatusChip label={item.urgency} />
                           </div>
                           <p className="mt-2 text-sm leading-6 text-purple-100">{item.detail}</p>
                         </button>
@@ -314,6 +414,9 @@ export default function PulseDashboard() {
             <div className="space-y-5">
               <section className="grid gap-5 xl:grid-cols-[1.25fr_.75fr]">
                 <Panel title="A few things may need your attention." subtitle="Executive Focus Panel">
+                  <p className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-sm text-purple-100">
+                    Calm intelligence, not dashboard noise.
+                  </p>
                   <p className="max-w-2xl text-base leading-7 text-purple-100">
                     Pulse filters fragmented communication across Outlook, Zoom, Teams, calls, and CRM data into the few things worth reviewing.
                   </p>
@@ -342,7 +445,10 @@ export default function PulseDashboard() {
                     setSelectedClient(clients[1]);
                     goToTab("Accounts");
                   }} />
-                  <SummaryButton label="Waiting too long" value="1 item" onClick={() => goToTab("Tasks")} />
+                  <SummaryButton label="Good timing" value="Northstar Logistics" onClick={() => {
+                    setSelectedClient(clients[0]);
+                    goToTab("Accounts");
+                  }} />
                   <SummaryButton label="Looking good" value="86%" onClick={() => {
                     setSelectedClient(clients[0]);
                     goToTab("Accounts");
@@ -354,10 +460,10 @@ export default function PulseDashboard() {
                 <MetricCard icon={Users} label="Tracked clients" value="128" detail="Across 14 account owners" />
                 <MetricCard icon={Clock} label="Avg response" value="3h 18m" detail="18% faster than last week" />
                 <MetricCard icon={CheckCircle2} label="Closed follow-ups" value="42" detail="This week" />
-                <MetricCard icon={HeartPulse} label="Looking good" value="86%" detail="Healthy relationship signals" />
+                <MetricCard icon={Activity} label="Looking good" value="86%" detail="Healthy relationship signals" />
               </section>
 
-              <HealthScoreGrid clients={clients} setSelectedClient={setSelectedClient} goToTab={goToTab} />
+              {showScores && <HealthScoreGrid clients={clients} setSelectedClient={setSelectedClient} goToTab={goToTab} />}
 
               <AccountsPanel
                 query={query}
@@ -378,7 +484,11 @@ export default function PulseDashboard() {
                 selectedClient={selectedClient}
                 setSelectedClient={setSelectedClient}
               />
-              {selectedClient ? <ClientDetail client={selectedClient} /> : <EmptyClientState />}
+              {selectedClient ? (
+                <ClientDetail client={selectedClient} showTimeline={showTimeline} />
+              ) : (
+                <EmptyClientState />
+              )}
             </div>
           )}
 
@@ -389,6 +499,8 @@ export default function PulseDashboard() {
               <TractionDetail onBack={() => setTractionOpen(false)} />
             ) : (
               <ActivityPanel
+                activityView={activityView}
+                setActivityView={setActivityView}
                 setActivityDetail={setActivityDetail}
                 setTractionOpen={setTractionOpen}
               />
@@ -400,7 +512,19 @@ export default function PulseDashboard() {
           {activeTab === "Reports" && <ReportsPanel />}
           {activeTab === "Admin" &&
             (adminPage === "Admin" ? (
-              <AdminPanel setAdminPage={setAdminPage} sandboxMode={sandboxMode} setSandboxMode={setSandboxMode} />
+              <AdminPanel
+                setAdminPage={setAdminPage}
+                sandboxMode={sandboxMode}
+                setSandboxMode={setSandboxMode}
+                density={density}
+                setDensity={setDensity}
+                insightStyle={insightStyle}
+                setInsightStyle={setInsightStyle}
+                showScores={showScores}
+                setShowScores={setShowScores}
+                showTimeline={showTimeline}
+                setShowTimeline={setShowTimeline}
+              />
             ) : (
               <PreferencesPanel setAdminPage={setAdminPage} />
             ))}
@@ -414,58 +538,84 @@ export default function PulseDashboard() {
 
 function LoginScreen({ onSignIn }: any) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,#f8e7f3_0%,#f8f4f1_42%,#eee8e6_100%)] px-5 text-[#24112f]">
-      <div className="w-full max-w-5xl">
-        <div className="mx-auto w-full max-w-md animate-[fadeIn_700ms_ease-out] rounded-[2rem] border border-[#eadde8] bg-[#fffaf8]/90 p-8 shadow-2xl shadow-[#c8a9bd]/25 backdrop-blur">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#402449_0%,#201b26_38%,#111216_100%)] px-5 py-8 text-white">
+      <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-6xl items-center gap-8 lg:grid-cols-[1.1fr_.9fr]">
+        <section className="hidden lg:block">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-purple-100">
+            <Sparkles className="h-4 w-4" />
+            Calm intelligence, not dashboard noise.
+          </div>
+
+          <h1 className="mt-7 max-w-2xl text-6xl font-semibold leading-tight">
+            See relationship risk before it becomes a problem.
+          </h1>
+
+          <p className="mt-5 max-w-xl text-lg leading-8 text-purple-100">
+            Pulse turns scattered client communication into a calm, focused view of what needs attention, what is trending well, and where to follow up next.
+          </p>
+
+          <div className="mt-8 grid max-w-2xl gap-4 md:grid-cols-3">
+            <MarketingCard title="Attention Queue" detail="Prioritized next actions without alert fatigue." />
+            <MarketingCard title="Client Timeline" detail="A living memory of emails, calls, meetings, and signals." />
+            <MarketingCard title="AI Insights" detail="Gentle recommendations that help teams act sooner." />
+          </div>
+        </section>
+
+        <section className="mx-auto w-full max-w-md animate-[fadeIn_700ms_ease-out] rounded-[2rem] border border-white/10 bg-white/10 p-8 shadow-2xl shadow-black/30 backdrop-blur">
           <div className="text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#32104b] to-[#e879d4] text-white shadow-lg shadow-pink-200/40">
-              <HeartPulse className="h-7 w-7 animate-pulse" />
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#16081f] via-[#4c1d5e] to-[#ff3df2] text-white shadow-lg shadow-pink-400/30">
+              <Activity className="h-7 w-7" />
             </div>
-            <h1 className="mt-5 text-4xl font-semibold tracking-[0.02em]">pulse</h1>
+            <h1
+              className="mt-5 text-5xl font-semibold tracking-[0.015em]"
+              style={{ fontFamily: "ui-rounded, Satoshi, Inter, sans-serif" }}
+            >
+              pulse
+            </h1>
             <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-[#e9a8cb]" />
-            <p className="mt-4 text-xl font-light text-[#8d4b75]">Relationship Intelligence</p>
+            <p className="mt-4 text-xl font-light text-pink-100">Relationship Intelligence</p>
           </div>
 
           <div className="mt-10">
-            <p className="text-sm text-[#9a7a8e]">Welcome back</p>
+            <p className="text-sm text-purple-100">Welcome back</p>
             <h2 className="mt-1 text-2xl font-semibold">Sign in to your workspace</h2>
           </div>
 
           <div className="mt-7 space-y-4">
             <input
               defaultValue="danielle@pulse.com"
-              className="h-14 w-full rounded-2xl border border-[#eadde8] bg-white px-4 text-[#24112f] outline-none placeholder:text-[#a8909e] focus:border-[#e9a8cb] focus:ring-4 focus:ring-[#e9a8cb]/20"
+              className="h-14 w-full rounded-2xl border border-white/15 bg-white/15 px-4 text-white outline-none placeholder:text-purple-200 focus:border-pink-200/50 focus:ring-4 focus:ring-pink-200/10"
               placeholder="Email"
             />
             <input
               defaultValue="relationshipintel"
               type="password"
-              className="h-14 w-full rounded-2xl border border-[#eadde8] bg-white px-4 text-[#24112f] outline-none placeholder:text-[#a8909e] focus:border-[#e9a8cb] focus:ring-4 focus:ring-[#e9a8cb]/20"
+              className="h-14 w-full rounded-2xl border border-white/15 bg-white/15 px-4 text-white outline-none placeholder:text-purple-200 focus:border-pink-200/50 focus:ring-4 focus:ring-pink-200/10"
               placeholder="Password"
             />
 
             <button
               onClick={() => onSignIn("sandbox")}
-              className="mt-3 h-14 w-full rounded-2xl bg-[#d85fae] px-5 text-sm font-semibold text-white shadow-lg shadow-pink-200/50 transition hover:scale-[1.01] hover:bg-[#c84f9d]"
+              className="mt-3 h-14 w-full rounded-2xl bg-[#d85fae] px-5 text-sm font-semibold text-white shadow-lg shadow-pink-950/30 transition hover:scale-[1.01] hover:bg-[#c84f9d]"
             >
               Try Sandbox Demo
             </button>
 
             <button
               onClick={() => onSignIn("standard")}
-              className="h-12 w-full rounded-2xl border border-[#eadde8] bg-white text-sm font-medium text-[#8d4b75] transition hover:bg-[#fff2f8]"
+              className="h-12 w-full rounded-2xl border border-white/15 bg-white/10 text-sm font-medium text-purple-100 transition hover:bg-white/15"
             >
               Sign In
             </button>
           </div>
 
-          <div className="mt-6 flex items-center justify-between text-sm text-[#9a7a8e]">
-            <button className="hover:text-[#d85fae]">Forgot password?</button>
-            <button className="hover:text-[#d85fae]">Create workspace</button>
+          <div className="mt-6 flex items-center justify-between text-sm text-purple-200">
+            <button className="hover:text-white">Forgot password?</button>
+            <button className="hover:text-white">Create workspace</button>
           </div>
 
-          <p className="mt-8 text-center text-xs text-[#b49aad]">© 2026 ClientPulse</p>
-        </div>
+          <p className="mt-8 text-center text-xs text-purple-300">© 2026 ClientPulse</p>
+        </section>
       </div>
 
       <style jsx>{`
@@ -488,8 +638,8 @@ function PulseLoadingScreen() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#17141c] via-[#1d1725] to-[#291536] px-5 text-white">
       <div className="w-full max-w-xl text-center">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#0f0617] via-[#32104b] to-[#ff3df2] shadow-2xl shadow-fuchsia-500/20">
-          <HeartPulse className="h-9 w-9 animate-pulse" />
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#16081f] via-[#4c1d5e] to-[#ff3df2] shadow-2xl shadow-fuchsia-500/20">
+          <Activity className="h-9 w-9 animate-pulse" />
         </div>
 
         <div className="relative mt-10 h-24 overflow-hidden rounded-3xl border border-white/10 bg-black/20 px-6 shadow-2xl shadow-black/30">
@@ -528,6 +678,15 @@ function PulseLoadingScreen() {
   );
 }
 
+function MarketingCard({ title, detail }: any) {
+  return (
+    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
+      <p className="font-medium text-white">{title}</p>
+      <p className="mt-2 text-sm leading-6 text-purple-100">{detail}</p>
+    </div>
+  );
+}
+
 function SummaryButton({ label, value, onClick, showAlert = false }: any) {
   return (
     <button onClick={onClick} className="flex w-full items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left transition hover:bg-white/20">
@@ -561,7 +720,7 @@ function HealthScoreGrid({ clients, setSelectedClient, goToTab }: any) {
   return (
     <Panel title="Client health signals" subtitle="A simple view of relationship movement.">
       <div className="grid gap-4 md:grid-cols-3">
-        {clients.map((client: any) => (
+        {clients.slice(0, 6).map((client: any) => (
           <button
             key={client.name}
             onClick={() => {
@@ -581,7 +740,10 @@ function HealthScoreGrid({ clients, setSelectedClient, goToTab }: any) {
               )}
             </div>
             <p className="mt-3 text-4xl font-semibold">{client.health}</p>
-            <p className="mt-1 text-sm text-purple-100">{client.trend} · {client.value}</p>
+            <div className="mt-2 flex items-center justify-between">
+              <p className="text-sm text-purple-100">{client.trend} · {client.value}</p>
+              <StatusChip label={client.priority} />
+            </div>
             <MiniSparkline trend={client.trend} />
           </button>
         ))}
@@ -634,6 +796,7 @@ function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSe
                 <div className="flex flex-wrap items-center gap-2">
                   <p className="inline-flex rounded-xl bg-white/15 px-3 py-1 font-medium text-white">{client.name}</p>
                   <RiskBadge risk={client.risk} />
+                  <StatusChip label={client.priority} />
                 </div>
                 <p className="mt-2 text-sm text-purple-100">Owner: {client.owner} · Last touch: {client.lastTouch}</p>
                 <p className="mt-2 text-sm text-purple-50">{client.insight}</p>
@@ -647,31 +810,53 @@ function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSe
   );
 }
 
-function ClientDetail({ client }: any) {
+function ClientDetail({ client, showTimeline }: any) {
   return (
     <div className="space-y-5">
       <Panel title={client.name} subtitle={`Owned by ${client.owner}`}>
-        <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-          <p className="text-sm text-purple-100">Health score</p>
-          <div className="mt-2 flex items-center justify-between">
-            <p className="text-4xl font-semibold">{client.health}</p>
-            <RiskBadge risk={client.risk} />
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+            <p className="text-sm text-purple-100">Health score</p>
+            <div className="mt-2 flex items-center justify-between">
+              <p className="text-4xl font-semibold">{client.health}</p>
+              <RiskBadge risk={client.risk} />
+            </div>
+            <p className="mt-3 text-sm leading-6 text-purple-50">{client.insight}</p>
           </div>
-          <p className="mt-3 text-sm leading-6 text-purple-50">{client.insight}</p>
+
+          <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+            <p className="text-sm text-purple-100">Suggested outreach</p>
+            <p className="mt-2 text-lg font-medium text-white">{client.prompt}</p>
+          </div>
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-          <p className="text-sm text-purple-100">Suggested outreach</p>
-          <p className="mt-2 text-lg font-medium text-white">{client.prompt}</p>
+        <div className="grid gap-4 md:grid-cols-3">
+          <MetricMini label="Account value" value={client.value} detail="Estimated ARR" />
+          <MetricMini label="Response time" value={client.response} detail="Current average" />
+          <MetricMini label="Last touch" value={client.lastTouch} detail={client.trend} />
         </div>
       </Panel>
 
-      <Panel title="Relationship timeline" subtitle="The memory of the relationship.">
-        {client.timeline.map((item: string) => (
-          <div key={item} className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm text-purple-50">
-            {item}
-          </div>
-        ))}
+      {showTimeline && (
+        <Panel title="Relationship timeline" subtitle="The memory of the relationship.">
+          {client.timeline.map((item: string) => (
+            <div key={item} className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm text-purple-50">
+              {item}
+            </div>
+          ))}
+        </Panel>
+      )}
+
+      <Panel title="People needing attention" subtitle="Useful when more than one stakeholder is active inside a company.">
+        <div className="grid gap-4 md:grid-cols-2">
+          {client.people.map((person: any) => (
+            <div key={person.name} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+              <p className="font-medium">{person.name}</p>
+              <p className="mt-1 text-sm text-purple-100">{person.role}</p>
+              <p className="mt-3 text-sm text-purple-50">{person.action}</p>
+            </div>
+          ))}
+        </div>
       </Panel>
     </div>
   );
@@ -681,23 +866,54 @@ function EmptyClientState() {
   return (
     <Panel title="Select an account" subtitle="Client page with insights">
       <p className="leading-7 text-purple-100">
-        Choose an account from the list to view health score, suggested outreach, timeline, and relationship context.
+        Choose an account from the list to view health score, suggested outreach, timeline, people, and relationship context.
       </p>
     </Panel>
   );
 }
 
-function ActivityPanel({ setActivityDetail, setTractionOpen }: any) {
+function ActivityPanel({ activityView, setActivityView, setActivityDetail, setTractionOpen }: any) {
+  const peopleRows = clients.flatMap((client) =>
+    client.people.map((person) => ({ ...person, company: client.name }))
+  );
+
   return (
     <div className="space-y-5">
       <div className="grid gap-5 xl:grid-cols-[1.1fr_.9fr]">
-        <Panel title="Upcoming Activity" subtitle="What is coming up next.">
-          {clients.map((client) => (
-            <div key={client.name} className="rounded-3xl border border-white/10 bg-white/10 p-4">
-              <p className="font-medium">{client.name}</p>
-              <p className="mt-2 text-sm text-purple-100">{client.prompt}</p>
-            </div>
-          ))}
+        <Panel title="Upcoming Activity" subtitle="Toggle between company and people views.">
+          <div className="flex w-fit rounded-2xl border border-white/15 bg-white/10 p-1">
+            {["Company", "People"].map((view) => (
+              <button
+                key={view}
+                onClick={() => setActivityView(view)}
+                className={`rounded-xl px-4 py-2 text-sm ${
+                  activityView === view ? "bg-white text-[#24112f]" : "text-white"
+                }`}
+              >
+                {view}
+              </button>
+            ))}
+          </div>
+
+          {activityView === "Company" ? (
+            clients.slice(0, 4).map((client) => (
+              <div key={client.name} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+                <div className="flex items-center justify-between">
+                  <p className="font-medium">{client.name}</p>
+                  <StatusChip label={client.priority} />
+                </div>
+                <p className="mt-2 text-sm text-purple-100">{client.prompt}</p>
+              </div>
+            ))
+          ) : (
+            peopleRows.slice(0, 7).map((person) => (
+              <div key={`${person.company}-${person.name}`} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+                <p className="font-medium">{person.name}</p>
+                <p className="mt-1 text-sm text-purple-100">{person.company} · {person.role}</p>
+                <p className="mt-2 text-sm text-purple-50">{person.action}</p>
+              </div>
+            ))
+          )}
         </Panel>
 
         <button
@@ -735,34 +951,24 @@ function ActivityPanel({ setActivityDetail, setTractionOpen }: any) {
 }
 
 function ActivityDetail({ item, onBack }: any) {
-  const content: any = {
-    "email-event": {
-      eyebrow: "Email preview",
-      title: "Invitation to Pulse Executive Event — New York City",
-      body: "Chuck Folker invited Austyn Diller to a Pulse executive event in New York City focused on relationship intelligence, missed follow-ups, and client visibility.",
-    },
-    "reply-event": {
-      eyebrow: "Reply preview",
-      title: "Re: Renewal Planning Conversation",
-      body: "Austyn Diller asked for the latest summary of unresolved requests and meeting participation before the renewal discussion.",
-    },
-    "meeting-event": {
-      eyebrow: "Meeting activity",
-      title: "Timeline Review Meeting Accepted",
-      body: "Brogan Westra accepted the implementation timeline review meeting. Pulse recommends preparing blockers, open milestones, and a clear decision request.",
-    },
-  };
-
-  const selected = content[item.id];
-
   return (
-    <Panel title={selected.title} subtitle={selected.eyebrow}>
+    <Panel title={item.subject} subtitle={item.type}>
       <button onClick={onBack} className="flex items-center gap-2 text-sm text-purple-100 hover:text-white">
         <ArrowLeft className="h-4 w-4" />
         Back to Activity
       </button>
+
       <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
-        <p className="leading-7 text-purple-50">{selected.body}</p>
+        <p className="text-sm text-purple-100">From: {item.from}</p>
+        <p className="text-sm text-purple-100">To: {item.to}</p>
+        <div className="mt-5 whitespace-pre-line rounded-2xl bg-white/10 p-4 text-sm leading-7 text-purple-50">
+          {item.body}
+        </div>
+      </div>
+
+      <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+        <p className="text-sm text-purple-100">AI summary</p>
+        <p className="mt-2 leading-7 text-white">{item.summary}</p>
       </div>
     </Panel>
   );
@@ -793,7 +999,7 @@ function AITaskManager() {
       <Panel title="How can I help?" subtitle="AI Task Manager">
         <textarea
           placeholder="Ask Pulse to summarize open questions, draft a follow-up, identify accounts that need a look, or prepare your next client action..."
-          className="min-h-44 w-full rounded-3xl border border-white/20 bg-[#e7e2ec] p-5 text-[#24112f] outline-none placeholder:text-purple-500 focus:ring-4 focus:ring-white/20"
+          className="min-h-44 w-full rounded-3xl border border-white/20 bg-[#f1edf3] p-5 text-black outline-none placeholder:text-purple-500 focus:ring-4 focus:ring-white/20"
         />
       </Panel>
 
@@ -806,7 +1012,19 @@ function AITaskManager() {
   );
 }
 
-function AdminPanel({ setAdminPage, sandboxMode, setSandboxMode }: any) {
+function AdminPanel({
+  setAdminPage,
+  sandboxMode,
+  setSandboxMode,
+  density,
+  setDensity,
+  insightStyle,
+  setInsightStyle,
+  showScores,
+  setShowScores,
+  showTimeline,
+  setShowTimeline,
+}: any) {
   return (
     <div className="space-y-5">
       <div className="flex justify-end">
@@ -825,19 +1043,19 @@ function AdminPanel({ setAdminPage, sandboxMode, setSandboxMode }: any) {
           </div>
         </Panel>
 
-        <Panel title="Workspace mode" subtitle="Demo and data controls.">
-          <button
-            onClick={() => setSandboxMode(!sandboxMode)}
-            className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left hover:bg-white/15"
-          >
-            {sandboxMode ? "Sandbox mode is on" : "Sandbox mode is off"}
-          </button>
+        <Panel title="Preferences" subtitle="Functional demo settings.">
+          <PreferenceToggle label="Sandbox mode" value={sandboxMode} setValue={setSandboxMode} />
+          <PreferenceToggle label="Show health scores" value={showScores} setValue={setShowScores} />
+          <PreferenceToggle label="Show client timeline" value={showTimeline} setValue={setShowTimeline} />
+
+          <PreferenceSelect label="Card density" value={density} setValue={setDensity} options={["Compact", "Comfortable", "Spacious"]} />
+          <PreferenceSelect label="Insight style" value={insightStyle} setValue={setInsightStyle} options={["Short bullets", "Gentle narrative", "Visual only"]} />
 
           <button
             onClick={() => setAdminPage("Preferences")}
             className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left hover:bg-white/15"
           >
-            Preferences
+            Open theme preferences
           </button>
         </Panel>
       </div>
@@ -860,8 +1078,48 @@ function PreferencesPanel({ setAdminPage }: any) {
       </Panel>
 
       <Panel title="Customize Theme" subtitle="Theme controls will appear here.">
-        <p className="text-purple-100">Future controls for palette, density, font, and workspace layout.</p>
+        <p className="text-purple-100">Current theme: graphite base with purple relationship intelligence accents.</p>
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl bg-white/10 p-4">Blush Accent</div>
+          <div className="rounded-2xl bg-white/10 p-4">Purple Depth</div>
+          <div className="rounded-2xl bg-white/10 p-4">Graphite Base</div>
+        </div>
       </Panel>
+    </div>
+  );
+}
+
+function PreferenceToggle({ label, value, setValue }: any) {
+  return (
+    <button
+      onClick={() => setValue(!value)}
+      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-left hover:bg-white/15"
+    >
+      <span>{label}</span>
+      <span className={`rounded-full px-3 py-1 text-xs ${value ? "bg-emerald-100 text-emerald-800" : "bg-white/15 text-purple-100"}`}>
+        {value ? "On" : "Off"}
+      </span>
+    </button>
+  );
+}
+
+function PreferenceSelect({ label, value, setValue, options }: any) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
+      <p className="text-sm text-purple-100">{label}</p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {options.map((option: string) => (
+          <button
+            key={option}
+            onClick={() => setValue(option)}
+            className={`rounded-full px-3 py-1 text-xs ${
+              value === option ? "bg-white text-[#24112f]" : "bg-white/10 text-purple-100"
+            }`}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
@@ -879,7 +1137,7 @@ function IntelligencePanel() {
       <Panel title="Suggested outreach" subtitle="Low-pressure message starters.">
         <SignalItem icon={Mail} title="Gentle check-in" detail="Wanted to circle back on the timeline question and make sure we are aligned." />
         <SignalItem icon={Calendar} title="Meeting prep" detail="Bring one clear decision request and a concise milestone summary." />
-        <SignalItem icon={HeartPulse} title="Relationship nurture" detail="Northstar is showing good engagement. A renewal conversation is well-timed." />
+        <SignalItem icon={Activity} title="Relationship nurture" detail="Northstar is showing good engagement. A renewal conversation is well-timed." />
       </Panel>
     </div>
   );
@@ -893,7 +1151,7 @@ function TasksPanel() {
           <div key={item.task} className="rounded-3xl border border-white/10 bg-white/10 p-4">
             <div className="flex items-start justify-between gap-3">
               <p className="font-medium">{item.client}</p>
-              <span className="rounded-full bg-white/15 px-3 py-1 text-xs text-purple-100">{item.priority}</span>
+              <StatusChip label={item.priority} />
             </div>
             <p className="mt-3 text-sm leading-6 text-purple-50">{item.task}</p>
             <div className="mt-4 flex items-center gap-2 text-sm text-purple-100">
@@ -910,10 +1168,10 @@ function TasksPanel() {
 function ReportsPanel() {
   return (
     <div className="space-y-5">
-      <Panel title="Describe the report you want to make." subtitle="Reports">
+      <Panel title="Describe the report you want to make." subtitle="">
         <textarea
           placeholder="Example: Show unanswered client requests by account owner for the last 30 days..."
-          className="min-h-28 w-full max-w-3xl rounded-3xl border border-white/20 bg-[#e7e2ec] p-5 text-[#24112f] outline-none placeholder:text-purple-500 focus:ring-4 focus:ring-white/20"
+          className="min-h-28 w-full max-w-3xl rounded-3xl border border-white/20 bg-[#f1edf3] p-5 text-black outline-none placeholder:text-purple-500 focus:ring-4 focus:ring-white/20"
         />
       </Panel>
 
@@ -936,7 +1194,8 @@ function ReportsPanel() {
             {[
               ["HarborTech", "5", "21h 05m", "Needs a look"],
               ["Summit", "3", "5h 44m", "Follow up"],
-              ["Northstar", "1", "1h 12m", "Looking good"],
+              ["Northstar", "1", "1h 12m", "Good timing"],
+              ["Evergreen", "0", "2h 08m", "Looking good"],
             ].map((row) => (
               <div key={row[0]} className="grid grid-cols-4 border-t border-white/10 px-4 py-3 text-sm text-purple-100">
                 <div className="text-white">{row[0]}</div>
@@ -956,7 +1215,7 @@ function Panel({ title, subtitle, children }: any) {
   return (
     <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-5 text-white shadow-xl shadow-black/20">
       <h3 className="text-2xl font-semibold">{title}</h3>
-      <p className="mt-1.5 text-sm text-purple-100">{subtitle}</p>
+      {subtitle !== "" && <p className="mt-1.5 text-sm text-purple-100">{subtitle}</p>}
       <div className="mt-5 space-y-4">{children}</div>
     </div>
   );
@@ -966,7 +1225,7 @@ function SignalItem({ icon: Icon, title, detail }: any) {
   return (
     <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
       <div className="flex gap-3">
-        <div className="rounded-xl bg-white/15 p-2 text-white">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-white">
           <Icon className="h-4 w-4" />
         </div>
         <div>
@@ -994,6 +1253,22 @@ function MetricMini({ label, value, detail }: any) {
       <p className="mt-2 text-3xl font-semibold">{value}</p>
       <p className="mt-1 text-sm text-purple-100">{detail}</p>
     </div>
+  );
+}
+
+function StatusChip({ label }: any) {
+  const styles: any = {
+    "Needs a look": "bg-pink-100 text-pink-800",
+    "Follow up": "bg-amber-100 text-amber-800",
+    "Good timing": "bg-emerald-100 text-emerald-800",
+    "Looking good": "bg-sky-100 text-sky-800",
+    "Keep an eye on": "bg-violet-100 text-violet-800",
+  };
+
+  return (
+    <span className={`rounded-full px-3 py-1 text-xs font-medium ${styles[label] || "bg-white/15 text-purple-100"}`}>
+      {label}
+    </span>
   );
 }
 
