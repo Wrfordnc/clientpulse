@@ -22,8 +22,10 @@ import {
   Sparkles,
   TrendingDown,
   TrendingUp,
+  UserPlus,
   Users,
   Video,
+  Zap,
 } from "lucide-react";
 
 const navigation = [
@@ -48,6 +50,8 @@ const clients = [
     response: "1h 12m",
     lastTouch: "Today",
     value: "$142K",
+    stage: "Renewal window",
+    nextStep: "Start renewal conversation today",
     insight: "Healthy cadence. Proposal follow-up completed this morning.",
     prompt: "A renewal conversation would land well today because engagement is high.",
     timeline: ["Proposal follow-up sent this morning", "Austyn opened the renewal summary yesterday", "Q2 review sentiment improved after pricing clarification"],
@@ -66,6 +70,8 @@ const clients = [
     response: "5h 44m",
     lastTouch: "Yesterday",
     value: "$98K",
+    stage: "Implementation",
+    nextStep: "Confirm implementation timeline",
     insight: "Implementation timeline question still needs confirmation.",
     prompt: "Send a short timeline confirmation with one clear next step.",
     timeline: ["Client asked for implementation timing yesterday", "Meeting accepted by Brogan Westra", "Timeline concern detected in Teams thread"],
@@ -81,6 +87,8 @@ const clients = [
     response: "21h 05m",
     lastTouch: "4 days ago",
     value: "$185K",
+    stage: "Project recovery",
+    nextStep: "Return callback today",
     insight: "Callback request is overdue and meeting sentiment declined.",
     prompt: "A direct, human check-in from the account owner is recommended today.",
     timeline: ["Callback request has not been completed", "Meeting sentiment declined after project delay discussion", "No response detected after client follow-up"],
@@ -99,6 +107,8 @@ const clients = [
     response: "2h 08m",
     lastTouch: "Today",
     value: "$76K",
+    stage: "Onboarding",
+    nextStep: "Confirm next onboarding step",
     insight: "Stakeholder engagement increased after onboarding session.",
     prompt: "Send a quick thank-you note and confirm next onboarding step.",
     timeline: ["Onboarding call completed", "Client shared positive feedback", "Next milestone scheduled for Thursday"],
@@ -114,6 +124,8 @@ const clients = [
     response: "9h 18m",
     lastTouch: "2 days ago",
     value: "$121K",
+    stage: "Budget review",
+    nextStep: "Ask if budget timing changed",
     insight: "Reply speed has slowed across two key contacts.",
     prompt: "A soft check-in would help confirm whether priorities shifted.",
     timeline: ["Two delayed replies detected", "Budget review mentioned in last meeting", "No owner assigned to next decision"],
@@ -129,10 +141,199 @@ const clients = [
     response: "1h 48m",
     lastTouch: "Today",
     value: "$64K",
+    stage: "Quarterly review",
+    nextStep: "Send review notes",
     insight: "Consistent communication and steady meeting participation.",
     prompt: "Maintain cadence. No major action needed today.",
     timeline: ["Quarterly review completed", "Meeting participation remains strong", "No unresolved client questions detected"],
     people: [{ name: "Drew Holland", role: "Partner", action: "Send quarterly review notes." }],
+  },
+  {
+    name: "Cobalt Manufacturing",
+    owner: "Priya Shah",
+    health: 72,
+    trend: "Stable",
+    risk: "Medium",
+    priority: "Follow up",
+    response: "6h 30m",
+    lastTouch: "Yesterday",
+    value: "$132K",
+    stage: "Expansion discussion",
+    nextStep: "Send facility rollout recap",
+    insight: "Expansion discussion is active, but next-step ownership is unclear.",
+    prompt: "Send a recap with the rollout options and ask who should own the next decision.",
+    timeline: ["Expansion interest mentioned", "Facilities team requested recap", "Decision owner not confirmed"],
+    people: [{ name: "Owen Price", role: "Facilities Director", action: "Clarify rollout decision owner." }],
+  },
+  {
+    name: "Pioneer Foods",
+    owner: "Lena Brooks",
+    health: 79,
+    trend: "Improving",
+    risk: "Low",
+    priority: "Good timing",
+    response: "3h 10m",
+    lastTouch: "Today",
+    value: "$89K",
+    stage: "Adoption growth",
+    nextStep: "Share adoption wins",
+    insight: "Usage and meeting participation are both trending up.",
+    prompt: "Share a short wins recap while momentum is high.",
+    timeline: ["Usage increased this week", "Team lead praised implementation", "Follow-up meeting scheduled"],
+    people: [{ name: "Maya Bryant", role: "Operations Manager", action: "Send adoption wins recap." }],
+  },
+  {
+    name: "Meridian Capital",
+    owner: "Tom Alvarez",
+    health: 61,
+    trend: "Declining",
+    risk: "Medium",
+    priority: "Needs a look",
+    response: "14h 12m",
+    lastTouch: "3 days ago",
+    value: "$156K",
+    stage: "Stakeholder change",
+    nextStep: "Rebuild stakeholder map",
+    insight: "A new stakeholder joined and prior sponsor engagement slowed.",
+    prompt: "Send a warm introduction note and confirm who should be included going forward.",
+    timeline: ["New stakeholder added", "Sponsor response rate slowed", "Renewal planning paused"],
+    people: [{ name: "Kelsey Nolan", role: "New Sponsor", action: "Send introduction and context." }],
+  },
+  {
+    name: "Greenline Energy",
+    owner: "Avery Stone",
+    health: 84,
+    trend: "Stable",
+    risk: "Low",
+    priority: "Looking good",
+    response: "2h 35m",
+    lastTouch: "Today",
+    value: "$110K",
+    stage: "Active success",
+    nextStep: "Maintain cadence",
+    insight: "Healthy activity and clear ownership across the relationship.",
+    prompt: "Maintain current touch cadence. No urgent action needed.",
+    timeline: ["Weekly check-in completed", "Client confirmed next milestone", "No unresolved items"],
+    people: [{ name: "Noah Pierce", role: "Program Manager", action: "Confirm next check-in agenda." }],
+  },
+  {
+    name: "Lakeshore Hospitality",
+    owner: "Rachel Kim",
+    health: 69,
+    trend: "Stable",
+    risk: "Medium",
+    priority: "Keep an eye on",
+    response: "8h 02m",
+    lastTouch: "2 days ago",
+    value: "$54K",
+    stage: "Service review",
+    nextStep: "Send service summary",
+    insight: "Recent activity is steady, but service review questions remain open.",
+    prompt: "Send a concise service review summary and invite clarification.",
+    timeline: ["Service review requested", "Two open questions remain", "Client sentiment neutral"],
+    people: [{ name: "Julia Hart", role: "Regional Manager", action: "Send service review summary." }],
+  },
+  {
+    name: "Orchard Lane Group",
+    owner: "Ben Wallace",
+    health: 93,
+    trend: "Improving",
+    risk: "Low",
+    priority: "Looking good",
+    response: "52m",
+    lastTouch: "Today",
+    value: "$47K",
+    stage: "Healthy cadence",
+    nextStep: "Celebrate project milestone",
+    insight: "Recent milestone was completed and client response is strong.",
+    prompt: "Send a quick milestone thank-you while sentiment is positive.",
+    timeline: ["Milestone completed", "Client responded positively", "Next step already scheduled"],
+    people: [{ name: "Elliot Chase", role: "Founder", action: "Send milestone thank-you." }],
+  },
+  {
+    name: "Ironwood Systems",
+    owner: "Dana Lewis",
+    health: 55,
+    trend: "Declining",
+    risk: "High",
+    priority: "Needs a look",
+    response: "1d 6h",
+    lastTouch: "5 days ago",
+    value: "$201K",
+    stage: "Escalation risk",
+    nextStep: "Schedule recovery call",
+    insight: "No recent response and two project concerns were raised last week.",
+    prompt: "Schedule a recovery call with a clear agenda and ownership.",
+    timeline: ["Two concerns raised", "No response after follow-up", "Renewal risk increased"],
+    people: [{ name: "Victor Stone", role: "VP Technology", action: "Schedule recovery call." }],
+  },
+  {
+    name: "Briarstone Legal",
+    owner: "Michelle Rowe",
+    health: 77,
+    trend: "Stable",
+    risk: "Medium",
+    priority: "Follow up",
+    response: "4h 22m",
+    lastTouch: "Yesterday",
+    value: "$73K",
+    stage: "Contract review",
+    nextStep: "Answer contract question",
+    insight: "Contract clarification is open but relationship tone remains positive.",
+    prompt: "Answer the contract question in plain language and offer a quick call.",
+    timeline: ["Contract question received", "Legal team requested clarification", "Tone remains positive"],
+    people: [{ name: "Alana Cross", role: "Managing Partner", action: "Answer contract question." }],
+  },
+  {
+    name: "Silvergate Pharma",
+    owner: "Henry Liu",
+    health: 82,
+    trend: "Improving",
+    risk: "Low",
+    priority: "Good timing",
+    response: "2h 50m",
+    lastTouch: "Today",
+    value: "$168K",
+    stage: "Expansion signal",
+    nextStep: "Explore added team rollout",
+    insight: "Client mentioned adding two teams during the last call.",
+    prompt: "Ask whether the additional team rollout should be scoped this month.",
+    timeline: ["Expansion mentioned", "New team added to meeting", "Engagement strong"],
+    people: [{ name: "Sofia Bennett", role: "Clinical Ops", action: "Explore added team rollout." }],
+  },
+  {
+    name: "Horizon Education",
+    owner: "Chris Martin",
+    health: 71,
+    trend: "Stable",
+    risk: "Medium",
+    priority: "Follow up",
+    response: "7h 05m",
+    lastTouch: "2 days ago",
+    value: "$58K",
+    stage: "Renewal prep",
+    nextStep: "Send renewal prep summary",
+    insight: "Renewal timing is approaching and key contact asked for usage highlights.",
+    prompt: "Send a short renewal prep summary with usage highlights.",
+    timeline: ["Renewal prep started", "Usage highlight requested", "Follow-up not yet sent"],
+    people: [{ name: "Megan Torres", role: "District Lead", action: "Send usage highlights." }],
+  },
+  {
+    name: "Clearwater Supply",
+    owner: "Janelle Price",
+    health: 86,
+    trend: "Stable",
+    risk: "Low",
+    priority: "Looking good",
+    response: "1h 35m",
+    lastTouch: "Today",
+    value: "$96K",
+    stage: "Healthy cadence",
+    nextStep: "Maintain relationship rhythm",
+    insight: "Steady communication and positive response patterns.",
+    prompt: "Keep the current rhythm. No immediate action needed.",
+    timeline: ["Weekly sync completed", "No open issues", "Positive engagement"],
+    people: [{ name: "Derek Miles", role: "Procurement", action: "Confirm next sync." }],
   },
 ];
 
@@ -247,17 +448,17 @@ export default function PulseDashboard() {
     <main
       className={`min-h-screen text-white ${
         theme === "Soft graphite"
-          ? "bg-[radial-gradient(circle_at_top_left,#3a3540_0%,#23242b_38%,#101116_100%)]"
+          ? "bg-[radial-gradient(circle_at_top_left,#403b46_0%,#24242d_38%,#101116_100%)]"
           : theme === "Deep blush"
-          ? "bg-[radial-gradient(circle_at_top_left,#46213d_0%,#26192b_42%,#111216_100%)]"
-          : "bg-[radial-gradient(circle_at_top_left,#44215b_0%,#211e2a_34%,#101116_100%)]"
+          ? "bg-[radial-gradient(circle_at_top_left,#52214a_0%,#2b1a31_42%,#111216_100%)]"
+          : "bg-[radial-gradient(circle_at_top_left,#4c2466_0%,#252032_34%,#101116_100%)]"
       }`}
       style={{ fontFamily: "Satoshi, Inter, sans-serif" }}
     >
-      <div className="pointer-events-none fixed inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.05),transparent_30%,rgba(217,70,239,0.06)_70%,transparent)]" />
+      <div className="pointer-events-none fixed inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),transparent_30%,rgba(217,70,239,0.08)_70%,transparent)]" />
 
       <div className="relative flex min-h-screen">
-        <aside className="fixed left-0 top-0 hidden h-screen w-60 border-r border-white/10 bg-gradient-to-b from-[#3a184c] via-[#281735] to-[#17151d] px-4 py-5 text-purple-100 shadow-2xl shadow-black/40 lg:block">
+        <aside className="fixed left-0 top-0 hidden h-screen w-60 border-r border-white/10 bg-gradient-to-b from-[#4b2362] via-[#3a1d4d] to-[#24172f] px-4 py-5 text-purple-100 shadow-2xl shadow-black/40 lg:block">
           <button onClick={goHome} className="flex w-full items-center gap-3 rounded-3xl p-2 text-left transition hover:bg-white/5">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#16081f] via-[#4c1d5e] to-[#ff3df2] text-white shadow-lg shadow-fuchsia-500/20">
               <Activity className="h-6 w-6" />
@@ -279,8 +480,8 @@ export default function PulseDashboard() {
                   onClick={() => goToTab(item.label)}
                   className={`flex w-full items-center justify-between rounded-2xl border px-3.5 py-2.5 text-left text-sm transition ${
                     activeTab === item.label
-                      ? "border-pink-200/35 bg-white/15 text-white shadow-lg shadow-fuchsia-950/20"
-                      : "border-white/10 bg-white/[0.04] text-purple-100 hover:border-white/25 hover:bg-white/10 hover:text-white"
+                      ? "border-pink-200/35 bg-white/16 text-white shadow-lg shadow-fuchsia-950/20"
+                      : "border-white/10 bg-white/[0.05] text-purple-100 hover:border-white/25 hover:bg-white/12 hover:text-white"
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -365,10 +566,8 @@ export default function PulseDashboard() {
 
               {showScores && <HealthScoreGrid clients={clients} setSelectedClient={setSelectedClient} goToTab={goToTab} pad={densityPad} />}
 
-              <AccountsPanel
-                query={query}
-                setQuery={setQuery}
-                filteredClients={filteredClients}
+              <RecentAccountsCard
+                clients={clients.slice(0, 10)}
                 selectedClient={selectedClient}
                 setSelectedClient={setSelectedClient}
                 pad={densityPad}
@@ -377,16 +576,22 @@ export default function PulseDashboard() {
           )}
 
           {activeTab === "Accounts" && (
-            <div className="grid gap-5 xl:grid-cols-[1fr_.72fr]">
-              <AccountsPanel
-                query={query}
-                setQuery={setQuery}
-                filteredClients={filteredClients}
-                selectedClient={selectedClient}
-                setSelectedClient={setSelectedClient}
-                pad={densityPad}
-              />
-              {selectedClient ? <ClientDetail client={selectedClient} showTimeline={showTimeline} pad={densityPad} insightStyle={insightStyle} /> : <EmptyClientState pad={densityPad} />}
+            <div className="space-y-5">
+              <div className="grid gap-5 xl:grid-cols-2">
+                <RecentAccountsCard
+                  clients={clients.slice(0, 10)}
+                  selectedClient={selectedClient}
+                  setSelectedClient={setSelectedClient}
+                  pad={densityPad}
+                />
+                {selectedClient ? (
+                  <ClientDetail client={selectedClient} showTimeline={showTimeline} pad={densityPad} insightStyle={insightStyle} compact />
+                ) : (
+                  <EmptyClientState pad={densityPad} />
+                )}
+              </div>
+
+              <FullAccountsList clients={filteredClients} setSelectedClient={setSelectedClient} query={query} setQuery={setQuery} pad={densityPad} />
             </div>
           )}
 
@@ -428,7 +633,7 @@ export default function PulseDashboard() {
                 pad={densityPad}
               />
             ) : (
-              <PreferencesPanel setAdminPage={setAdminPage} theme={theme} setTheme={setTheme} pad={densityPad} />
+              <PreferencesPanel setAdminPage={setAdminPage} theme={theme} setTheme={setTheme} pad={densityPad} density={density} insightStyle={insightStyle} showScores={showScores} showTimeline={showTimeline} />
             ))}
         </section>
       </div>
@@ -630,7 +835,7 @@ function SummaryButton({ label, value, onClick, showAlert = false }: any) {
 
 function MetricCard({ icon: Icon, label, value, detail }: any) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-5 text-white shadow-xl shadow-black/20">
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-5 text-white shadow-xl shadow-black/25">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm text-purple-100">{label}</p>
@@ -696,10 +901,36 @@ function MiniSparkline({ trend }: any) {
   );
 }
 
-function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSelectedClient, pad }: any) {
+function RecentAccountsCard({ clients, selectedClient, setSelectedClient, pad }: any) {
   return (
-    <Panel title="Accounts" subtitle="Relationship visibility and communication health." pad={pad}>
-      <div className="relative w-full md:w-72">
+    <Panel title="Recent Accounts" subtitle="Recently active relationships." pad={pad}>
+      <div className="max-h-[265px] space-y-3 overflow-y-auto pr-2">
+        {clients.map((client: any) => (
+          <button
+            key={client.name}
+            onClick={() => setSelectedClient(client)}
+            className={`w-full rounded-3xl border p-4 text-left transition ${
+              selectedClient?.name === client.name ? "border-white/40 bg-white/20" : "border-white/10 bg-white/10 hover:bg-white/15"
+            }`}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="font-medium text-white">{client.name}</p>
+                <p className="mt-1 text-sm text-purple-100">{client.owner} · {client.stage}</p>
+              </div>
+              <StatusChip label={client.priority} />
+            </div>
+          </button>
+        ))}
+      </div>
+    </Panel>
+  );
+}
+
+function FullAccountsList({ clients, setSelectedClient, query, setQuery, pad }: any) {
+  return (
+    <Panel title="Account list" subtitle="Scrollable CRM-style relationship view." pad={pad}>
+      <div className="relative w-full md:w-80">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-purple-200" />
         <input
           value={query}
@@ -709,28 +940,35 @@ function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSe
         />
       </div>
 
-      <div className="space-y-3">
-        {filteredClients.map((client: any) => (
+      <div className="max-h-[520px] overflow-y-auto rounded-3xl border border-white/10">
+        {clients.map((client: any) => (
           <button
             key={client.name}
             onClick={() => setSelectedClient(client)}
-            className={`w-full rounded-3xl border p-4 text-left transition ${
-              selectedClient?.name === client.name
-                ? "border-white/40 bg-white/20"
-                : "border-white/10 bg-white/10 hover:bg-white/15"
-            }`}
+            className="grid w-full grid-cols-1 gap-3 border-b border-white/10 bg-white/[0.06] px-4 py-4 text-left transition hover:bg-white/12 md:grid-cols-[1.3fr_.8fr_.8fr_.8fr_.8fr_40px]"
           >
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="inline-flex rounded-xl bg-white/15 px-3 py-1 font-medium text-white">{client.name}</p>
-                  <RiskBadge risk={client.risk} />
-                  <StatusChip label={client.priority} />
-                </div>
-                <p className="mt-2 text-sm text-purple-100">Owner: {client.owner} · Last touch: {client.lastTouch}</p>
-                <p className="mt-2 text-sm text-purple-50">{client.insight}</p>
-              </div>
-              <ArrowUpRight className="h-5 w-5 text-purple-100" />
+            <div>
+              <p className="font-medium text-white">{client.name}</p>
+              <p className="mt-1 text-xs text-purple-100">{client.stage}</p>
+            </div>
+            <div>
+              <p className="text-xs text-purple-200">Owner</p>
+              <p className="text-sm text-white">{client.owner}</p>
+            </div>
+            <div>
+              <p className="text-xs text-purple-200">Value</p>
+              <p className="text-sm text-white">{client.value}</p>
+            </div>
+            <div>
+              <p className="text-xs text-purple-200">Last touch</p>
+              <p className="text-sm text-white">{client.lastTouch}</p>
+            </div>
+            <div>
+              <p className="text-xs text-purple-200">Next step</p>
+              <p className="text-sm text-white">{client.nextStep}</p>
+            </div>
+            <div className="flex items-center justify-end">
+              <PulseMark health={client.health} />
             </div>
           </button>
         ))}
@@ -739,7 +977,23 @@ function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSe
   );
 }
 
-function ClientDetail({ client, showTimeline, pad, insightStyle }: any) {
+function PulseMark({ health }: any) {
+  const color = health >= 82 ? "#86efac" : health >= 70 ? "#facc15" : health >= 60 ? "#c4b5fd" : "#f9a8d4";
+  return (
+    <svg viewBox="0 0 60 28" className="h-8 w-12">
+      <path
+        d="M2 14 H12 L16 7 L22 22 L28 14 H38 L42 10 L47 18 L52 14 H58"
+        fill="none"
+        stroke={color}
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ClientDetail({ client, showTimeline, pad, insightStyle, compact = false }: any) {
   return (
     <div className="space-y-5">
       <Panel title={client.name} subtitle={`Owned by ${client.owner}`} pad={pad}>
@@ -765,14 +1019,16 @@ function ClientDetail({ client, showTimeline, pad, insightStyle }: any) {
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <MetricMini label="Account value" value={client.value} detail="Estimated ARR" />
-          <MetricMini label="Response time" value={client.response} detail="Current average" />
-          <MetricMini label="Last touch" value={client.lastTouch} detail={client.trend} />
-        </div>
+        {!compact && (
+          <div className="grid gap-4 md:grid-cols-3">
+            <MetricMini label="Account value" value={client.value} detail="Estimated ARR" />
+            <MetricMini label="Response time" value={client.response} detail="Current average" />
+            <MetricMini label="Last touch" value={client.lastTouch} detail={client.trend} />
+          </div>
+        )}
       </Panel>
 
-      {showTimeline && (
+      {showTimeline && !compact && (
         <Panel title="Relationship timeline" subtitle="The memory of the relationship." pad={pad}>
           {client.timeline.map((item: string) => (
             <div key={item} className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm text-purple-50">
@@ -782,17 +1038,19 @@ function ClientDetail({ client, showTimeline, pad, insightStyle }: any) {
         </Panel>
       )}
 
-      <Panel title="People needing attention" subtitle="Useful when more than one stakeholder is active inside a company." pad={pad}>
-        <div className="grid gap-4 md:grid-cols-2">
-          {client.people.map((person: any) => (
-            <div key={person.name} className="rounded-3xl border border-white/10 bg-white/10 p-4">
-              <p className="font-medium">{person.name}</p>
-              <p className="mt-1 text-sm text-purple-100">{person.role}</p>
-              <p className="mt-3 text-sm text-purple-50">{person.action}</p>
-            </div>
-          ))}
-        </div>
-      </Panel>
+      {!compact && (
+        <Panel title="People needing attention" subtitle="Useful when more than one stakeholder is active inside a company." pad={pad}>
+          <div className="grid gap-4 md:grid-cols-2">
+            {client.people.map((person: any) => (
+              <div key={person.name} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+                <p className="font-medium">{person.name}</p>
+                <p className="mt-1 text-sm text-purple-100">{person.role}</p>
+                <p className="mt-3 text-sm text-purple-50">{person.action}</p>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      )}
     </div>
   );
 }
@@ -801,7 +1059,7 @@ function EmptyClientState({ pad }: any) {
   return (
     <Panel title="Select an account" subtitle="Client page with insights" pad={pad}>
       <p className="leading-7 text-purple-100">
-        Choose an account from the list to view health score, suggested outreach, timeline, people, and relationship context.
+        Choose an account from Recent Accounts or the full account list to view health score, suggested outreach, timeline, people, and relationship context.
       </p>
     </Panel>
   );
@@ -854,7 +1112,7 @@ function ActivityPanel({ activityView, setActivityView, setActivityDetail, setTr
 
         <button
           onClick={() => setTractionOpen(true)}
-          className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-5 text-left text-white shadow-xl shadow-black/20 transition hover:scale-[1.01]"
+          className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-5 text-left text-white shadow-xl shadow-black/25 transition hover:scale-[1.01]"
         >
           <p className="text-sm text-purple-100">Traction</p>
           <h3 className="mt-1 text-2xl font-semibold">Engagement performance</h3>
@@ -936,7 +1194,7 @@ function AITaskManager({ pad }: any) {
       <Panel title="How can I help?" subtitle="AI Task Manager" pad={pad}>
         <textarea
           placeholder="Ask Pulse to summarize open questions, draft a follow-up, identify accounts that need a look, or prepare your next client action..."
-          className="min-h-44 w-full rounded-3xl border border-white/20 bg-[#f1edf3] p-5 text-black outline-none placeholder:text-purple-500 focus:ring-4 focus:ring-white/20"
+          className="min-h-44 w-full rounded-3xl border border-white/30 bg-[linear-gradient(180deg,#fbf8fc_0%,#eee8f3_100%)] p-5 text-[#17141c] shadow-inner shadow-white/50 outline-none placeholder:text-[#5b5262] focus:ring-4 focus:ring-white/20"
         />
       </Panel>
 
@@ -975,6 +1233,12 @@ function AdminPanel({
 
       <div className="grid gap-5 xl:grid-cols-2">
         <Panel title="Integrations" subtitle="Connected communication systems." pad={pad}>
+          <div className="flex justify-end">
+            <button className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-[#24112f] hover:bg-purple-50">
+              Connect Integration
+            </button>
+          </div>
+
           <div className="grid gap-4 md:grid-cols-2">
             <Integration name="Outlook" status="Connected" icon={Mail} />
             <Integration name="Zoom" status="Connected" icon={Video} />
@@ -983,10 +1247,39 @@ function AdminPanel({
           </div>
         </Panel>
 
+        <Panel title="Manage Team" subtitle="Workspace people and permissions." pad={pad}>
+          <button className="flex w-fit items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm font-medium text-[#24112f] hover:bg-purple-50">
+            <UserPlus className="h-4 w-4" />
+            Invite Team Member
+          </button>
+
+          <div className="space-y-3">
+            {[
+              ["Danielle Hart", "Admin", "14 accounts", "Active today"],
+              ["James Carter", "Relationship Lead", "11 accounts", "Active 1h ago"],
+              ["Nora Patel", "Viewer", "6 accounts", "Active yesterday"],
+            ].map((row) => (
+              <div key={row[0]} className="rounded-2xl border border-white/10 bg-white/10 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="font-medium">{row[0]}</p>
+                    <p className="mt-1 text-sm text-purple-100">{row[2]} · {row[3]}</p>
+                  </div>
+                  <span className="rounded-full bg-white/15 px-3 py-1 text-xs text-purple-100">{row[1]}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+      </div>
+
+      <div className="grid gap-5 xl:grid-cols-[1.1fr_.9fr]">
         <Panel title="Preferences" subtitle="These settings change the demo view immediately." pad={pad}>
-          <PreferenceToggle label="Sandbox mode" value={sandboxMode} setValue={setSandboxMode} />
-          <PreferenceToggle label="Show health scores" value={showScores} setValue={setShowScores} />
-          <PreferenceToggle label="Show client timeline" value={showTimeline} setValue={setShowTimeline} />
+          <div className="grid gap-4 md:grid-cols-2">
+            <PreferenceToggle label="Sandbox mode" value={sandboxMode} setValue={setSandboxMode} />
+            <PreferenceToggle label="Show health scores" value={showScores} setValue={setShowScores} />
+            <PreferenceToggle label="Show client timeline" value={showTimeline} setValue={setShowTimeline} />
+          </div>
 
           <PreferenceSelect label="Card density" value={density} setValue={setDensity} options={["Compact", "Comfortable", "Spacious"]} />
           <PreferenceSelect label="Insight style" value={insightStyle} setValue={setInsightStyle} options={["Short bullets", "Gentle narrative", "Visual only"]} />
@@ -996,12 +1289,45 @@ function AdminPanel({
             Open theme preferences
           </button>
         </Panel>
+
+        <PreferencePreview density={density} insightStyle={insightStyle} theme={theme} showScores={showScores} showTimeline={showTimeline} />
       </div>
     </div>
   );
 }
 
-function PreferencesPanel({ setAdminPage, theme, setTheme, pad }: any) {
+function PreferencePreview({ density, insightStyle, theme, showScores, showTimeline }: any) {
+  return (
+    <Panel title="Live Preview" subtitle="See preference changes immediately.">
+      <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
+        <p className="text-sm text-purple-100">Theme</p>
+        <p className="mt-1 text-lg font-semibold">{theme}</p>
+      </div>
+
+      <div className={`rounded-3xl border border-white/10 bg-white/10 ${density === "Compact" ? "p-3" : density === "Spacious" ? "p-6" : "p-4"}`}>
+        <div className="flex items-center justify-between">
+          <p className="font-medium">Preview Account</p>
+          <StatusChip label="Good timing" />
+        </div>
+        {showScores && <p className="mt-3 text-3xl font-semibold">84</p>}
+        <p className="mt-2 text-sm text-purple-100">
+          {insightStyle === "Short bullets"
+            ? "Status: Good timing. Trend: Improving."
+            : insightStyle === "Visual only"
+            ? "Good timing · Improving"
+            : "Engagement is improving and a renewal conversation would be well-timed."}
+        </p>
+        {showTimeline && (
+          <div className="mt-4 rounded-2xl bg-white/10 p-3 text-sm text-purple-100">
+            Timeline preview is visible.
+          </div>
+        )}
+      </div>
+    </Panel>
+  );
+}
+
+function PreferencesPanel({ setAdminPage, theme, setTheme, pad, density, insightStyle, showScores, showTimeline }: any) {
   return (
     <div className="grid gap-5 xl:grid-cols-[.45fr_1fr]">
       <Panel title="Preferences" subtitle="Workspace settings" pad={pad}>
@@ -1015,10 +1341,14 @@ function PreferencesPanel({ setAdminPage, theme, setTheme, pad }: any) {
         </button>
       </Panel>
 
-      <Panel title="Customize Theme" subtitle="Pick a working demo theme." pad={pad}>
-        <PreferenceSelect label="Theme" value={theme} setValue={setTheme} options={["Purple graphite", "Soft graphite", "Deep blush"]} />
-        <p className="text-purple-100">Current theme: {theme}. The page background updates immediately.</p>
-      </Panel>
+      <div className="space-y-5">
+        <Panel title="Customize Theme" subtitle="Pick a working demo theme." pad={pad}>
+          <PreferenceSelect label="Theme" value={theme} setValue={setTheme} options={["Purple graphite", "Soft graphite", "Deep blush"]} />
+          <p className="text-purple-100">Current theme: {theme}. The page background updates immediately.</p>
+        </Panel>
+
+        <PreferencePreview density={density} insightStyle={insightStyle} theme={theme} showScores={showScores} showTimeline={showTimeline} />
+      </div>
     </div>
   );
 }
@@ -1038,12 +1368,14 @@ function PreferenceSelect({ label, value, setValue, options }: any) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
       <p className="text-sm text-purple-100">{label}</p>
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-3 grid gap-2 sm:grid-cols-3">
         {options.map((option: string) => (
           <button
             key={option}
             onClick={() => setValue(option)}
-            className={`rounded-full px-3 py-1 text-xs ${value === option ? "bg-white text-[#24112f]" : "bg-white/10 text-purple-100"}`}
+            className={`rounded-2xl px-3 py-2 text-xs transition ${
+              value === option ? "bg-white text-[#24112f] shadow-lg shadow-black/10" : "bg-white/10 text-purple-100 hover:bg-white/15"
+            }`}
           >
             {option}
           </button>
@@ -1107,7 +1439,7 @@ function ReportsPanel({ pad }: any) {
       <Panel title="Describe the report you want to make." subtitle="" pad={pad}>
         <textarea
           placeholder="Example: Show unanswered client requests by account owner for the last 30 days..."
-          className="min-h-28 w-full max-w-3xl rounded-3xl border border-white/20 bg-[#f1edf3] p-5 text-black outline-none placeholder:text-purple-500 focus:ring-4 focus:ring-white/20"
+          className="min-h-28 w-full max-w-3xl rounded-3xl border border-white/30 bg-[linear-gradient(180deg,#fbf8fc_0%,#eee8f3_100%)] p-5 text-[#17141c] shadow-inner shadow-white/50 outline-none placeholder:text-[#5b5262] focus:ring-4 focus:ring-white/20"
         />
       </Panel>
 
@@ -1121,7 +1453,7 @@ function ReportsPanel({ pad }: any) {
 
         <Panel title="Account trend table" subtitle="A simple technical view of where attention is needed." pad={pad}>
           <div className="overflow-hidden rounded-3xl border border-white/10">
-            <div className="grid grid-cols-4 bg-white/15 px-4 py-3 text-sm font-medium text-purple-50">
+            <div className="grid grid-cols-4 bg-gradient-to-r from-white/20 to-white/10 px-4 py-3 text-sm font-medium text-purple-50">
               <div>Account</div>
               <div>Open Items</div>
               <div>Response</div>
@@ -1150,8 +1482,10 @@ function ReportsPanel({ pad }: any) {
 function Panel({ title, subtitle, children, pad = "p-5" }: any) {
   return (
     <div className={`rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] ${pad} text-white shadow-xl shadow-black/25`}>
-      <h3 className="text-2xl font-semibold">{title}</h3>
-      {subtitle !== "" && <p className="mt-1.5 text-sm text-purple-100">{subtitle}</p>}
+      <div className="rounded-2xl bg-gradient-to-r from-white/[0.08] to-transparent px-1 py-1">
+        <h3 className="text-2xl font-semibold">{title}</h3>
+        {subtitle !== "" && <p className="mt-1.5 text-sm text-purple-100">{subtitle}</p>}
+      </div>
       <div className="mt-5 space-y-4">{children}</div>
     </div>
   );
