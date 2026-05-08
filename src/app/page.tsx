@@ -4,23 +4,32 @@ import React, { useMemo, useState } from "react";
 import {
   Activity,
   AlertTriangle,
+  ArrowLeft,
   ArrowUpRight,
-  Bell,
+  Bot,
   Calendar,
   CheckCircle2,
   ChevronRight,
   Clock,
   Mail,
   MessageSquare,
+  Palette,
   Search,
   Settings,
-  ShieldCheck,
-  Sparkles,
   Users,
   Video,
 } from "lucide-react";
 
-const navigation = ["Overview", "Accounts", "Activity", "Intelligence", "Tasks", "Reports", "Admin"];
+const navigation = [
+  "Overview",
+  "Accounts",
+  "Activity",
+  "Intelligence",
+  "Tasks",
+  "AI Task Manager",
+  "Reports",
+  "Admin",
+];
 
 const clients = [
   {
@@ -73,10 +82,54 @@ const tasks = [
   },
 ];
 
-export default function ClientPulseDashboard() {
+const activityAccounts = [
+  {
+    name: "Northstar Logistics",
+    person: "Austyn Diller",
+    aiSummary: "You should start renewal conversations with Austyn Diller today.",
+    upcoming: "Renewal planning window opens today.",
+  },
+  {
+    name: "Summit Insurance Group",
+    person: "Brogan Westra",
+    aiSummary: "You have a meeting with Brogan Westra in 26 minutes.",
+    upcoming: "Implementation timeline review at 2:30 PM.",
+  },
+  {
+    name: "HarborTech Services",
+    person: "Mia Foster",
+    aiSummary: "You should follow up with Mia Foster before end of day.",
+    upcoming: "Open callback request is approaching escalation.",
+  },
+];
+
+const recentActivity = [
+  {
+    id: "email-event",
+    text: "Chuck Folker sent Austyn Diller an email 8 minutes ago",
+    type: "Email",
+  },
+  {
+    id: "reply-event",
+    text: "Austyn Diller replied to your email 1 hour ago",
+    type: "Reply",
+  },
+  {
+    id: "meeting-event",
+    text: "Brogan Westra accepted the timeline review meeting",
+    type: "Meeting",
+  },
+];
+
+export default function PulseDashboard() {
   const [activeTab, setActiveTab] = useState("Overview");
   const [query, setQuery] = useState("");
   const [selectedClient, setSelectedClient] = useState<any>(null);
+  const [selectedActivityAccount, setSelectedActivityAccount] = useState(activityAccounts[0]);
+  const [activityView, setActivityView] = useState("Company");
+  const [emailOpen, setEmailOpen] = useState(false);
+  const [tractionOpen, setTractionOpen] = useState(false);
+  const [adminPage, setAdminPage] = useState("Admin");
 
   const filteredClients = useMemo(() => {
     return clients.filter(
@@ -86,29 +139,44 @@ export default function ClientPulseDashboard() {
     );
   }, [query]);
 
+  function goHome() {
+    setActiveTab("Overview");
+    setEmailOpen(false);
+    setTractionOpen(false);
+    setAdminPage("Admin");
+  }
+
+  function goToTab(tab: string) {
+    setActiveTab(tab);
+    setEmailOpen(false);
+    setTractionOpen(false);
+    if (tab !== "Admin") setAdminPage("Admin");
+  }
+
   return (
-    <main className="min-h-screen bg-[#f5eef7] text-slate-950">
+    <main className="min-h-screen bg-[#17141c] text-white" style={{ fontFamily: "Satoshi, Inter, sans-serif" }}>
       <div className="flex min-h-screen">
-        <aside className="hidden w-72 bg-[#24112f] px-5 py-6 text-purple-100 lg:block">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#b43cc7] text-white">
+        <aside className="fixed left-0 top-0 hidden h-screen w-72 bg-[#21142c] px-5 py-6 text-purple-100 lg:block">
+          <button onClick={goHome} className="flex items-center gap-3 rounded-2xl p-1 text-left transition hover:bg-white/5">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-[#4c1d5e] to-[#d946ef] text-white">
               <Activity className="h-6 w-6" />
             </div>
+
             <div>
-              <h1 className="text-lg font-semibold text-white">ClientPulse</h1>
+              <h1 className="text-lg font-semibold text-white">Pulse</h1>
               <p className="text-xs text-purple-200">Relationship intelligence</p>
             </div>
-          </div>
+          </button>
 
-          <nav className="mt-8 space-y-1">
+          <nav className="mt-8 space-y-2">
             {navigation.map((item) => (
               <button
                 key={item}
-                onClick={() => setActiveTab(item)}
-                className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm transition ${
+                onClick={() => goToTab(item)}
+                className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm transition ${
                   activeTab === item
-                    ? "bg-[#b43cc7] text-white"
-                    : "text-purple-100 hover:bg-white/10 hover:text-white"
+                    ? "border-white/35 bg-white/15 text-white"
+                    : "border-white/10 text-purple-100 hover:border-white/25 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 <span>{item}</span>
@@ -116,49 +184,22 @@ export default function ClientPulseDashboard() {
               </button>
             ))}
           </nav>
-
-          <div className="mt-8 rounded-3xl border border-white/10 bg-white/5 p-4">
-            <div className="flex items-center gap-2 text-sm font-medium text-white">
-              <ShieldCheck className="h-4 w-4" />
-              Privacy controls
-            </div>
-            <p className="mt-2 text-sm leading-6 text-purple-200">
-              Tracking limited to approved client domains. Internal-only communication is excluded.
-            </p>
-          </div>
         </aside>
 
-        <section className="flex-1 px-5 py-5 lg:px-8">
-          <header className="flex flex-col gap-4 rounded-3xl border border-purple-200 bg-white px-5 py-4 shadow-sm md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-sm text-slate-500">Good morning</p>
-              <h2 className="text-2xl font-semibold">
-                Here are the relationships that need attention.
-              </h2>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button className="rounded-2xl border border-purple-200 bg-[#faf5fb] p-3 text-purple-700 hover:bg-[#f3e6f6]">
-                <Bell className="h-5 w-5" />
-              </button>
-              <button className="rounded-2xl border border-purple-200 bg-[#faf5fb] p-3 text-purple-700 hover:bg-[#f3e6f6]">
-                <Settings className="h-5 w-5" />
-              </button>
-              <button
-                onClick={() => setActiveTab("Admin")}
-                className="rounded-2xl bg-[#b43cc7] px-4 py-3 text-sm font-medium text-white hover:bg-[#9d2fb0]"
-              >
-                Connect integration
-              </button>
-            </div>
+        <section className="flex-1 px-5 py-5 lg:ml-72 lg:px-8">
+          <header className="mb-6">
+            <p className="text-sm text-purple-200">Good morning, Danielle.</p>
+            <h2 className="mt-1 text-3xl font-semibold tracking-tight text-white">
+              Here are a few things that might need attention soon.
+            </h2>
           </header>
 
           {activeTab === "Overview" && (
-            <div className="mt-6 space-y-6">
+            <div className="space-y-6">
               <section className="grid gap-5 xl:grid-cols-[1.25fr_.75fr]">
-                <div className="rounded-3xl bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#b43cc7] p-8 text-white shadow-sm">
+                <div className="rounded-3xl bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-8 text-white shadow-xl shadow-black/20">
                   <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm text-white/80">
-                    <Sparkles className="h-4 w-4" />
+                    <Activity className="h-4 w-4" />
                     Calm intelligence, not dashboard noise
                   </div>
 
@@ -167,34 +208,34 @@ export default function ClientPulseDashboard() {
                   </h3>
 
                   <p className="mt-5 max-w-2xl text-base leading-7 text-purple-100">
-                    ClientPulse filters fragmented communication across Outlook, Zoom, Teams,
-                    calls, and CRM data into the few items leadership should actually review.
+                    Pulse filters fragmented communication across Outlook, Zoom, Teams, calls,
+                    and CRM data into the few items leadership should actually review.
                   </p>
 
                   <div className="mt-7 flex flex-wrap gap-3">
                     <button
-                      onClick={() => setActiveTab("Intelligence")}
+                      onClick={() => goToTab("Intelligence")}
                       className="rounded-2xl bg-white px-5 py-3 text-sm font-medium text-[#24112f] hover:bg-purple-50"
                     >
-                      Review attention items
+                      Review Attention Items
                     </button>
 
                     <button
-                      onClick={() => setActiveTab("Activity")}
+                      onClick={() => goToTab("Activity")}
                       className="rounded-2xl border border-white/20 px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
                     >
-                      View account timeline
+                      View Account Timeline
                     </button>
                   </div>
                 </div>
 
-                <div className="rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
+                <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-sm text-slate-500">Executive summary</p>
+                      <p className="text-sm text-purple-100">Executive summary</p>
                       <h3 className="mt-1 text-2xl font-semibold">Today’s focus</h3>
                     </div>
-                    <AlertTriangle className="h-6 w-6 text-pink-500" />
+                    <AlertTriangle className="h-6 w-6 text-pink-200" />
                   </div>
 
                   <div className="mt-6 space-y-3">
@@ -203,7 +244,7 @@ export default function ClientPulseDashboard() {
                       value="HarborTech Services"
                       onClick={() => {
                         setSelectedClient(clients[2]);
-                        setActiveTab("Accounts");
+                        goToTab("Accounts");
                       }}
                     />
                     <SummaryButton
@@ -211,21 +252,16 @@ export default function ClientPulseDashboard() {
                       value="Summit Insurance Group"
                       onClick={() => {
                         setSelectedClient(clients[1]);
-                        setActiveTab("Accounts");
+                        goToTab("Accounts");
                       }}
                     />
-                    <SummaryButton
-                      label="Overdue follow-up"
-                      value="1 item"
-                      onClick={() => setActiveTab("Tasks")}
-                    />
+                    <SummaryButton label="Overdue follow-up" value="1 item" onClick={() => goToTab("Tasks")} />
                     <SummaryButton
                       label="Healthy accounts"
                       value="86%"
-                      valueClassName="text-emerald-600"
                       onClick={() => {
                         setSelectedClient(clients[0]);
-                        setActiveTab("Accounts");
+                        goToTab("Accounts");
                       }}
                     />
                   </div>
@@ -236,7 +272,7 @@ export default function ClientPulseDashboard() {
                 <MetricCard icon={Users} label="Tracked clients" value="128" detail="Across 14 account owners" />
                 <MetricCard icon={Clock} label="Avg response" value="3h 18m" detail="18% faster than last week" />
                 <MetricCard icon={CheckCircle2} label="Closed follow-ups" value="42" detail="This week" />
-                <MetricCard icon={ShieldCheck} label="Healthy accounts" value="86%" detail="Low-risk relationship score" />
+                <MetricCard icon={Activity} label="Healthy accounts" value="86%" detail="Low-risk relationship score" />
               </section>
 
               <AccountsPanel
@@ -250,7 +286,7 @@ export default function ClientPulseDashboard() {
           )}
 
           {activeTab === "Accounts" && (
-            <div className="mt-6 grid gap-6 xl:grid-cols-[1fr_.75fr]">
+            <div className="grid gap-6 xl:grid-cols-[1fr_.75fr]">
               <AccountsPanel
                 query={query}
                 setQuery={setQuery}
@@ -259,54 +295,65 @@ export default function ClientPulseDashboard() {
                 setSelectedClient={setSelectedClient}
               />
 
-              {selectedClient ? (
-                <ClientDetail client={selectedClient} />
-              ) : (
-                <div className="rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
-                  <p className="text-sm text-slate-500">Client page with insights</p>
-                  <h3 className="mt-1 text-2xl font-semibold">Select an account</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
-                    Choose an account from the list to view relationship status, open follow-ups,
-                    response trends, and communication insights.
-                  </p>
-                </div>
-              )}
+              {selectedClient ? <ClientDetail client={selectedClient} /> : <EmptyClientState />}
             </div>
           )}
 
-          {activeTab === "Activity" && <ActivityPanel />}
+          {activeTab === "Activity" &&
+            (emailOpen ? (
+              <EmailDetail onBack={() => setEmailOpen(false)} />
+            ) : tractionOpen ? (
+              <TractionDetail onBack={() => setTractionOpen(false)} />
+            ) : (
+              <ActivityPanel
+                selectedActivityAccount={selectedActivityAccount}
+                setSelectedActivityAccount={setSelectedActivityAccount}
+                activityView={activityView}
+                setActivityView={setActivityView}
+                setEmailOpen={setEmailOpen}
+                setTractionOpen={setTractionOpen}
+              />
+            ))}
+
           {activeTab === "Intelligence" && <IntelligencePanel />}
           {activeTab === "Tasks" && <TasksPanel />}
+          {activeTab === "AI Task Manager" && <AITaskManager />}
           {activeTab === "Reports" && <ReportsPanel />}
-          {activeTab === "Admin" && <AdminPanel />}
+
+          {activeTab === "Admin" &&
+            (adminPage === "Admin" ? (
+              <AdminPanel setAdminPage={setAdminPage} />
+            ) : (
+              <PreferencesPanel setAdminPage={setAdminPage} />
+            ))}
         </section>
       </div>
     </main>
   );
 }
 
-function SummaryButton({ label, value, onClick, valueClassName = "text-slate-950" }: any) {
+function SummaryButton({ label, value, onClick }: any) {
   return (
     <button
       onClick={onClick}
-      className="flex w-full items-center justify-between rounded-2xl border border-purple-100 bg-[#faf5fb] px-4 py-3 text-left transition hover:bg-[#f3e6f6]"
+      className="flex w-full items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left transition hover:bg-white/20"
     >
-      <span className="text-sm text-slate-500">{label}</span>
-      <span className={`text-sm font-medium ${valueClassName}`}>{value}</span>
+      <span className="text-sm text-purple-100">{label}</span>
+      <span className="text-sm font-medium text-white">{value}</span>
     </button>
   );
 }
 
 function MetricCard({ icon: Icon, label, value, detail }: any) {
   return (
-    <div className="rounded-3xl border border-purple-200 bg-white p-5 shadow-sm">
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-5 text-white shadow-xl shadow-black/20">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-slate-500">{label}</p>
+          <p className="text-sm text-purple-100">{label}</p>
           <p className="mt-2 text-3xl font-semibold">{value}</p>
-          <p className="mt-1 text-sm text-slate-500">{detail}</p>
+          <p className="mt-1 text-sm text-purple-100">{detail}</p>
         </div>
-        <div className="rounded-2xl bg-[#faf5fb] p-3 text-[#b43cc7]">
+        <div className="rounded-2xl bg-white/15 p-3 text-white">
           <Icon className="h-5 w-5" />
         </div>
       </div>
@@ -316,22 +363,20 @@ function MetricCard({ icon: Icon, label, value, detail }: any) {
 
 function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSelectedClient }: any) {
   return (
-    <div className="rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h3 className="text-xl font-semibold">Accounts</h3>
-          <p className="mt-1 text-sm text-slate-500">
-            Relationship visibility and communication health.
-          </p>
+          <p className="mt-1 text-sm text-purple-100">Relationship visibility and communication health.</p>
         </div>
 
         <div className="relative w-full md:w-72">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-purple-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-purple-200" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search accounts"
-            className="w-full rounded-2xl border border-purple-200 bg-[#faf5fb] py-2 pl-9 pr-3 text-sm outline-none focus:ring-4 focus:ring-purple-100"
+            className="w-full rounded-2xl border border-white/15 bg-white/10 py-2 pl-9 pr-3 text-sm text-white outline-none placeholder:text-purple-200 focus:ring-4 focus:ring-white/10"
           />
         </div>
       </div>
@@ -343,24 +388,24 @@ function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSe
             onClick={() => setSelectedClient(client)}
             className={`w-full rounded-3xl border p-4 text-left transition ${
               selectedClient?.name === client.name
-                ? "border-[#b43cc7] bg-[#f3e6f6]"
-                : "border-purple-200 bg-[#faf5fb] hover:bg-[#f3e6f6]"
+                ? "border-white/40 bg-white/20"
+                : "border-white/10 bg-white/10 hover:bg-white/15"
             }`}
           >
             <div className="flex items-center justify-between gap-4">
               <div>
-                <div className="flex items-center gap-2">
-                  <p className="inline-flex rounded-xl bg-[#f3e6f6] px-3 py-1 font-medium text-[#8e2aa0]">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="inline-flex rounded-xl bg-white/15 px-3 py-1 font-medium text-white">
                     {client.name}
                   </p>
                   <RiskBadge risk={client.risk} />
                 </div>
-                <p className="mt-2 text-sm text-slate-500">
+                <p className="mt-2 text-sm text-purple-100">
                   Owner: {client.owner} · Last touch: {client.lastTouch}
                 </p>
-                <p className="mt-2 text-sm text-slate-600">{client.insight}</p>
+                <p className="mt-2 text-sm text-purple-50">{client.insight}</p>
               </div>
-              <ArrowUpRight className="h-5 w-5 text-purple-400" />
+              <ArrowUpRight className="h-5 w-5 text-purple-100" />
             </div>
           </button>
         ))}
@@ -371,35 +416,295 @@ function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSe
 
 function ClientDetail({ client }: any) {
   return (
-    <div className="rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
-      <p className="text-sm text-slate-500">Client page with insights</p>
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+      <p className="text-sm text-purple-100">Client page with insights</p>
       <h3 className="mt-1 text-2xl font-semibold">{client.name}</h3>
-      <p className="mt-1 text-sm text-slate-500">Owned by {client.owner}</p>
+      <p className="mt-1 text-sm text-purple-100">Owned by {client.owner}</p>
 
-      <div className="mt-6 rounded-3xl bg-[#faf5fb] p-5">
-        <p className="text-sm text-slate-500">Relationship status</p>
+      <div className="mt-6 rounded-3xl border border-white/10 bg-white/10 p-5">
+        <p className="text-sm text-purple-100">Relationship status</p>
         <div className="mt-2 flex items-center justify-between">
-          <p className="text-2xl font-semibold">
-            {client.risk === "High" ? "Needs attention" : "Stable"}
-          </p>
+          <p className="text-2xl font-semibold">{client.risk === "High" ? "Needs attention" : "Stable"}</p>
           <RiskBadge risk={client.risk} />
         </div>
-        <p className="mt-3 text-sm leading-6 text-slate-600">{client.insight}</p>
+        <p className="mt-3 text-sm leading-6 text-purple-50">{client.insight}</p>
       </div>
     </div>
   );
 }
 
-function ActivityPanel() {
+function EmptyClientState() {
   return (
-    <div className="mt-6 rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
-      <h3 className="text-2xl font-semibold">Activity Timeline</h3>
-      <p className="mt-2 text-slate-500">Centralized communication activity across platforms.</p>
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+      <p className="text-sm text-purple-100">Client page with insights</p>
+      <h3 className="mt-1 text-2xl font-semibold">Select an account</h3>
+      <p className="mt-3 text-sm leading-6 text-purple-100">
+        Choose an account from the list to view relationship status, response trends, and communication insights.
+      </p>
+    </div>
+  );
+}
 
-      <div className="mt-6 space-y-4">
-        <ActivityItem icon={Mail} title="Pricing follow-up sent" client="Northstar Logistics" time="22 minutes ago" />
-        <ActivityItem icon={Video} title="Quarterly review completed" client="BrightPath Consulting" time="1 hour ago" />
-        <ActivityItem icon={MessageSquare} title="Client asked for timeline update" client="Summit Insurance Group" time="3 hours ago" />
+function ActivityPanel({
+  selectedActivityAccount,
+  setSelectedActivityAccount,
+  activityView,
+  setActivityView,
+  setEmailOpen,
+  setTractionOpen,
+}: any) {
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-6 xl:grid-cols-[1.1fr_.9fr]">
+        <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h3 className="text-2xl font-semibold">Upcoming Activity</h3>
+              <p className="mt-2 text-purple-100">Toggle between company and person views.</p>
+            </div>
+
+            <div className="flex rounded-2xl border border-white/15 bg-white/10 p-1">
+              {["Company", "Person"].map((view) => (
+                <button
+                  key={view}
+                  onClick={() => setActivityView(view)}
+                  className={`rounded-xl px-4 py-2 text-sm ${
+                    activityView === view ? "bg-white text-[#24112f]" : "text-white"
+                  }`}
+                >
+                  {view}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-3 md:grid-cols-3">
+            {activityAccounts.map((account) => (
+              <button
+                key={account.name}
+                onClick={() => setSelectedActivityAccount(account)}
+                className={`rounded-3xl border p-4 text-left transition ${
+                  selectedActivityAccount.name === account.name
+                    ? "border-white/40 bg-white/20"
+                    : "border-white/10 bg-white/10 hover:bg-white/15"
+                }`}
+              >
+                <p className="font-medium">{activityView === "Company" ? account.name : account.person}</p>
+                <p className="mt-2 text-sm text-purple-100">{account.upcoming}</p>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-white/10 bg-white/10 p-5">
+            <p className="text-sm text-purple-100">AI summary</p>
+            <h4 className="mt-2 text-2xl font-semibold">{selectedActivityAccount.aiSummary}</h4>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setTractionOpen(true)}
+          className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-left text-white shadow-xl shadow-black/20 transition hover:scale-[1.01]"
+        >
+          <p className="text-sm text-purple-100">Traction</p>
+          <h3 className="mt-1 text-2xl font-semibold">Engagement performance</h3>
+
+          <div className="mt-6 grid gap-3">
+            <StatRow label="Email engagement" value="68%" />
+            <StatRow label="Response efficiency" value="+22%" />
+            <StatRow label="Meeting acceptance" value="81%" />
+            <StatRow label="Follow-up completion" value="74%" />
+          </div>
+
+          <p className="mt-5 text-sm text-purple-100">
+            Click to view activity efficiency, engagement quality, and recommended next actions.
+          </p>
+        </button>
+      </div>
+
+      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+        <h3 className="text-2xl font-semibold">Recent Activity</h3>
+        <div className="mt-6 space-y-3">
+          {recentActivity.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => item.id === "email-event" && setEmailOpen(true)}
+              className="flex w-full items-center justify-between rounded-3xl border border-white/10 bg-white/10 p-4 text-left transition hover:bg-white/15"
+            >
+              <div>
+                <p className="font-medium">{item.text}</p>
+                <p className="mt-1 text-sm text-purple-100">{item.type}</p>
+              </div>
+              <ArrowUpRight className="h-5 w-5 text-purple-100" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TractionDetail({ onBack }: any) {
+  return (
+    <div className="space-y-6">
+      <button onClick={onBack} className="flex items-center gap-2 text-sm text-purple-100 hover:text-white">
+        <ArrowLeft className="h-4 w-4" />
+        Back to Activity
+      </button>
+
+      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+        <p className="text-sm text-purple-100">Traction insights</p>
+        <h3 className="mt-1 text-3xl font-semibold">Activity engagement is improving, but renewal activity needs attention.</h3>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-4">
+          <MetricMini label="Engagement rate" value="68%" detail="+9% this week" />
+          <MetricMini label="Response speed" value="2h 14m" detail="22% faster" />
+          <MetricMini label="Meeting conversion" value="41%" detail="7 accepted" />
+          <MetricMini label="Open loops" value="5" detail="2 high priority" />
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-white/10 bg-white/10 p-5">
+          <h4 className="text-xl font-semibold">AI efficiency insight</h4>
+          <p className="mt-3 leading-7 text-purple-50">
+            Your recent communication is generating solid engagement, but renewal conversations are starting later than recommended.
+            Pulse recommends prioritizing Northstar Logistics today because Austyn Diller has engaged with the last two emails and has an open renewal window.
+          </p>
+        </div>
+
+        <div className="mt-6 rounded-3xl border border-white/10 bg-white/10 p-5">
+          <h4 className="text-xl font-semibold">Recommended next action</h4>
+          <p className="mt-3 leading-7 text-purple-50">
+            Send a concise renewal conversation opener to Austyn Diller and schedule a follow-up within 48 hours if no response is received.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatRow({ label, value }: any) {
+  return (
+    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/10 px-4 py-3">
+      <span className="text-sm text-purple-100">{label}</span>
+      <span className="text-sm font-semibold text-white">{value}</span>
+    </div>
+  );
+}
+
+function MetricMini({ label, value, detail }: any) {
+  return (
+    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
+      <p className="text-sm text-purple-100">{label}</p>
+      <p className="mt-2 text-3xl font-semibold">{value}</p>
+      <p className="mt-1 text-sm text-purple-100">{detail}</p>
+    </div>
+  );
+}
+
+function EmailDetail({ onBack }: any) {
+  return (
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+      <button onClick={onBack} className="mb-6 flex items-center gap-2 text-sm text-purple-100 hover:text-white">
+        <ArrowLeft className="h-4 w-4" />
+        Back to Activity
+      </button>
+
+      <p className="text-sm text-purple-100">Email preview</p>
+      <h3 className="mt-1 text-2xl font-semibold">Invitation to Pulse Executive Event — New York City</h3>
+
+      <div className="mt-6 rounded-3xl border border-white/10 bg-white/10 p-5">
+        <p className="text-sm text-purple-100">From: Chuck Folker &lt;chuck.folker@pulse.com&gt;</p>
+        <p className="text-sm text-purple-100">To: Austyn Diller &lt;austyn.diller@northstarlogistics.com&gt;</p>
+        <p className="mt-6 leading-7 text-purple-50">
+          Hi Austyn,
+          <br /><br />
+          I wanted to personally invite you to the upcoming Pulse Executive Relationship Intelligence event in New York City.
+          We’ll be discussing how leading teams are improving client visibility, reducing missed follow-ups, and identifying relationship risk earlier.
+          <br /><br />
+          I think this would be especially relevant based on the renewal conversations coming up with your team.
+          <br /><br />
+          Best,
+          <br />
+          Chuck Folker
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function AITaskManager() {
+  return (
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-8 text-white shadow-xl shadow-black/20">
+      <div className="flex items-center gap-3">
+        <div className="rounded-2xl bg-white/15 p-3">
+          <Bot className="h-6 w-6" />
+        </div>
+        <div>
+          <p className="text-sm text-purple-100">AI Task Manager</p>
+          <h3 className="text-3xl font-semibold">How can I help?</h3>
+        </div>
+      </div>
+
+      <textarea
+        placeholder="Ask Pulse to summarize open questions, draft a follow-up, identify risk accounts, or prepare your next client action..."
+        className="mt-8 min-h-44 w-full rounded-3xl border border-white/20 bg-white/90 p-5 text-[#24112f] outline-none placeholder:text-purple-400 focus:ring-4 focus:ring-white/20"
+      />
+    </div>
+  );
+}
+
+function AdminPanel({ setAdminPage }: any) {
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-end">
+        <button className="rounded-2xl border border-white/10 bg-white/10 p-3 text-white hover:bg-white/15">
+          <Settings className="h-5 w-5" />
+        </button>
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-2">
+        <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+          <h3 className="text-2xl font-semibold">Integrations</h3>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <Integration name="Outlook" status="Connected" icon={Mail} />
+            <Integration name="Zoom" status="Connected" icon={Video} />
+            <Integration name="Teams" status="Pending" icon={MessageSquare} />
+            <Integration name="CRM" status="Not connected" icon={Users} />
+          </div>
+        </div>
+
+        <button
+          onClick={() => setAdminPage("Preferences")}
+          className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-left text-white shadow-xl shadow-black/20 transition hover:scale-[1.01]"
+        >
+          <Palette className="h-7 w-7" />
+          <h3 className="mt-4 text-2xl font-semibold">Preferences</h3>
+          <p className="mt-2 text-purple-100">Customize theme, workspace behavior, and interface preferences.</p>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function PreferencesPanel({ setAdminPage }: any) {
+  return (
+    <div className="grid gap-6 xl:grid-cols-[.45fr_1fr]">
+      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+        <button onClick={() => setAdminPage("Admin")} className="mb-6 flex items-center gap-2 text-sm text-purple-100 hover:text-white">
+          <ArrowLeft className="h-4 w-4" />
+          Back to Admin
+        </button>
+
+        <h3 className="text-2xl font-semibold">Preferences</h3>
+
+        <button className="mt-6 flex w-full items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left hover:bg-white/15">
+          <span>Customize Theme</span>
+          <ChevronRight className="h-4 w-4" />
+        </button>
+      </div>
+
+      <div className="rounded-3xl border border-white/10 bg-white/10 p-6 text-white">
+        <h3 className="text-2xl font-semibold">Customize Theme</h3>
+        <p className="mt-2 text-purple-100">Theme customization controls will appear here.</p>
       </div>
     </div>
   );
@@ -407,104 +712,50 @@ function ActivityPanel() {
 
 function IntelligencePanel() {
   return (
-    <div className="mt-6 rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
-      <h3 className="text-2xl font-semibold">Intelligence Center</h3>
-      <p className="mt-2 text-slate-500">
-        AI highlights the relationships and communications requiring attention.
-      </p>
-
-      <div className="mt-6 space-y-4">
-        <RiskItem title="HarborTech relationship score dropped" detail="Overdue callback and declining meeting sentiment detected." />
-        <RiskItem title="Summit has unanswered implementation questions" detail="No response detected in Teams communication." />
-        <RiskItem title="Northstar is trending positive" detail="Meeting sentiment improved and proposal follow-up was completed ahead of deadline." />
-      </div>
-    </div>
+    <Panel title="Intelligence Center" subtitle="AI highlights relationships and communications requiring attention.">
+      <RiskItem title="HarborTech relationship score dropped" detail="Overdue callback and declining meeting sentiment detected." />
+      <RiskItem title="Summit has unanswered implementation questions" detail="No response detected in Teams communication." />
+      <RiskItem title="Northstar is trending positive" detail="Meeting sentiment improved and proposal follow-up was completed ahead of deadline." />
+    </Panel>
   );
 }
 
 function TasksPanel() {
   return (
-    <div className="mt-6 rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
-      <h3 className="text-2xl font-semibold">Tasks</h3>
-
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
+    <Panel title="Tasks" subtitle="Follow-ups generated from emails, meetings, calls, and chats.">
+      <div className="grid gap-4 md:grid-cols-3">
         {tasks.map((item) => (
-          <div key={item.task} className="rounded-3xl border border-purple-200 bg-[#faf5fb] p-4">
+          <div key={item.task} className="rounded-3xl border border-white/10 bg-white/10 p-4">
             <div className="flex items-start justify-between gap-3">
               <p className="font-medium">{item.client}</p>
-              <span className="rounded-full bg-white px-3 py-1 text-xs text-purple-700">
-                {item.priority}
-              </span>
+              <span className="rounded-full bg-white/15 px-3 py-1 text-xs text-purple-100">{item.priority}</span>
             </div>
-            <p className="mt-3 text-sm leading-6 text-slate-600">{item.task}</p>
-            <div className="mt-4 flex items-center gap-2 text-sm text-slate-500">
+            <p className="mt-3 text-sm leading-6 text-purple-50">{item.task}</p>
+            <div className="mt-4 flex items-center gap-2 text-sm text-purple-100">
               <Calendar className="h-4 w-4" />
               Due: {item.due}
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </Panel>
   );
 }
 
 function ReportsPanel() {
   return (
-    <div className="mt-6 rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
-      <h3 className="text-2xl font-semibold">Reports</h3>
-      <p className="mt-2 text-slate-500">Executive-ready trends, exceptions, and performance visibility.</p>
-    </div>
+    <Panel title="Reports" subtitle="Executive-ready trends, exceptions, and performance visibility.">
+      <p className="text-purple-50">Reporting examples will appear here.</p>
+    </Panel>
   );
 }
 
-function AdminPanel() {
+function Panel({ title, subtitle, children }: any) {
   return (
-    <div className="mt-6 grid gap-6 xl:grid-cols-2">
-      <div className="rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
-        <h3 className="text-2xl font-semibold">Integrations</h3>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <Integration name="Outlook" status="Connected" icon={Mail} />
-          <Integration name="Zoom" status="Connected" icon={Video} />
-          <Integration name="Teams" status="Pending" icon={MessageSquare} />
-          <Integration name="CRM" status="Not connected" icon={Users} />
-        </div>
-      </div>
-
-      <div className="rounded-3xl border border-purple-200 bg-white p-6 shadow-sm">
-        <h3 className="text-2xl font-semibold">Data controls</h3>
-        <div className="mt-6 space-y-3">
-          <InsightRow label="Approved domains only" value="Enabled" />
-          <InsightRow label="Internal email exclusion" value="Enabled" />
-          <InsightRow label="Role-based visibility" value="Enabled" />
-          <InsightRow label="Token encryption" value="Enabled" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function InsightRow({ label, value }: any) {
-  return (
-    <div className="flex items-center justify-between rounded-2xl border border-purple-100 bg-[#faf5fb] px-4 py-3">
-      <span className="text-sm text-slate-500">{label}</span>
-      <span className="text-sm font-medium text-slate-950">{value}</span>
-    </div>
-  );
-}
-
-function ActivityItem({ icon: Icon, title, client, time }: any) {
-  return (
-    <div className="flex gap-4 rounded-3xl border border-purple-200 bg-[#faf5fb] p-4">
-      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-[#b43cc7]">
-        <Icon className="h-5 w-5" />
-      </div>
-
-      <div>
-        <p className="font-medium">{title}</p>
-        <p className="mt-1 text-sm text-slate-500">
-          {client} · {time}
-        </p>
-      </div>
+    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20">
+      <h3 className="text-2xl font-semibold">{title}</h3>
+      <p className="mt-2 text-purple-100">{subtitle}</p>
+      <div className="mt-6 space-y-4">{children}</div>
     </div>
   );
 }
@@ -516,24 +767,19 @@ function RiskBadge({ risk }: any) {
     High: "bg-pink-50 text-pink-700",
   };
 
-  return (
-    <span className={`rounded-full px-3 py-1 text-xs font-medium ${styles[risk]}`}>
-      {risk} risk
-    </span>
-  );
+  return <span className={`rounded-full px-3 py-1 text-xs font-medium ${styles[risk]}`}>{risk} risk</span>;
 }
 
 function RiskItem({ title, detail }: any) {
   return (
-    <div className="rounded-3xl border border-purple-200 bg-[#faf5fb] p-4">
+    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
       <div className="flex gap-3">
         <div className="rounded-xl bg-pink-50 p-2 text-pink-600">
           <AlertTriangle className="h-4 w-4" />
         </div>
-
         <div>
           <p className="font-medium">{title}</p>
-          <p className="mt-1 text-sm text-slate-500">{detail}</p>
+          <p className="mt-1 text-sm text-purple-100">{detail}</p>
         </div>
       </div>
     </div>
@@ -542,15 +788,14 @@ function RiskItem({ title, detail }: any) {
 
 function Integration({ name, status, icon: Icon }: any) {
   return (
-    <div className="rounded-3xl border border-purple-200 bg-[#faf5fb] p-4">
+    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-[#b43cc7]">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/15 text-white">
           <Icon className="h-5 w-5" />
         </div>
-
         <div>
           <p className="font-medium">{name}</p>
-          <p className="text-sm text-slate-500">{status}</p>
+          <p className="text-sm text-purple-100">{status}</p>
         </div>
       </div>
     </div>
