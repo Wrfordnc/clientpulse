@@ -151,6 +151,7 @@ function getGreeting() {
 }
 
 export default function PulseDashboard() {
+  const [authState, setAuthState] = useState<"login" | "loading" | "dashboard">("login");
   const [activeTab, setActiveTab] = useState("Overview");
   const [query, setQuery] = useState("");
   const [selectedClient, setSelectedClient] = useState<any>(null);
@@ -169,11 +170,19 @@ export default function PulseDashboard() {
     );
   }, [query]);
 
+  function handleSignIn() {
+    setAuthState("loading");
+    setTimeout(() => {
+      setAuthState("dashboard");
+    }, 2200);
+  }
+
   function goHome() {
     setActiveTab("Overview");
     setActivityDetail(null);
     setTractionOpen(false);
     setAdminPage("Admin");
+    setNotificationsOpen(false);
   }
 
   function goToTab(tab: string) {
@@ -184,11 +193,25 @@ export default function PulseDashboard() {
     if (tab !== "Admin") setAdminPage("Admin");
   }
 
+  if (authState === "login") {
+    return <LoginScreen onSignIn={handleSignIn} />;
+  }
+
+  if (authState === "loading") {
+    return <PulseLoadingScreen />;
+  }
+
   return (
-    <main className="min-h-screen bg-[#17141c] text-white" style={{ fontFamily: "Satoshi, Inter, sans-serif" }}>
+    <main
+      className="min-h-screen bg-gradient-to-br from-[#17141c] via-[#1d1725] to-[#24162c] text-white"
+      style={{ fontFamily: "Satoshi, Inter, sans-serif" }}
+    >
       <div className="flex min-h-screen">
-        <aside className="fixed left-0 top-0 hidden h-screen w-60 bg-[#21142c] px-4 py-5 text-purple-100 lg:block">
-          <button onClick={goHome} className="flex w-full items-center gap-3 rounded-3xl p-2 text-left transition hover:bg-white/5">
+        <aside className="fixed left-0 top-0 hidden h-screen w-60 bg-gradient-to-b from-[#1d1725] via-[#22162d] to-[#281734] px-4 py-5 text-purple-100 lg:block">
+          <button
+            onClick={goHome}
+            className="flex w-full items-center gap-3 rounded-3xl p-2 text-left transition hover:bg-white/5"
+          >
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0f0617] via-[#32104b] to-[#ff3df2] text-white shadow-lg shadow-fuchsia-500/20">
               <Activity className="h-6 w-6" />
             </div>
@@ -219,7 +242,7 @@ export default function PulseDashboard() {
           </nav>
         </aside>
 
-        <section className="flex-1 px-5 py-5 lg:ml-60 lg:px-7 xl:px-8">
+        <section className="flex-1 px-4 pb-24 pt-5 sm:px-5 lg:ml-60 lg:px-7 lg:pb-5 xl:px-8">
           {activeTab === "Overview" && (
             <header className="relative mb-5 flex items-start justify-between gap-4">
               <div>
@@ -243,7 +266,7 @@ export default function PulseDashboard() {
                 </button>
 
                 {notificationsOpen && (
-                  <div className="absolute right-0 top-14 z-50 w-[360px] rounded-3xl border border-white/10 bg-[#21142c] p-4 shadow-2xl shadow-black/40">
+                  <div className="absolute right-0 top-14 z-50 w-[340px] rounded-3xl border border-white/10 bg-[#21142c] p-4 shadow-2xl shadow-black/40 sm:w-[360px]">
                     <p className="text-sm text-purple-100">Priority notifications</p>
                     <h3 className="mt-1 text-xl font-semibold text-white">Needs attention</h3>
 
@@ -267,7 +290,9 @@ export default function PulseDashboard() {
                         >
                           <div className="flex items-center justify-between gap-3">
                             <p className="font-medium text-white">{item.title}</p>
-                            <span className="rounded-full bg-white/15 px-2 py-1 text-xs text-purple-100">{item.urgency}</span>
+                            <span className="rounded-full bg-white/15 px-2 py-1 text-xs text-purple-100">
+                              {item.urgency}
+                            </span>
                           </div>
                           <p className="mt-2 text-sm leading-6 text-purple-100">{item.detail}</p>
                         </button>
@@ -282,14 +307,14 @@ export default function PulseDashboard() {
           {activeTab === "Overview" && (
             <div className="space-y-5">
               <section className="grid gap-5 xl:grid-cols-[1.25fr_.75fr]">
-                <div className="rounded-3xl bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-7 text-white shadow-xl shadow-black/20">
+                <div className="rounded-3xl bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-6 text-white shadow-xl shadow-black/20 sm:p-7">
                   <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm text-white/80">
                     <Activity className="h-4 w-4" />
-                    Calm intelligence, not dashboard noise
+                    Executive Focus Panel
                   </div>
 
-                  <h3 className="mt-5 max-w-3xl text-4xl font-semibold md:text-5xl">
-                    Three accounts need action. Everything else is stable.
+                  <h3 className="mt-5 max-w-3xl text-3xl font-semibold md:text-4xl">
+                    3 relationship signals may need review.
                   </h3>
 
                   <p className="mt-4 max-w-2xl text-base leading-7 text-purple-100">
@@ -409,6 +434,124 @@ export default function PulseDashboard() {
             ))}
         </section>
       </div>
+
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-[#21142c]/95 px-3 py-2 backdrop-blur lg:hidden">
+        <div className="grid grid-cols-5 gap-2">
+          {[
+            { label: "Home", tab: "Overview", icon: Activity },
+            { label: "Activity", tab: "Activity", icon: Clock },
+            { label: "AI", tab: "AI Task Manager", icon: Bot },
+            { label: "Reports", tab: "Reports", icon: BarChart3 },
+            { label: "Admin", tab: "Admin", icon: Settings },
+          ].map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <button
+                key={item.tab}
+                onClick={() => goToTab(item.tab)}
+                className={`flex flex-col items-center justify-center rounded-2xl px-2 py-2 text-xs transition ${
+                  activeTab === item.tab
+                    ? "bg-white/15 text-white"
+                    : "text-purple-200 hover:bg-white/10 hover:text-white"
+                }`}
+              >
+                <Icon className="mb-1 h-5 w-5" />
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+    </main>
+  );
+}
+
+function LoginScreen({ onSignIn }: any) {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#17141c] via-[#1d1725] to-[#291536] px-5 text-white">
+      <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/8 p-7 shadow-2xl shadow-black/30 backdrop-blur">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0f0617] via-[#32104b] to-[#ff3df2] shadow-lg shadow-fuchsia-500/20">
+            <Activity className="h-6 w-6" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-semibold tracking-[0.025em]">pulse</h1>
+            <p className="mt-1 text-xs text-purple-200">Relationship Intelligence</p>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <p className="text-sm text-purple-100">Welcome back</p>
+          <h2 className="mt-1 text-3xl font-semibold">Sign in to your workspace</h2>
+        </div>
+
+        <div className="mt-7 space-y-4">
+          <input
+            defaultValue="danielle@pulse.com"
+            className="w-full rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-white outline-none placeholder:text-purple-200 focus:ring-4 focus:ring-white/10"
+            placeholder="Email"
+          />
+          <input
+            defaultValue="relationshipintel"
+            type="password"
+            className="w-full rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-white outline-none placeholder:text-purple-200 focus:ring-4 focus:ring-white/10"
+            placeholder="Password"
+          />
+          <button
+            onClick={onSignIn}
+            className="w-full rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-[#24112f] transition hover:bg-purple-50"
+          >
+            Sign In
+          </button>
+        </div>
+
+        <p className="mt-6 text-center text-xs text-purple-200">
+          Proof-of-concept login experience. No real authentication yet.
+        </p>
+      </div>
+    </main>
+  );
+}
+
+function PulseLoadingScreen() {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#17141c] via-[#1d1725] to-[#291536] px-5 text-white">
+      <div className="text-center">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#0f0617] via-[#32104b] to-[#ff3df2] shadow-2xl shadow-fuchsia-500/20">
+          <Activity className="h-9 w-9 animate-pulse" />
+        </div>
+
+        <div className="mt-8 flex items-end justify-center gap-1">
+          {[18, 32, 14, 44, 20, 30, 16].map((height, index) => (
+            <div
+              key={index}
+              className="w-2 rounded-full bg-fuchsia-300/80"
+              style={{
+                height,
+                animation: `pulse 900ms ${index * 90}ms infinite ease-in-out`,
+              }}
+            />
+          ))}
+        </div>
+
+        <h1 className="mt-8 text-3xl font-semibold">{getGreeting()}, Danielle.</h1>
+        <p className="mt-3 text-purple-100">Building your relationship intelligence workspace…</p>
+
+        <style jsx>{`
+          @keyframes pulse {
+            0%,
+            100% {
+              transform: scaleY(0.6);
+              opacity: 0.55;
+            }
+            50% {
+              transform: scaleY(1.15);
+              opacity: 1;
+            }
+          }
+        `}</style>
+      </div>
     </main>
   );
 }
@@ -479,7 +622,9 @@ function AccountsPanel({ query, setQuery, filteredClients, selectedClient, setSe
             <div className="flex items-center justify-between gap-4">
               <div>
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="inline-flex rounded-xl bg-white/15 px-3 py-1 font-medium text-white">{client.name}</p>
+                  <p className="inline-flex rounded-xl bg-white/15 px-3 py-1 font-medium text-white">
+                    {client.name}
+                  </p>
                   <RiskBadge risk={client.risk} />
                 </div>
                 <p className="mt-2 text-sm text-purple-100">
@@ -533,12 +678,14 @@ function ActivityPanel({
     <div className="space-y-5">
       <div className="grid gap-5 xl:grid-cols-[1.1fr_.9fr]">
         <Panel title="Upcoming Activity" subtitle="Toggle between company and people views.">
-          <div className="flex rounded-2xl border border-white/15 bg-white/10 p-1">
+          <div className="flex w-fit rounded-2xl border border-white/15 bg-white/10 p-1">
             {["Company", "People"].map((view) => (
               <button
                 key={view}
                 onClick={() => setActivityView(view)}
-                className={`rounded-xl px-4 py-2 text-sm ${activityView === view ? "bg-white text-[#24112f]" : "text-white"}`}
+                className={`rounded-xl px-4 py-2 text-sm ${
+                  activityView === view ? "bg-white text-[#24112f]" : "text-white"
+                }`}
               >
                 {view}
               </button>
@@ -678,7 +825,7 @@ function AITaskManager() {
       <Panel title="How can I help?" subtitle="AI Task Manager">
         <textarea
           placeholder="Ask Pulse to summarize open questions, draft a follow-up, identify risk accounts, or prepare your next client action..."
-          className="min-h-44 w-full rounded-3xl border border-white/20 bg-white/90 p-5 text-[#24112f] outline-none placeholder:text-purple-400 focus:ring-4 focus:ring-white/20"
+          className="min-h-44 w-full rounded-3xl border border-white/20 bg-[#e7e2ec] p-5 text-[#24112f] outline-none placeholder:text-purple-500 focus:ring-4 focus:ring-white/20"
         />
       </Panel>
 
@@ -792,8 +939,8 @@ function ReportsPanel() {
     <div className="space-y-5">
       <Panel title="Describe the report you want to make." subtitle="Reports">
         <textarea
-          placeholder="Example: Create a report showing unanswered client requests by account owner for the last 30 days..."
-          className="min-h-36 w-full rounded-3xl border border-white/20 bg-white/90 p-5 text-[#24112f] outline-none placeholder:text-purple-400 focus:ring-4 focus:ring-white/20"
+          placeholder="Example: Show unanswered client requests by account owner for the last 30 days..."
+          className="min-h-28 w-full max-w-3xl rounded-3xl border border-white/20 bg-[#e7e2ec] p-5 text-[#24112f] outline-none placeholder:text-purple-500 focus:ring-4 focus:ring-white/20"
         />
       </Panel>
 
