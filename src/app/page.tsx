@@ -16,7 +16,6 @@ import {
   Lightbulb,
   Mail,
   MessageSquare,
-  Palette,
   Search,
   Settings,
   Sparkles,
@@ -25,7 +24,6 @@ import {
   UserPlus,
   Users,
   Video,
-  Zap,
 } from "lucide-react";
 
 const navigation = [
@@ -54,7 +52,11 @@ const clients = [
     nextStep: "Start renewal conversation today",
     insight: "Healthy cadence. Proposal follow-up completed this morning.",
     prompt: "A renewal conversation would land well today because engagement is high.",
-    timeline: ["Proposal follow-up sent this morning", "Austyn opened the renewal summary yesterday", "Q2 review sentiment improved after pricing clarification"],
+    timeline: [
+      "Proposal follow-up sent this morning",
+      "Austyn opened the renewal summary yesterday",
+      "Q2 review sentiment improved after pricing clarification",
+    ],
     people: [
       { name: "Austyn Diller", role: "VP Operations", action: "Start renewal conversation today." },
       { name: "Marisa Kane", role: "Finance Lead", action: "Send pricing recap before Friday." },
@@ -74,7 +76,11 @@ const clients = [
     nextStep: "Confirm implementation timeline",
     insight: "Implementation timeline question still needs confirmation.",
     prompt: "Send a short timeline confirmation with one clear next step.",
-    timeline: ["Client asked for implementation timing yesterday", "Meeting accepted by Brogan Westra", "Timeline concern detected in Teams thread"],
+    timeline: [
+      "Client asked for implementation timing yesterday",
+      "Meeting accepted by Brogan Westra",
+      "Timeline concern detected in Teams thread",
+    ],
     people: [{ name: "Brogan Westra", role: "Implementation Lead", action: "Meeting starts in 26 minutes." }],
   },
   {
@@ -91,7 +97,11 @@ const clients = [
     nextStep: "Return callback today",
     insight: "Callback request is overdue and meeting sentiment declined.",
     prompt: "A direct, human check-in from the account owner is recommended today.",
-    timeline: ["Callback request has not been completed", "Meeting sentiment declined after project delay discussion", "No response detected after client follow-up"],
+    timeline: [
+      "Callback request has not been completed",
+      "Meeting sentiment declined after project delay discussion",
+      "No response detected after client follow-up",
+    ],
     people: [
       { name: "Jasper Milligan", role: "COO", action: "Callback request needs a look." },
       { name: "Lena Ortiz", role: "Project Sponsor", action: "Send milestone recovery note." },
@@ -111,7 +121,11 @@ const clients = [
     nextStep: "Confirm next onboarding step",
     insight: "Stakeholder engagement increased after onboarding session.",
     prompt: "Send a quick thank-you note and confirm next onboarding step.",
-    timeline: ["Onboarding call completed", "Client shared positive feedback", "Next milestone scheduled for Thursday"],
+    timeline: [
+      "Onboarding call completed",
+      "Client shared positive feedback",
+      "Next milestone scheduled for Thursday",
+    ],
     people: [{ name: "Camille Reed", role: "Client Success", action: "Confirm next milestone." }],
   },
   {
@@ -128,7 +142,11 @@ const clients = [
     nextStep: "Ask if budget timing changed",
     insight: "Reply speed has slowed across two key contacts.",
     prompt: "A soft check-in would help confirm whether priorities shifted.",
-    timeline: ["Two delayed replies detected", "Budget review mentioned in last meeting", "No owner assigned to next decision"],
+    timeline: [
+      "Two delayed replies detected",
+      "Budget review mentioned in last meeting",
+      "No owner assigned to next decision",
+    ],
     people: [{ name: "Tessa Brooks", role: "Director", action: "Ask if budget review changed timing." }],
   },
   {
@@ -145,7 +163,11 @@ const clients = [
     nextStep: "Send review notes",
     insight: "Consistent communication and steady meeting participation.",
     prompt: "Maintain cadence. No major action needed today.",
-    timeline: ["Quarterly review completed", "Meeting participation remains strong", "No unresolved client questions detected"],
+    timeline: [
+      "Quarterly review completed",
+      "Meeting participation remains strong",
+      "No unresolved client questions detected",
+    ],
     people: [{ name: "Drew Holland", role: "Partner", action: "Send quarterly review notes." }],
   },
   {
@@ -162,7 +184,11 @@ const clients = [
     nextStep: "Send facility rollout recap",
     insight: "Expansion discussion is active, but next-step ownership is unclear.",
     prompt: "Send a recap with the rollout options and ask who should own the next decision.",
-    timeline: ["Expansion interest mentioned", "Facilities team requested recap", "Decision owner not confirmed"],
+    timeline: [
+      "Expansion interest mentioned",
+      "Facilities team requested recap",
+      "Decision owner not confirmed",
+    ],
     people: [{ name: "Owen Price", role: "Facilities Director", action: "Clarify rollout decision owner." }],
   },
   {
@@ -179,7 +205,11 @@ const clients = [
     nextStep: "Share adoption wins",
     insight: "Usage and meeting participation are both trending up.",
     prompt: "Share a short wins recap while momentum is high.",
-    timeline: ["Usage increased this week", "Team lead praised implementation", "Follow-up meeting scheduled"],
+    timeline: [
+      "Usage increased this week",
+      "Team lead praised implementation",
+      "Follow-up meeting scheduled",
+    ],
     people: [{ name: "Maya Bryant", role: "Operations Manager", action: "Send adoption wins recap." }],
   },
   {
@@ -196,7 +226,11 @@ const clients = [
     nextStep: "Rebuild stakeholder map",
     insight: "A new stakeholder joined and prior sponsor engagement slowed.",
     prompt: "Send a warm introduction note and confirm who should be included going forward.",
-    timeline: ["New stakeholder added", "Sponsor response rate slowed", "Renewal planning paused"],
+    timeline: [
+      "New stakeholder added",
+      "Sponsor response rate slowed",
+      "Renewal planning paused",
+    ],
     people: [{ name: "Kelsey Nolan", role: "New Sponsor", action: "Send introduction and context." }],
   },
   {
@@ -213,7 +247,11 @@ const clients = [
     nextStep: "Maintain cadence",
     insight: "Healthy activity and clear ownership across the relationship.",
     prompt: "Maintain current touch cadence. No urgent action needed.",
-    timeline: ["Weekly check-in completed", "Client confirmed next milestone", "No unresolved items"],
+    timeline: [
+      "Weekly check-in completed",
+      "Client confirmed next milestone",
+      "No unresolved items",
+    ],
     people: [{ name: "Noah Pierce", role: "Program Manager", action: "Confirm next check-in agenda." }],
   },
   {
@@ -230,7 +268,11 @@ const clients = [
     nextStep: "Send service summary",
     insight: "Recent activity is steady, but service review questions remain open.",
     prompt: "Send a concise service review summary and invite clarification.",
-    timeline: ["Service review requested", "Two open questions remain", "Client sentiment neutral"],
+    timeline: [
+      "Service review requested",
+      "Two open questions remain",
+      "Client sentiment neutral",
+    ],
     people: [{ name: "Julia Hart", role: "Regional Manager", action: "Send service review summary." }],
   },
   {
@@ -247,7 +289,11 @@ const clients = [
     nextStep: "Celebrate project milestone",
     insight: "Recent milestone was completed and client response is strong.",
     prompt: "Send a quick milestone thank-you while sentiment is positive.",
-    timeline: ["Milestone completed", "Client responded positively", "Next step already scheduled"],
+    timeline: [
+      "Milestone completed",
+      "Client responded positively",
+      "Next step already scheduled",
+    ],
     people: [{ name: "Elliot Chase", role: "Founder", action: "Send milestone thank-you." }],
   },
   {
@@ -264,7 +310,11 @@ const clients = [
     nextStep: "Schedule recovery call",
     insight: "No recent response and two project concerns were raised last week.",
     prompt: "Schedule a recovery call with a clear agenda and ownership.",
-    timeline: ["Two concerns raised", "No response after follow-up", "Renewal risk increased"],
+    timeline: [
+      "Two concerns raised",
+      "No response after follow-up",
+      "Renewal risk increased",
+    ],
     people: [{ name: "Victor Stone", role: "VP Technology", action: "Schedule recovery call." }],
   },
   {
@@ -281,7 +331,11 @@ const clients = [
     nextStep: "Answer contract question",
     insight: "Contract clarification is open but relationship tone remains positive.",
     prompt: "Answer the contract question in plain language and offer a quick call.",
-    timeline: ["Contract question received", "Legal team requested clarification", "Tone remains positive"],
+    timeline: [
+      "Contract question received",
+      "Legal team requested clarification",
+      "Tone remains positive",
+    ],
     people: [{ name: "Alana Cross", role: "Managing Partner", action: "Answer contract question." }],
   },
   {
@@ -298,7 +352,11 @@ const clients = [
     nextStep: "Explore added team rollout",
     insight: "Client mentioned adding two teams during the last call.",
     prompt: "Ask whether the additional team rollout should be scoped this month.",
-    timeline: ["Expansion mentioned", "New team added to meeting", "Engagement strong"],
+    timeline: [
+      "Expansion mentioned",
+      "New team added to meeting",
+      "Engagement strong",
+    ],
     people: [{ name: "Sofia Bennett", role: "Clinical Ops", action: "Explore added team rollout." }],
   },
   {
@@ -315,7 +373,11 @@ const clients = [
     nextStep: "Send renewal prep summary",
     insight: "Renewal timing is approaching and key contact asked for usage highlights.",
     prompt: "Send a short renewal prep summary with usage highlights.",
-    timeline: ["Renewal prep started", "Usage highlight requested", "Follow-up not yet sent"],
+    timeline: [
+      "Renewal prep started",
+      "Usage highlight requested",
+      "Follow-up not yet sent",
+    ],
     people: [{ name: "Megan Torres", role: "District Lead", action: "Send usage highlights." }],
   },
   {
@@ -332,7 +394,11 @@ const clients = [
     nextStep: "Maintain relationship rhythm",
     insight: "Steady communication and positive response patterns.",
     prompt: "Keep the current rhythm. No immediate action needed.",
-    timeline: ["Weekly sync completed", "No open issues", "Positive engagement"],
+    timeline: [
+      "Weekly sync completed",
+      "No open issues",
+      "Positive engagement",
+    ],
     people: [{ name: "Derek Miles", role: "Procurement", action: "Confirm next sync." }],
   },
 ];
@@ -448,23 +514,27 @@ export default function PulseDashboard() {
     <main
       className={`min-h-screen text-white ${
         theme === "Soft graphite"
-          ? "bg-[radial-gradient(circle_at_top_left,#403b46_0%,#24242d_38%,#101116_100%)]"
+          ? "bg-[radial-gradient(circle_at_top_left,#30313a_0%,#181a20_38%,#07080b_100%)]"
           : theme === "Deep blush"
-          ? "bg-[radial-gradient(circle_at_top_left,#52214a_0%,#2b1a31_42%,#111216_100%)]"
-          : "bg-[radial-gradient(circle_at_top_left,#4c2466_0%,#252032_34%,#101116_100%)]"
+          ? "bg-[radial-gradient(circle_at_top_left,#3b1b35_0%,#1c121f_42%,#08070a_100%)]"
+          : "bg-[radial-gradient(circle_at_top_left,#352044_0%,#191720_38%,#07080b_100%)]"
       }`}
       style={{ fontFamily: "Satoshi, Inter, sans-serif" }}
     >
-      <div className="pointer-events-none fixed inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),transparent_30%,rgba(217,70,239,0.08)_70%,transparent)]" />
+      <div className="pointer-events-none fixed inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.045),transparent_30%,rgba(157,90,181,0.055)_72%,transparent)]" />
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(168,85,247,0.10),transparent_35%)]" />
 
       <div className="relative flex min-h-screen">
-        <aside className="fixed left-0 top-0 hidden h-screen w-60 border-r border-white/10 bg-gradient-to-b from-[#4b2362] via-[#3a1d4d] to-[#24172f] px-4 py-5 text-purple-100 shadow-2xl shadow-black/40 lg:block">
+        <aside className="fixed left-0 top-0 hidden h-screen w-60 border-r border-white/10 bg-gradient-to-b from-[#3a2449] via-[#2c2038] to-[#17131f] px-4 py-5 text-purple-100 shadow-2xl shadow-black/40 lg:block">
           <button onClick={goHome} className="flex w-full items-center gap-3 rounded-3xl p-2 text-left transition hover:bg-white/5">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#16081f] via-[#4c1d5e] to-[#ff3df2] text-white shadow-lg shadow-fuchsia-500/20">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#130b19] via-[#3b2448] to-[#a35c9f] text-white shadow-lg shadow-black/20">
               <Activity className="h-6 w-6" />
             </div>
             <div className="leading-none">
-              <h1 className="text-[2.35rem] font-semibold leading-none tracking-[0.015em] text-white" style={{ fontFamily: "ui-rounded, Satoshi, Inter, sans-serif" }}>
+              <h1
+                className="text-[2.35rem] font-semibold leading-none tracking-[0.015em] text-white"
+                style={{ fontFamily: "ui-rounded, Satoshi, Inter, sans-serif" }}
+              >
                 pulse
               </h1>
               <p className="mt-1.5 text-[11px] font-medium tracking-wide text-purple-200">Relationship Intelligence</p>
@@ -478,10 +548,10 @@ export default function PulseDashboard() {
                 <button
                   key={item.label}
                   onClick={() => goToTab(item.label)}
-                  className={`flex w-full items-center justify-between rounded-2xl border px-3.5 py-2.5 text-left text-sm transition ${
+                  className={`flex w-full items-center justify-between rounded-2xl border px-3.5 py-2.5 text-left text-[13px] transition ${
                     activeTab === item.label
-                      ? "border-pink-200/35 bg-white/16 text-white shadow-lg shadow-fuchsia-950/20"
-                      : "border-white/10 bg-white/[0.05] text-purple-100 hover:border-white/25 hover:bg-white/12 hover:text-white"
+                      ? "border-white/25 bg-white/[0.14] text-white shadow-lg shadow-black/20"
+                      : "border-white/10 bg-white/[0.045] text-purple-100 hover:border-white/20 hover:bg-white/[0.09] hover:text-white"
                   }`}
                 >
                   <span className="flex items-center gap-2">
@@ -496,24 +566,26 @@ export default function PulseDashboard() {
             })}
           </nav>
 
-          <div className="absolute bottom-5 left-4 right-4 rounded-3xl border border-white/10 bg-white/10 p-3">
+          <div className="absolute bottom-5 left-4 right-4 rounded-3xl border border-white/10 bg-white/[0.08] p-3">
             <p className="text-xs text-purple-200">Workspace</p>
             <p className="mt-1 text-sm font-medium text-white">{sandboxMode ? "Sandbox Demo" : "ClientPulse Team"}</p>
           </div>
         </aside>
 
-        <section className="flex-1 px-4 pb-24 pt-5 sm:px-5 lg:ml-60 lg:px-7 lg:pb-5 xl:px-8">
+        <section className="flex-1 px-4 pb-24 pt-5 sm:px-5 lg:ml-60 lg:px-8 lg:pb-6 xl:px-10">
           {sandboxMode && (
-            <div className="mb-5 rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-sm text-purple-100 shadow-lg shadow-black/10">
+            <div className="mb-5 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm text-purple-100 shadow-lg shadow-black/10">
               Sandbox mode is on — this workspace uses sample clients and demo activity.
             </div>
           )}
 
           {activeTab === "Overview" && (
-            <header className="relative mb-5 flex items-start justify-between gap-4">
+            <header className="relative mb-6 flex items-start justify-between gap-4">
               <div>
-                <p className="text-xl font-medium text-purple-100">{getGreeting()}, Danielle.</p>
-                <h2 className="mt-1 text-lg font-medium tracking-tight text-purple-200">Here&apos;s what we have:</h2>
+                <p className="text-lg font-medium text-purple-100">{getGreeting()}, Danielle.</p>
+                <h2 className="mt-1 text-sm font-medium tracking-wide text-purple-300">
+                  Here&apos;s what we have:
+                </h2>
               </div>
 
               <NotificationBell
@@ -529,10 +601,10 @@ export default function PulseDashboard() {
             <div className={densityGap}>
               <section className="grid gap-5 xl:grid-cols-[1.25fr_.75fr]">
                 <Panel title="A few things may need your attention." subtitle="Executive Focus Panel" pad={densityPad}>
-                  <p className="inline-flex w-fit rounded-full bg-white/10 px-3 py-1 text-sm text-purple-100">
+                  <p className="inline-flex w-fit rounded-full border border-white/10 bg-white/[0.07] px-3 py-1 text-xs tracking-wide text-purple-100">
                     Calm intelligence, not dashboard noise.
                   </p>
-                  <p className="max-w-2xl text-base leading-7 text-purple-100">
+                  <p className="max-w-2xl text-sm leading-7 text-purple-100">
                     {insightStyle === "Short bullets"
                       ? "Three priority signals surfaced from client communication, timing, and engagement patterns."
                       : insightStyle === "Visual only"
@@ -540,10 +612,10 @@ export default function PulseDashboard() {
                       : "Pulse filters fragmented communication across Outlook, Zoom, Teams, calls, and CRM data into the few things worth reviewing."}
                   </p>
                   <div className="flex flex-wrap gap-3">
-                    <button onClick={() => goToTab("Intelligence")} className="rounded-2xl bg-white px-5 py-3 text-sm font-medium text-[#24112f] hover:bg-purple-50">
+                    <button onClick={() => goToTab("Intelligence")} className="rounded-2xl bg-white px-5 py-3 text-sm font-medium text-[#17141c] transition hover:scale-[1.01] hover:bg-purple-50">
                       Review Attention Items
                     </button>
-                    <button onClick={() => goToTab("Activity")} className="rounded-2xl border border-white/20 px-5 py-3 text-sm font-medium text-white hover:bg-white/10">
+                    <button onClick={() => goToTab("Activity")} className="rounded-2xl border border-white/18 px-5 py-3 text-sm font-medium text-white transition hover:bg-white/10">
                       View Account Timeline
                     </button>
                   </div>
@@ -633,7 +705,16 @@ export default function PulseDashboard() {
                 pad={densityPad}
               />
             ) : (
-              <PreferencesPanel setAdminPage={setAdminPage} theme={theme} setTheme={setTheme} pad={densityPad} density={density} insightStyle={insightStyle} showScores={showScores} showTimeline={showTimeline} />
+              <PreferencesPanel
+                setAdminPage={setAdminPage}
+                theme={theme}
+                setTheme={setTheme}
+                pad={densityPad}
+                density={density}
+                insightStyle={insightStyle}
+                showScores={showScores}
+                showTimeline={showTimeline}
+              />
             ))}
         </section>
       </div>
@@ -648,16 +729,16 @@ function NotificationBell({ notificationsOpen, setNotificationsOpen, setSelected
     <div className="relative">
       <button
         onClick={() => setNotificationsOpen(!notificationsOpen)}
-        className="relative rounded-2xl border border-white/15 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-3 text-white shadow-lg shadow-black/20 transition hover:scale-[1.03]"
+        className="relative rounded-2xl border border-white/15 bg-gradient-to-br from-[#24112f] via-[#3b2448] to-[#8b5b86] p-3 text-white shadow-lg shadow-black/20 transition hover:scale-[1.03]"
       >
         <Bell className="h-5 w-5" />
-        <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-pink-500 text-xs font-semibold text-white">3</span>
+        <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#b86aa6] text-xs font-semibold text-white">3</span>
       </button>
 
       {notificationsOpen && (
-        <div className="absolute right-0 top-14 z-50 w-[340px] rounded-3xl border border-white/10 bg-[#21142c] p-4 shadow-2xl shadow-black/40 sm:w-[360px]">
+        <div className="absolute right-0 top-14 z-50 w-[340px] rounded-3xl border border-white/10 bg-[#17131f] p-4 shadow-2xl shadow-black/40 sm:w-[360px]">
           <p className="text-sm text-purple-100">Important updates</p>
-          <h3 className="mt-1 text-xl font-semibold text-white">A few things worth reviewing</h3>
+          <h3 className="mt-1 text-xl font-medium text-white">A few things worth reviewing</h3>
 
           <div className="mt-4 space-y-3">
             {notifications.map((item) => (
@@ -669,7 +750,7 @@ function NotificationBell({ notificationsOpen, setNotificationsOpen, setSelected
                   else setSelectedClient(clients[0]);
                   goToTab("Accounts");
                 }}
-                className="w-full rounded-2xl border border-white/10 bg-white/10 p-4 text-left transition hover:bg-white/15"
+                className="w-full rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-left transition hover:bg-white/[0.10]"
               >
                 <div className="flex items-center justify-between gap-3">
                   <p className="font-medium text-white">{item.title}</p>
@@ -687,69 +768,74 @@ function NotificationBell({ notificationsOpen, setNotificationsOpen, setSelected
 
 function LoginScreen({ onSignIn }: any) {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,#402449_0%,#201b26_38%,#111216_100%)] px-5 py-8 text-white">
-      <div className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-6xl items-center gap-8 lg:grid-cols-[1.1fr_.9fr]">
+    <main className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_50%_0%,#2e203b_0%,#111118_45%,#030305_100%)] px-5 py-8 text-white">
+      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(173,112,176,0.16),transparent_32%),radial-gradient(circle_at_80%_0%,rgba(112,87,164,0.16),transparent_30%)]" />
+
+      <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] max-w-6xl items-center gap-10 lg:grid-cols-[1.15fr_.85fr]">
         <section className="hidden lg:block">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm text-purple-100">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.07] px-4 py-2 text-xs tracking-wide text-purple-100">
             <Sparkles className="h-4 w-4" />
             Calm intelligence, not dashboard noise.
           </div>
 
-          <h1 className="mt-7 max-w-2xl text-6xl font-semibold leading-tight">
+          <h1 className="mt-8 max-w-2xl text-6xl font-medium leading-[1.05] tracking-[-0.04em]">
             See relationship risk before it becomes a problem.
           </h1>
 
-          <p className="mt-5 max-w-xl text-lg leading-8 text-purple-100">
+          <p className="mt-6 max-w-xl text-base leading-8 text-purple-100">
             Pulse turns scattered client communication into a calm, focused view of what needs attention, what is trending well, and where to follow up next.
           </p>
 
-          <div className="mt-8 grid max-w-2xl gap-4 md:grid-cols-3">
+          <div className="mt-10 grid max-w-2xl gap-4 md:grid-cols-3">
             <MarketingCard title="Attention Queue" detail="Prioritized next actions without alert fatigue." />
             <MarketingCard title="Client Timeline" detail="A living memory of emails, calls, meetings, and signals." />
             <MarketingCard title="AI Insights" detail="Gentle recommendations that help teams act sooner." />
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-md animate-[fadeIn_700ms_ease-out] rounded-[2rem] border border-white/10 bg-white/10 p-8 shadow-2xl shadow-black/30 backdrop-blur">
+        <section className="mx-auto w-full max-w-md animate-[fadeIn_700ms_ease-out] rounded-[2rem] border border-white/10 bg-white/[0.075] p-8 shadow-2xl shadow-black/40 backdrop-blur-xl">
           <div className="text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#16081f] via-[#4c1d5e] to-[#ff3df2] text-white shadow-lg shadow-pink-400/30">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#130b19] via-[#3b2448] to-[#a35c9f] text-white shadow-lg shadow-black/30">
               <Activity className="h-7 w-7" />
             </div>
-            <h1 className="mt-5 text-5xl font-semibold tracking-[0.015em]" style={{ fontFamily: "ui-rounded, Satoshi, Inter, sans-serif" }}>
+            <h1
+              className="mt-5 text-5xl font-semibold tracking-[0.015em]"
+              style={{ fontFamily: "ui-rounded, Satoshi, Inter, sans-serif" }}
+            >
               pulse
             </h1>
-            <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-[#e9a8cb]" />
-            <p className="mt-4 text-xl font-light text-pink-100">Relationship Intelligence</p>
+            <div className="mx-auto mt-2 h-px w-12 rounded-full bg-[#b98bb1]" />
+            <p className="mt-4 text-xl font-light text-purple-100">Relationship Intelligence</p>
           </div>
 
           <div className="mt-10">
-            <p className="text-sm text-purple-100">Welcome back</p>
-            <h2 className="mt-1 text-2xl font-semibold">Sign in to your workspace</h2>
+            <p className="text-sm text-purple-200">Welcome back</p>
+            <h2 className="mt-1 text-2xl font-medium">Sign in to your workspace</h2>
           </div>
 
           <div className="mt-7 space-y-4">
             <input
               defaultValue="danielle@pulse.com"
-              className="h-14 w-full rounded-2xl border border-white/15 bg-white/15 px-4 text-white outline-none placeholder:text-purple-200 focus:border-pink-200/50 focus:ring-4 focus:ring-pink-200/10"
+              className="h-14 w-full rounded-2xl border border-white/15 bg-white/[0.10] px-4 text-white outline-none placeholder:text-purple-200 focus:border-white/35 focus:ring-4 focus:ring-white/10"
               placeholder="Email"
             />
             <input
               defaultValue="relationshipintel"
               type="password"
-              className="h-14 w-full rounded-2xl border border-white/15 bg-white/15 px-4 text-white outline-none placeholder:text-purple-200 focus:border-pink-200/50 focus:ring-4 focus:ring-pink-200/10"
+              className="h-14 w-full rounded-2xl border border-white/15 bg-white/[0.10] px-4 text-white outline-none placeholder:text-purple-200 focus:border-white/35 focus:ring-4 focus:ring-white/10"
               placeholder="Password"
             />
 
             <button
               onClick={() => onSignIn("sandbox")}
-              className="mt-3 h-14 w-full rounded-2xl bg-[#d85fae] px-5 text-sm font-semibold text-white shadow-lg shadow-pink-950/30 transition hover:scale-[1.01] hover:bg-[#c84f9d]"
+              className="mt-3 h-14 w-full rounded-2xl bg-[#d8c9df] px-5 text-sm font-semibold text-[#17141c] shadow-lg shadow-black/25 transition hover:scale-[1.01] hover:bg-white"
             >
               Try Sandbox Demo
             </button>
 
             <button
               onClick={() => onSignIn("standard")}
-              className="h-12 w-full rounded-2xl border border-white/15 bg-white/10 text-sm font-medium text-purple-100 transition hover:bg-white/15"
+              className="h-12 w-full rounded-2xl border border-white/15 bg-white/[0.08] text-sm font-medium text-purple-100 transition hover:bg-white/[0.13]"
             >
               Sign In
             </button>
@@ -776,28 +862,28 @@ function LoginScreen({ onSignIn }: any) {
 
 function PulseLoadingScreen() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#17141c] via-[#1d1725] to-[#291536] px-5 text-white">
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#111118] via-[#1a1521] to-[#050507] px-5 text-white">
       <div className="w-full max-w-xl text-center">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#16081f] via-[#4c1d5e] to-[#ff3df2] shadow-2xl shadow-fuchsia-500/20">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-[#130b19] via-[#3b2448] to-[#a35c9f] shadow-2xl shadow-black/30">
           <Activity className="h-9 w-9 animate-pulse" />
         </div>
 
         <div className="relative mt-10 h-24 overflow-hidden rounded-3xl border border-white/10 bg-black/20 px-6 shadow-2xl shadow-black/30">
-          <div className="absolute left-0 top-1/2 h-px w-full bg-fuchsia-300/15" />
+          <div className="absolute left-0 top-1/2 h-px w-full bg-purple-200/15" />
           <svg viewBox="0 0 600 120" className="absolute left-0 top-0 h-full w-[1200px] animate-heartbeat" preserveAspectRatio="none">
             <path
               d="M0 60 L60 60 L75 60 L88 25 L105 95 L125 60 L180 60 L195 60 L208 45 L220 72 L235 60 L300 60 L360 60 L375 60 L388 25 L405 95 L425 60 L480 60 L495 60 L508 45 L520 72 L535 60 L600 60"
               fill="none"
-              stroke="#f0abfc"
+              stroke="#d8c9df"
               strokeWidth="4"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
-          <div className="absolute inset-x-0 top-0 h-full bg-gradient-to-r from-[#21142c] via-transparent to-[#21142c]" />
+          <div className="absolute inset-x-0 top-0 h-full bg-gradient-to-r from-[#111118] via-transparent to-[#111118]" />
         </div>
 
-        <h1 className="mt-8 text-3xl font-semibold">{getGreeting()}, Danielle.</h1>
+        <h1 className="mt-8 text-3xl font-medium">{getGreeting()}, Danielle.</h1>
         <p className="mt-3 text-purple-100">Reading your relationship signals…</p>
 
         <style jsx>{`
@@ -814,7 +900,7 @@ function PulseLoadingScreen() {
 
 function MarketingCard({ title, detail }: any) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
+    <div className="rounded-3xl border border-white/10 bg-white/[0.06] p-4">
       <p className="font-medium text-white">{title}</p>
       <p className="mt-2 text-sm leading-6 text-purple-100">{detail}</p>
     </div>
@@ -823,9 +909,9 @@ function MarketingCard({ title, detail }: any) {
 
 function SummaryButton({ label, value, onClick, showAlert = false }: any) {
   return (
-    <button onClick={onClick} className="flex w-full items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left transition hover:bg-white/20">
+    <button onClick={onClick} className="flex w-full items-center justify-between rounded-2xl border border-white/12 bg-white/[0.055] px-4 py-3 text-left transition hover:bg-white/[0.10]">
       <span className="flex items-center gap-2 text-sm text-purple-100">
-        {showAlert && <AlertTriangle className="h-4 w-4 text-pink-200" />}
+        {showAlert && <AlertTriangle className="h-4 w-4 text-[#d8a2c7]" />}
         {label}
       </span>
       <span className="text-sm font-medium text-white">{value}</span>
@@ -835,14 +921,14 @@ function SummaryButton({ label, value, onClick, showAlert = false }: any) {
 
 function MetricCard({ icon: Icon, label, value, detail }: any) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-5 text-white shadow-xl shadow-black/25">
+    <div className="rounded-3xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.105),rgba(255,255,255,0.045))] p-5 text-white shadow-xl shadow-black/25">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm text-purple-100">{label}</p>
-          <p className="mt-2 text-3xl font-semibold">{value}</p>
+          <p className="text-xs uppercase tracking-[0.16em] text-purple-200/80">{label}</p>
+          <p className="mt-2 text-3xl font-medium">{value}</p>
           <p className="mt-1 text-sm text-purple-100">{detail}</p>
         </div>
-        <div className="rounded-2xl bg-white/15 p-3 text-white">
+        <div className="rounded-2xl bg-white/10 p-3 text-white">
           <Icon className="h-5 w-5" />
         </div>
       </div>
@@ -861,7 +947,7 @@ function HealthScoreGrid({ clients, setSelectedClient, goToTab, pad }: any) {
               setSelectedClient(client);
               goToTab("Accounts");
             }}
-            className="rounded-3xl border border-white/10 bg-white/10 p-4 text-left hover:bg-white/15"
+            className="rounded-3xl border border-white/10 bg-white/[0.055] p-4 text-left transition hover:bg-white/[0.10]"
           >
             <div className="flex items-center justify-between">
               <p className="font-medium">{client.name}</p>
@@ -873,7 +959,7 @@ function HealthScoreGrid({ clients, setSelectedClient, goToTab, pad }: any) {
                 <Activity className="h-5 w-5 text-purple-100" />
               )}
             </div>
-            <p className="mt-3 text-4xl font-semibold">{client.health}</p>
+            <p className="mt-3 text-4xl font-medium">{client.health}</p>
             <div className="mt-2 flex items-center justify-between">
               <p className="text-sm text-purple-100">{client.trend} · {client.value}</p>
               <StatusChip label={client.priority} />
@@ -896,7 +982,7 @@ function MiniSparkline({ trend }: any) {
 
   return (
     <svg viewBox="0 0 90 45" className="mt-4 h-12 w-full">
-      <path d={path} fill="none" stroke="rgba(255,255,255,.75)" strokeWidth="3" strokeLinecap="round" />
+      <path d={path} fill="none" stroke="rgba(255,255,255,.68)" strokeWidth="3" strokeLinecap="round" />
     </svg>
   );
 }
@@ -910,7 +996,7 @@ function RecentAccountsCard({ clients, selectedClient, setSelectedClient, pad }:
             key={client.name}
             onClick={() => setSelectedClient(client)}
             className={`w-full rounded-3xl border p-4 text-left transition ${
-              selectedClient?.name === client.name ? "border-white/40 bg-white/20" : "border-white/10 bg-white/10 hover:bg-white/15"
+              selectedClient?.name === client.name ? "border-white/35 bg-white/[0.12]" : "border-white/10 bg-white/[0.055] hover:bg-white/[0.10]"
             }`}
           >
             <div className="flex items-center justify-between gap-4">
@@ -936,7 +1022,7 @@ function FullAccountsList({ clients, setSelectedClient, query, setQuery, pad }: 
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search accounts"
-          className="w-full rounded-2xl border border-white/15 bg-white/10 py-2 pl-9 pr-3 text-sm text-white outline-none placeholder:text-purple-200 focus:ring-4 focus:ring-white/10"
+          className="w-full rounded-2xl border border-white/15 bg-white/[0.07] py-2 pl-9 pr-3 text-sm text-white outline-none placeholder:text-purple-200 focus:ring-4 focus:ring-white/10"
         />
       </div>
 
@@ -945,26 +1031,26 @@ function FullAccountsList({ clients, setSelectedClient, query, setQuery, pad }: 
           <button
             key={client.name}
             onClick={() => setSelectedClient(client)}
-            className="grid w-full grid-cols-1 gap-3 border-b border-white/10 bg-white/[0.06] px-4 py-4 text-left transition hover:bg-white/12 md:grid-cols-[1.3fr_.8fr_.8fr_.8fr_.8fr_40px]"
+            className="grid w-full grid-cols-1 gap-3 border-b border-white/10 bg-white/[0.045] px-4 py-4 text-left transition hover:bg-white/[0.09] md:grid-cols-[1.3fr_.8fr_.8fr_.8fr_.8fr_40px]"
           >
             <div>
               <p className="font-medium text-white">{client.name}</p>
               <p className="mt-1 text-xs text-purple-100">{client.stage}</p>
             </div>
             <div>
-              <p className="text-xs text-purple-200">Owner</p>
+              <p className="text-xs text-purple-300">Owner</p>
               <p className="text-sm text-white">{client.owner}</p>
             </div>
             <div>
-              <p className="text-xs text-purple-200">Value</p>
+              <p className="text-xs text-purple-300">Value</p>
               <p className="text-sm text-white">{client.value}</p>
             </div>
             <div>
-              <p className="text-xs text-purple-200">Last touch</p>
+              <p className="text-xs text-purple-300">Last touch</p>
               <p className="text-sm text-white">{client.lastTouch}</p>
             </div>
             <div>
-              <p className="text-xs text-purple-200">Next step</p>
+              <p className="text-xs text-purple-300">Next step</p>
               <p className="text-sm text-white">{client.nextStep}</p>
             </div>
             <div className="flex items-center justify-end">
@@ -998,10 +1084,10 @@ function ClientDetail({ client, showTimeline, pad, insightStyle, compact = false
     <div className="space-y-5">
       <Panel title={client.name} subtitle={`Owned by ${client.owner}`} pad={pad}>
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.055] p-5">
             <p className="text-sm text-purple-100">Health score</p>
             <div className="mt-2 flex items-center justify-between">
-              <p className="text-4xl font-semibold">{client.health}</p>
+              <p className="text-4xl font-medium">{client.health}</p>
               <RiskBadge risk={client.risk} />
             </div>
             <p className="mt-3 text-sm leading-6 text-purple-50">
@@ -1013,9 +1099,9 @@ function ClientDetail({ client, showTimeline, pad, insightStyle, compact = false
             </p>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.055] p-5">
             <p className="text-sm text-purple-100">Suggested outreach</p>
-            <p className="mt-2 text-lg font-medium text-white">{client.prompt}</p>
+            <p className="mt-2 text-base font-medium leading-7 text-white">{client.prompt}</p>
           </div>
         </div>
 
@@ -1031,7 +1117,7 @@ function ClientDetail({ client, showTimeline, pad, insightStyle, compact = false
       {showTimeline && !compact && (
         <Panel title="Relationship timeline" subtitle="The memory of the relationship." pad={pad}>
           {client.timeline.map((item: string) => (
-            <div key={item} className="rounded-2xl border border-white/10 bg-white/10 p-4 text-sm text-purple-50">
+            <div key={item} className="rounded-2xl border border-white/10 bg-white/[0.055] p-4 text-sm text-purple-50">
               {item}
             </div>
           ))}
@@ -1042,7 +1128,7 @@ function ClientDetail({ client, showTimeline, pad, insightStyle, compact = false
         <Panel title="People needing attention" subtitle="Useful when more than one stakeholder is active inside a company." pad={pad}>
           <div className="grid gap-4 md:grid-cols-2">
             {client.people.map((person: any) => (
-              <div key={person.name} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+              <div key={person.name} className="rounded-3xl border border-white/10 bg-white/[0.055] p-4">
                 <p className="font-medium">{person.name}</p>
                 <p className="mt-1 text-sm text-purple-100">{person.role}</p>
                 <p className="mt-3 text-sm text-purple-50">{person.action}</p>
@@ -1066,18 +1152,20 @@ function EmptyClientState({ pad }: any) {
 }
 
 function ActivityPanel({ activityView, setActivityView, setActivityDetail, setTractionOpen, pad }: any) {
-  const peopleRows = clients.flatMap((client) => client.people.map((person) => ({ ...person, company: client.name, priority: client.priority })));
+  const peopleRows = clients.flatMap((client) =>
+    client.people.map((person) => ({ ...person, company: client.name, priority: client.priority }))
+  );
 
   return (
     <div className="space-y-5">
       <div className="grid gap-5 xl:grid-cols-[1.1fr_.9fr]">
         <Panel title="Upcoming Activity" subtitle="Scroll through what is coming up next." pad={pad}>
-          <div className="flex w-fit rounded-2xl border border-white/15 bg-white/10 p-1">
+          <div className="flex w-fit rounded-2xl border border-white/15 bg-white/[0.06] p-1">
             {["Company", "People"].map((view) => (
               <button
                 key={view}
                 onClick={() => setActivityView(view)}
-                className={`rounded-xl px-4 py-2 text-sm ${activityView === view ? "bg-white text-[#24112f]" : "text-white"}`}
+                className={`rounded-xl px-4 py-2 text-sm ${activityView === view ? "bg-white text-[#17141c]" : "text-white"}`}
               >
                 {view}
               </button>
@@ -1087,7 +1175,7 @@ function ActivityPanel({ activityView, setActivityView, setActivityDetail, setTr
           <div className="max-h-[360px] space-y-3 overflow-y-auto pr-2">
             {activityView === "Company"
               ? clients.map((client) => (
-                  <div key={client.name} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+                  <div key={client.name} className="rounded-3xl border border-white/10 bg-white/[0.055] p-4">
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-medium">{client.name}</p>
                       <StatusChip label={client.priority} />
@@ -1096,7 +1184,7 @@ function ActivityPanel({ activityView, setActivityView, setActivityDetail, setTr
                   </div>
                 ))
               : peopleRows.map((person) => (
-                  <div key={`${person.company}-${person.name}`} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+                  <div key={`${person.company}-${person.name}`} className="rounded-3xl border border-white/10 bg-white/[0.055] p-4">
                     <div className="flex items-center justify-between gap-3">
                       <p className="font-medium">{person.name}</p>
                       <StatusChip label={person.priority} />
@@ -1112,10 +1200,10 @@ function ActivityPanel({ activityView, setActivityView, setActivityDetail, setTr
 
         <button
           onClick={() => setTractionOpen(true)}
-          className="rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] p-5 text-left text-white shadow-xl shadow-black/25 transition hover:scale-[1.01]"
+          className="rounded-3xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.10),rgba(255,255,255,0.045))] p-5 text-left text-white shadow-xl shadow-black/25 transition hover:scale-[1.01]"
         >
-          <p className="text-sm text-purple-100">Traction</p>
-          <h3 className="mt-1 text-2xl font-semibold">Engagement performance</h3>
+          <p className="text-xs uppercase tracking-[0.16em] text-purple-200">Traction</p>
+          <h3 className="mt-2 text-2xl font-medium">Engagement performance</h3>
           <div className="mt-5 grid gap-3">
             <StatRow label="Email engagement" value="68%" />
             <StatRow label="Response efficiency" value="+22%" />
@@ -1133,7 +1221,7 @@ function ActivityPanel({ activityView, setActivityView, setActivityDetail, setTr
           <button
             key={item.id}
             onClick={() => setActivityDetail(item)}
-            className="flex w-full items-center justify-between rounded-3xl border border-white/10 bg-white/10 p-4 text-left transition hover:bg-white/15"
+            className="flex w-full items-center justify-between rounded-3xl border border-white/10 bg-white/[0.055] p-4 text-left transition hover:bg-white/[0.10]"
           >
             <div>
               <p className="font-medium">{item.text}</p>
@@ -1155,13 +1243,13 @@ function ActivityDetail({ item, onBack, pad }: any) {
         Back to Activity
       </button>
 
-      <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+      <div className="rounded-3xl border border-white/10 bg-white/[0.055] p-5">
         <p className="text-sm text-purple-100">From: {item.from}</p>
         <p className="text-sm text-purple-100">To: {item.to}</p>
-        <div className="mt-5 whitespace-pre-line rounded-2xl bg-white/10 p-4 text-sm leading-7 text-purple-50">{item.body}</div>
+        <div className="mt-5 whitespace-pre-line rounded-2xl bg-white/[0.06] p-4 text-sm leading-7 text-purple-50">{item.body}</div>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-white/10 p-5">
+      <div className="rounded-3xl border border-white/10 bg-white/[0.055] p-5">
         <p className="text-sm text-purple-100">AI summary</p>
         <p className="mt-2 leading-7 text-white">{item.summary}</p>
       </div>
@@ -1226,7 +1314,7 @@ function AdminPanel({
   return (
     <div className="space-y-5">
       <div className="flex justify-end">
-        <button className="rounded-2xl border border-white/10 bg-white/10 p-3 text-white hover:bg-white/15">
+        <button className="rounded-2xl border border-white/10 bg-white/[0.06] p-3 text-white hover:bg-white/[0.10]">
           <Settings className="h-5 w-5" />
         </button>
       </div>
@@ -1234,7 +1322,7 @@ function AdminPanel({
       <div className="grid gap-5 xl:grid-cols-2">
         <Panel title="Integrations" subtitle="Connected communication systems." pad={pad}>
           <div className="flex justify-end">
-            <button className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-[#24112f] hover:bg-purple-50">
+            <button className="rounded-2xl bg-white px-4 py-2 text-sm font-medium text-[#17141c] hover:bg-purple-50">
               Connect Integration
             </button>
           </div>
@@ -1248,7 +1336,7 @@ function AdminPanel({
         </Panel>
 
         <Panel title="Manage Team" subtitle="Workspace people and permissions." pad={pad}>
-          <button className="flex w-fit items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm font-medium text-[#24112f] hover:bg-purple-50">
+          <button className="flex w-fit items-center gap-2 rounded-2xl bg-white px-4 py-2 text-sm font-medium text-[#17141c] hover:bg-purple-50">
             <UserPlus className="h-4 w-4" />
             Invite Team Member
           </button>
@@ -1259,13 +1347,13 @@ function AdminPanel({
               ["James Carter", "Relationship Lead", "11 accounts", "Active 1h ago"],
               ["Nora Patel", "Viewer", "6 accounts", "Active yesterday"],
             ].map((row) => (
-              <div key={row[0]} className="rounded-2xl border border-white/10 bg-white/10 p-4">
+              <div key={row[0]} className="rounded-2xl border border-white/10 bg-white/[0.055] p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="font-medium">{row[0]}</p>
                     <p className="mt-1 text-sm text-purple-100">{row[2]} · {row[3]}</p>
                   </div>
-                  <span className="rounded-full bg-white/15 px-3 py-1 text-xs text-purple-100">{row[1]}</span>
+                  <span className="rounded-full bg-white/12 px-3 py-1 text-xs text-purple-100">{row[1]}</span>
                 </div>
               </div>
             ))}
@@ -1285,7 +1373,7 @@ function AdminPanel({
           <PreferenceSelect label="Insight style" value={insightStyle} setValue={setInsightStyle} options={["Short bullets", "Gentle narrative", "Visual only"]} />
           <PreferenceSelect label="Theme" value={theme} setValue={setTheme} options={["Purple graphite", "Soft graphite", "Deep blush"]} />
 
-          <button onClick={() => setAdminPage("Preferences")} className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left hover:bg-white/15">
+          <button onClick={() => setAdminPage("Preferences")} className="rounded-2xl border border-white/15 bg-white/[0.06] px-4 py-3 text-left hover:bg-white/[0.10]">
             Open theme preferences
           </button>
         </Panel>
@@ -1299,17 +1387,17 @@ function AdminPanel({
 function PreferencePreview({ density, insightStyle, theme, showScores, showTimeline }: any) {
   return (
     <Panel title="Live Preview" subtitle="See preference changes immediately.">
-      <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
+      <div className="rounded-3xl border border-white/10 bg-white/[0.055] p-4">
         <p className="text-sm text-purple-100">Theme</p>
-        <p className="mt-1 text-lg font-semibold">{theme}</p>
+        <p className="mt-1 text-lg font-medium">{theme}</p>
       </div>
 
-      <div className={`rounded-3xl border border-white/10 bg-white/10 ${density === "Compact" ? "p-3" : density === "Spacious" ? "p-6" : "p-4"}`}>
+      <div className={`rounded-3xl border border-white/10 bg-white/[0.055] ${density === "Compact" ? "p-3" : density === "Spacious" ? "p-6" : "p-4"}`}>
         <div className="flex items-center justify-between">
           <p className="font-medium">Preview Account</p>
           <StatusChip label="Good timing" />
         </div>
-        {showScores && <p className="mt-3 text-3xl font-semibold">84</p>}
+        {showScores && <p className="mt-3 text-3xl font-medium">84</p>}
         <p className="mt-2 text-sm text-purple-100">
           {insightStyle === "Short bullets"
             ? "Status: Good timing. Trend: Improving."
@@ -1318,7 +1406,7 @@ function PreferencePreview({ density, insightStyle, theme, showScores, showTimel
             : "Engagement is improving and a renewal conversation would be well-timed."}
         </p>
         {showTimeline && (
-          <div className="mt-4 rounded-2xl bg-white/10 p-3 text-sm text-purple-100">
+          <div className="mt-4 rounded-2xl bg-white/[0.06] p-3 text-sm text-purple-100">
             Timeline preview is visible.
           </div>
         )}
@@ -1335,7 +1423,7 @@ function PreferencesPanel({ setAdminPage, theme, setTheme, pad, density, insight
           <ArrowLeft className="h-4 w-4" />
           Back to Admin
         </button>
-        <button className="flex w-full items-center justify-between rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-left hover:bg-white/15">
+        <button className="flex w-full items-center justify-between rounded-2xl border border-white/15 bg-white/[0.06] px-4 py-3 text-left hover:bg-white/[0.10]">
           <span>Customize Theme</span>
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -1355,9 +1443,9 @@ function PreferencesPanel({ setAdminPage, theme, setTheme, pad, density, insight
 
 function PreferenceToggle({ label, value, setValue }: any) {
   return (
-    <button onClick={() => setValue(!value)} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-left hover:bg-white/15">
+    <button onClick={() => setValue(!value)} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.055] px-4 py-3 text-left hover:bg-white/[0.10]">
       <span>{label}</span>
-      <span className={`rounded-full px-3 py-1 text-xs ${value ? "bg-emerald-100 text-emerald-800" : "bg-white/15 text-purple-100"}`}>
+      <span className={`rounded-full px-3 py-1 text-xs ${value ? "bg-emerald-100 text-emerald-800" : "bg-white/12 text-purple-100"}`}>
         {value ? "On" : "Off"}
       </span>
     </button>
@@ -1366,7 +1454,7 @@ function PreferenceToggle({ label, value, setValue }: any) {
 
 function PreferenceSelect({ label, value, setValue, options }: any) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.055] p-4">
       <p className="text-sm text-purple-100">{label}</p>
       <div className="mt-3 grid gap-2 sm:grid-cols-3">
         {options.map((option: string) => (
@@ -1374,7 +1462,7 @@ function PreferenceSelect({ label, value, setValue, options }: any) {
             key={option}
             onClick={() => setValue(option)}
             className={`rounded-2xl px-3 py-2 text-xs transition ${
-              value === option ? "bg-white text-[#24112f] shadow-lg shadow-black/10" : "bg-white/10 text-purple-100 hover:bg-white/15"
+              value === option ? "bg-white text-[#17141c] shadow-lg shadow-black/10" : "bg-white/[0.07] text-purple-100 hover:bg-white/[0.12]"
             }`}
           >
             {option}
@@ -1416,7 +1504,7 @@ function TasksPanel({ pad }: any) {
     <Panel title="Tasks" subtitle="Follow-ups generated from emails, meetings, calls, and chats." pad={pad}>
       <div className="grid gap-4 md:grid-cols-3">
         {tasks.map((item) => (
-          <div key={item.task} className="rounded-3xl border border-white/10 bg-white/10 p-4">
+          <div key={item.task} className="rounded-3xl border border-white/10 bg-white/[0.055] p-4">
             <div className="flex items-start justify-between gap-3">
               <p className="font-medium">{item.client}</p>
               <StatusChip label={item.priority} />
@@ -1453,7 +1541,7 @@ function ReportsPanel({ pad }: any) {
 
         <Panel title="Account trend table" subtitle="A simple technical view of where attention is needed." pad={pad}>
           <div className="overflow-hidden rounded-3xl border border-white/10">
-            <div className="grid grid-cols-4 bg-gradient-to-r from-white/20 to-white/10 px-4 py-3 text-sm font-medium text-purple-50">
+            <div className="grid grid-cols-4 bg-gradient-to-r from-white/[0.13] to-white/[0.06] px-4 py-3 text-sm font-medium text-purple-50">
               <div>Account</div>
               <div>Open Items</div>
               <div>Response</div>
@@ -1481,11 +1569,9 @@ function ReportsPanel({ pad }: any) {
 
 function Panel({ title, subtitle, children, pad = "p-5" }: any) {
   return (
-    <div className={`rounded-3xl border border-white/10 bg-gradient-to-br from-[#24112f] via-[#4c1d5e] to-[#d946ef] ${pad} text-white shadow-xl shadow-black/25`}>
-      <div className="rounded-2xl bg-gradient-to-r from-white/[0.08] to-transparent px-1 py-1">
-        <h3 className="text-2xl font-semibold">{title}</h3>
-        {subtitle !== "" && <p className="mt-1.5 text-sm text-purple-100">{subtitle}</p>}
-      </div>
+    <div className={`rounded-[1.65rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.095),rgba(255,255,255,0.040))] ${pad} text-white shadow-xl shadow-black/25 backdrop-blur-sm`}>
+      <h3 className="text-[1.35rem] font-medium tracking-[-0.015em] text-white">{title}</h3>
+      {subtitle !== "" && <p className="mt-1.5 text-sm font-normal text-purple-200/85">{subtitle}</p>}
       <div className="mt-5 space-y-4">{children}</div>
     </div>
   );
@@ -1493,9 +1579,9 @@ function Panel({ title, subtitle, children, pad = "p-5" }: any) {
 
 function SignalItem({ icon: Icon, title, detail }: any) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
+    <div className="rounded-3xl border border-white/10 bg-white/[0.055] p-4">
       <div className="flex gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-white">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/10 text-white">
           <Icon className="h-4 w-4" />
         </div>
         <div>
@@ -1509,7 +1595,7 @@ function SignalItem({ icon: Icon, title, detail }: any) {
 
 function StatRow({ label, value }: any) {
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/10 px-4 py-3">
+    <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.055] px-4 py-3">
       <span className="text-sm text-purple-100">{label}</span>
       <span className="text-sm font-semibold text-white">{value}</span>
     </div>
@@ -1518,9 +1604,9 @@ function StatRow({ label, value }: any) {
 
 function MetricMini({ label, value, detail }: any) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
-      <p className="text-sm text-purple-100">{label}</p>
-      <p className="mt-2 text-3xl font-semibold">{value}</p>
+    <div className="rounded-3xl border border-white/10 bg-white/[0.055] p-4">
+      <p className="text-xs uppercase tracking-[0.14em] text-purple-200/80">{label}</p>
+      <p className="mt-2 text-3xl font-medium">{value}</p>
       <p className="mt-1 text-sm text-purple-100">{detail}</p>
     </div>
   );
@@ -1550,9 +1636,9 @@ function RiskBadge({ risk }: any) {
 
 function Integration({ name, status, icon: Icon }: any) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
+    <div className="rounded-3xl border border-white/10 bg-white/[0.055] p-4">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/15 text-white">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 text-white">
           <Icon className="h-5 w-5" />
         </div>
         <div>
@@ -1566,7 +1652,7 @@ function Integration({ name, status, icon: Icon }: any) {
 
 function MobileNav({ activeTab, goToTab }: any) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-[#21142c]/95 px-3 py-2 backdrop-blur lg:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-[#17131f]/95 px-3 py-2 backdrop-blur lg:hidden">
       <div className="grid grid-cols-5 gap-2">
         {[
           { label: "Home", tab: "Overview", icon: Activity },
