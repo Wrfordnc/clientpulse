@@ -186,6 +186,7 @@ export default function Page() {
   const [touches, setTouches] = useState<Touch[]>(starterTouches);
   const [selectedAccountId, setSelectedAccountId] = useState("northstar");
   const [query, setQuery] = useState("");
+
   const [selectedTouch, setSelectedTouch] = useState<Touch | null>(null);
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiResponse, setAiResponse] = useState("");
@@ -202,9 +203,26 @@ const [theme, setTheme] = useState("Purple graphite");
 const [density, setDensity] = useState("Comfortable");
 const [showScores, setShowScores] = useState(true);
 const [showTimeline, setShowTimeline] = useState(true);
+const [mobileSectionsOpen, setMobileSectionsOpen] = useState({
+  focus: true,
+  metrics: false,
+  accounts: true,
+  ai: false,
+});
+
 
   useEffect(() => {
     if (localStorage.getItem(SIGNIN_KEY) === "true") setAuthState("dashboard");
+    const savedTheme = localStorage.getItem("pulse-theme");
+const savedDensity = localStorage.getItem("pulse-density");
+
+useEffect(() => {
+  localStorage.setItem("pulse-theme", theme);
+  localStorage.setItem("pulse-density", density);
+}, [theme, density]);
+
+if (savedTheme) setTheme(savedTheme);
+if (savedDensity) setDensity(savedDensity);
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
@@ -251,13 +269,89 @@ const [showTimeline, setShowTimeline] = useState(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function runAI() {
-    const lowest = [...scoredAccounts].sort((a, b) => a.score.overall - b.score.overall)[0];
-    setAiResponse(
-      `${lowest.name} currently shows the highest attention need. Pulse is seeing a ${lowest.score.overall} Relationship Pulse score with ${lowest.score.trend.toLowerCase()} momentum. Recommended next step: ${lowest.score.action}`
-    );
+function runSimulatedAI() {
+  const lowerPrompt = aiPrompt.toLowerCase();
+
+  const wantsChart =
+    lowerPrompt.includes("chart") ||
+    lowerPrompt.includes("graph") ||
+    lowerPrompt.includes("visual");
+
+  const wantsTable =
+    lowerPrompt.includes("table") ||
+    lowerPrompt.includes("spreadsheet");
+
+  const lowAccounts = scoredAccounts
+    .filter((a: ScoredAccount) => a.score.overall < 75)
+    .slice(0, 5);
+
+  const strongestAccounts = [...scoredAccounts]
+    .sort((a: ScoredAccount, b: ScoredAccount) => b.score.overall - a.score.overall)
+    .slice(0, 5);
+
+  const avgScore = Math.round(
+    scoredAccounts.reduce(
+      (s: number, a: ScoredAccount) => s + a.score.overall,
+      0
+    ) / scoredAccounts.length
+  );
+
+  let response = `
+Relationship Intelligence Report
+────────────────────────────
+
+Portfolio Summary
+• Average Pulse Score: ${avgScore}
+• Accounts Requiring Attention: ${lowAccounts.length}
+• Strong Momentum Relationships: ${strongestAccounts.length}
+
+Key Observations
+• Engagement stability is generally healthy across the sandbox portfolio.
+• Several relationships show declining responsiveness and should receive proactive outreach.
+• High-trust accounts continue demonstrating strong momentum after recent strategic conversations.
+
+Recommended Actions
+1. Re-engage lower scoring accounts within 7 days.
+2. Schedule executive-level continuity conversations for strategic clients.
+3. Review relationships showing declining engagement rhythm.
+
+`;
+
+  if (wantsChart) {
+    response += `
+Relationship Pulse Distribution (Chart)
+███████████████ 90-100
+███████████     80-89
+██████          70-79
+███             Below 70
+
+Momentum Trend
+↗ Positive momentum detected in enterprise accounts.
+`;
   }
 
+  if (wantsTable) {
+    response += `
+Priority Accounts Table
+────────────────────────────────────────
+Name                 | Pulse | Attention
+────────────────────────────────────────
+${lowAccounts
+  .map(
+    (a: ScoredAccount) =>
+      `${a.name.padEnd(20)} | ${String(a.score.overall).padEnd(5)} | High`
+  )
+  .join("\n")}
+`;
+  }
+
+  response += `
+Narrative Summary
+Pulse indicates generally healthy continuity across the portfolio, though several accounts display elevated attention need due to slower engagement patterns and reduced communication consistency.
+`;
+
+  setAiResponse(response);
+}
   function addAccount() {
     if (!newAccount.name.trim()) return;
     const account: Account = {
@@ -323,8 +417,17 @@ const [showTimeline, setShowTimeline] = useState(true);
   />
 
         {activeTab === "Overview" && (
-          <OverviewTab scoredAccounts={scoredAccounts} accounts={accounts} touches={touches} attention={attention} setSelectedAccountId={setSelectedAccountId} goTab={goTab} selectedAccount={selectedAccount} />
-        )}
+<OverviewTab
+  scoredAccounts={scoredAccounts}
+  accounts={accounts}
+  touches={touches}
+  attention={attention}
+  setSelectedAccountId={setSelectedAccountId}
+  goTab={goTab}
+  selectedAccount={selectedAccount}
+  mobileSectionsOpen={mobileSectionsOpen}
+  setMobileSectionsOpen={setMobileSectionsOpen}
+/>        )}
 
         {activeTab === "Accounts" && (
           <AccountsTab
@@ -345,18 +448,33 @@ const [showTimeline, setShowTimeline] = useState(true);
         )}
 
         {activeTab === "Activity" && (
-          <ActivityTab touches={touches} accounts={scoredAccounts} selectedTouch={selectedTouch} setSelectedTouch={setSelectedTouch} />
-        )}
+<ActivityTab
+  touches={touches}
+  accounts={scoredAccounts}
+  selectedTouch={selectedTouch}
+  setSelectedTouch={setSelectedTouch}
+  selectedAccount={selectedAccount}
+  newTouch={newTouch}
+  setNewTouch={setNewTouch}
+  logTouch={logTouch}
+/>        )}
 
         {activeTab === "Intelligence" && <IntelligenceTab accounts={scoredAccounts} />}
 
-{activeTab === "AI Task Manager" && (          <AITab aiPrompt={aiPrompt} setAiPrompt={setAiPrompt} aiResponse={aiResponse} runAI={runAI} />
+{activeTab === "AI Task Manager" && (          <AITab aiPrompt={aiPrompt} setAiPrompt={setAiPrompt} aiResponse={aiResponse} runAI={runSimulatedAI} />
         )}
 
         {activeTab === "Reports" && <ReportsTab accounts={scoredAccounts} touches={touches} />}
 
-        {activeTab === "Admin" && <AdminTab resetSandbox={resetSandbox} />}
-      </section>
+{activeTab === "Admin" && (
+  <AdminTab
+    resetSandbox={resetSandbox}
+    theme={theme}
+    setTheme={setTheme}
+    density={density}
+    setDensity={setDensity}
+  />
+)}      </section>
     </main>
   );
 }
@@ -424,8 +542,8 @@ function TopHero({ attention, notificationsOpen, setNotificationsOpen, setSelect
 
 function LoginScreen({ onSignIn }: { onSignIn: () => void }) {
   return (
-    <main className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,#3a2444_0%,#111118_44%,#030305_100%)] text-white">
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(216,165,184,0.18),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(190,150,220,0.14),transparent_30%)]" />
+<main
+className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,#3a2444_0%,#111118_44%,#030305_100%)] text-white">     <div className="fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(216,165,184,0.18),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(190,150,220,0.14),transparent_30%)]" />
 
       <div className="relative mx-auto flex min-h-screen max-w-7xl items-center px-6 py-10">
         <div className="grid w-full gap-16 lg:grid-cols-[1.1fr_.9fr]">
@@ -481,10 +599,12 @@ function LoginScreen({ onSignIn }: { onSignIn: () => void }) {
                 Try Sandbox Demo
               </button>
 
-              <button className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.06] text-sm text-white transition hover:bg-white/[0.10]">
-                Sign In
-              </button>
-            </div>
+<button
+  onClick={onSignIn}
+  className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.06] text-sm text-white transition hover:bg-white/[0.10]"
+>
+  Sign In
+</button>            </div>
 
             <div className="mt-8 flex items-center justify-between text-sm text-[#d8c8dc]/72">
               <button>Forgot password?</button>
@@ -511,16 +631,30 @@ function LoadingScreen() {
   );
 }
 
-function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch }: any) {
+function ActivityTab({
+  touches,
+  accounts,
+  selectedTouch,
+  setSelectedTouch,
+  selectedAccount,
+  newTouch,
+  setNewTouch,
+  logTouch,
+}: any) {
   if (selectedTouch) {
     return (
       <Panel title={selectedTouch.summary} subtitle={selectedTouch.type}>
-        <button onClick={() => setSelectedTouch(null)} className="text-sm text-[#d8c8dc]/75">
+        <button
+          onClick={() => setSelectedTouch(null)}
+          className="text-sm text-[#d8c8dc]/75"
+        >
           Back to activity
         </button>
 
         <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
-          <p className="text-sm text-[#d8c8dc]/70">Sentiment: {selectedTouch.sentiment}</p>
+          <p className="text-sm text-[#d8c8dc]/70">
+            Sentiment: {selectedTouch.sentiment}
+          </p>
           <p className="mt-4 whitespace-pre-line text-sm leading-7 text-white">
             {selectedTouch.content || selectedTouch.summary}
           </p>
@@ -533,45 +667,75 @@ function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch }: any
     );
   }
 
+  <div className="grid gap-6 xl:grid-cols-[1fr_.8fr]">
+  <Panel title="Upcoming Activity" subtitle="Recommended actions based on relationship signals">
+    <div className="max-h-[360px] space-y-3 overflow-y-auto pr-2">
+      {[...accounts]
+        .sort((a: ScoredAccount, b: ScoredAccount) => a.score.overall - b.score.overall)
+        .map((account: ScoredAccount) => (
+          <div key={account.id} className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="font-medium">{account.name}</p>
+                <p className="mt-2 text-sm leading-6 text-[#d8c8dc]/70">
+                  {account.score.action}
+                </p>
+              </div>
+              <ScorePill score={account.score.overall} />
+            </div>
+          </div>
+        ))}
+    </div>
+  </Panel>
+
+  <LogTouchPanel
+    selectedAccount={selectedAccount}
+    newTouch={newTouch}
+    setNewTouch={setNewTouch}
+    logTouch={logTouch}
+  />
+</div>
+
   const rows = touches.map((touch: Touch) => ({
     ...touch,
     account: accounts.find((a: ScoredAccount) => a.id === touch.accountId),
   }));
 
-  const upcoming = [...accounts].sort((a: ScoredAccount, b: ScoredAccount) => a.score.overall - b.score.overall);
-
   return (
     <div className="space-y-6">
-      <div className="grid gap-6 xl:grid-cols-[1.05fr_.95fr]">
+      <div className="grid gap-6 xl:grid-cols-[1fr_.8fr]">
         <Panel title="Upcoming Activity" subtitle="Recommended actions based on relationship signals">
           <div className="max-h-[360px] space-y-3 overflow-y-auto pr-2">
-            {upcoming.map((account: ScoredAccount) => (
-              <div key={account.id} className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="font-medium">{account.name}</p>
-                    <p className="mt-2 text-sm leading-6 text-[#d8c8dc]/70">{account.score.action}</p>
+            {[...accounts]
+              .sort((a: ScoredAccount, b: ScoredAccount) => a.score.overall - b.score.overall)
+              .map((account: ScoredAccount) => (
+                <div
+                  key={account.id}
+                  className="rounded-3xl border border-white/8 bg-white/[0.045] p-5"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="font-medium">{account.name}</p>
+                      <p className="mt-2 text-sm leading-6 text-[#d8c8dc]/70">
+                        {account.score.action}
+                      </p>
+                    </div>
+                    <ScorePill score={account.score.overall} />
                   </div>
-                  <ScorePill score={account.score.overall} />
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </Panel>
 
-        <Panel title="Traction" subtitle="Engagement performance snapshot">
-          <Dimension label="Email engagement" value={68} suffix="%" />
-          <Dimension label="Response efficiency" value={74} suffix="%" />
-          <Dimension label="Meeting acceptance" value={81} suffix="%" />
-          <Dimension label="Follow-up completion" value={72} suffix="%" />
-
-          <div className="rounded-3xl border border-[#d8a5b8]/12 bg-[#d8a5b8]/8 p-5 text-sm leading-7 text-[#f1e9f4]">
-            Engagement is steady overall, but the lowest-scoring relationships should be reviewed before the next customer touchpoint.
-          </div>
-        </Panel>
+        <LogTouchPanel
+          selectedAccount={selectedAccount}
+          newTouch={newTouch}
+          setNewTouch={setNewTouch}
+          logTouch={logTouch}
+        />
       </div>
 
-      <Panel title="Recent Activity" subtitle="Click into activity for details">
+      <Panel title="Recent Activity" subtitle="Communication activity with contextual drill-down">
         {rows.map((row: any) => (
           <button
             key={row.id}
@@ -582,7 +746,9 @@ function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch }: any
               <p className="font-medium">
                 {row.account?.name || "Unknown"} · {row.type}
               </p>
-              <p className="mt-1 text-sm text-[#d8c8dc]/65">{row.summary}</p>
+              <p className="mt-1 text-sm text-[#d8c8dc]/65">
+                {row.summary}
+              </p>
             </div>
             <ArrowUpRight className="h-5 w-5 text-[#d8c8dc]/55" />
           </button>
@@ -591,11 +757,77 @@ function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch }: any
     </div>
   );
 }
-
-function OverviewTab({ scoredAccounts, accounts, touches, attention, setSelectedAccountId, goTab, selectedAccount }: any) {
+function OverviewTab({
+  scoredAccounts,
+  accounts,
+  touches,
+  attention,
+  setSelectedAccountId,
+  goTab,
+  selectedAccount,
+  mobileSectionsOpen,
+  setMobileSectionsOpen,
+}: any) {
   return (
     <>
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
+      <DesktopOnly>
+        <div className="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
+          <Panel title="A few relationships may need attention." subtitle="Executive Focus Panel">
+            <div className="inline-flex w-fit rounded-full border border-[#d8a5b8]/15 bg-[#d8a5b8]/10 px-3 py-1 text-xs tracking-wide text-[#f1d6e2]">
+              Calm intelligence, not dashboard noise.
+            </div>
+            <p className="max-w-2xl text-sm leading-8 text-[#d8c8dc]/76">
+              Pulse interprets trust, engagement, momentum, stability, and opportunity to prioritize thoughtful action without creating workflow noise.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => goTab("Intelligence")}
+                className="rounded-2xl bg-[linear-gradient(135deg,#f1dbe5_0%,#d8a5b8_45%,#b98bb1_100%)] px-5 py-3 text-sm font-semibold text-[#17141c]"
+              >
+                Review Attention Items
+              </button>
+              <button
+                onClick={() => goTab("Accounts")}
+                className="rounded-2xl border border-white/10 bg-white/[0.05] px-5 py-3 text-sm"
+              >
+                Open Accounts
+              </button>
+            </div>
+          </Panel>
+
+          <Panel title="Today’s focus" subtitle="Calculated relationship attention queue">
+            {attention.map((account: ScoredAccount) => (
+              <button
+                key={account.id}
+                onClick={() => {
+                  setSelectedAccountId(account.id);
+                  goTab("Accounts");
+                }}
+                className="w-full rounded-3xl border border-white/8 bg-white/[0.05] p-4 text-left hover:bg-white/[0.08]"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-medium">{account.name}</p>
+                    <p className="mt-1 text-sm text-[#d8c8dc]/65">{account.score.action}</p>
+                  </div>
+                  <ScorePill score={account.score.overall} />
+                </div>
+              </button>
+            ))}
+          </Panel>
+        </div>
+      </DesktopOnly>
+
+      <MobileSection
+        title="Today’s Focus"
+        open={mobileSectionsOpen.focus}
+        onToggle={() =>
+          setMobileSectionsOpen({
+            ...mobileSectionsOpen,
+            focus: !mobileSectionsOpen.focus,
+          })
+        }
+      >
         <Panel title="A few relationships may need attention." subtitle="Executive Focus Panel">
           <div className="inline-flex w-fit rounded-full border border-[#d8a5b8]/15 bg-[#d8a5b8]/10 px-3 py-1 text-xs tracking-wide text-[#f1d6e2]">
             Calm intelligence, not dashboard noise.
@@ -603,17 +835,9 @@ function OverviewTab({ scoredAccounts, accounts, touches, attention, setSelected
           <p className="max-w-2xl text-sm leading-8 text-[#d8c8dc]/76">
             Pulse interprets trust, engagement, momentum, stability, and opportunity to prioritize thoughtful action without creating workflow noise.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <button onClick={() => goTab("Intelligence")} className="rounded-2xl bg-[linear-gradient(135deg,#f1dbe5_0%,#d8a5b8_45%,#b98bb1_100%)] px-5 py-3 text-sm font-semibold text-[#17141c]">
-              Review Attention Items
-            </button>
-            <button onClick={() => goTab("Accounts")} className="rounded-2xl border border-white/10 bg-white/[0.05] px-5 py-3 text-sm">
-              Open Accounts
-            </button>
-          </div>
         </Panel>
 
-        <Panel title="Today’s focus" subtitle="Calculated relationship attention queue">
+        <Panel title="Attention Queue" subtitle="Current relationship priorities">
           {attention.map((account: ScoredAccount) => (
             <button
               key={account.id}
@@ -621,7 +845,7 @@ function OverviewTab({ scoredAccounts, accounts, touches, attention, setSelected
                 setSelectedAccountId(account.id);
                 goTab("Accounts");
               }}
-              className="w-full rounded-3xl border border-white/8 bg-white/[0.05] p-4 text-left hover:bg-white/[0.08]"
+              className="w-full rounded-3xl border border-white/8 bg-white/[0.045] p-4 text-left"
             >
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -633,23 +857,57 @@ function OverviewTab({ scoredAccounts, accounts, touches, attention, setSelected
             </button>
           ))}
         </Panel>
-      </div>
+      </MobileSection>
 
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        <MetricCard icon={Users} label="Tracked Accounts" value={String(accounts.length)} detail="Sandbox relationships" />
-        <MetricCard icon={Clock} label="Relationship Touches" value={String(touches.length)} detail="Emails, calls, meetings" />
-        <MetricCard icon={CheckCircle2} label="Average Pulse" value={String(Math.round(scoredAccounts.reduce((s: number, a: ScoredAccount) => s + a.score.overall, 0) / scoredAccounts.length))} detail="Calculated score" />
-        <MetricCard icon={TrendingDown} label="Attention Need" value={String(scoredAccounts.filter((a: ScoredAccount) => a.score.overall < 72).length)} detail="Relationships to review" />
-      </div>
+      <DesktopOnly>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          <MetricCard icon={Users} label="Tracked Accounts" value={String(accounts.length)} detail="Sandbox relationships" />
+          <MetricCard icon={Clock} label="Relationship Touches" value={String(touches.length)} detail="Emails, calls, meetings" />
+          <MetricCard icon={CheckCircle2} label="Average Pulse" value={String(Math.round(scoredAccounts.reduce((s: number, a: ScoredAccount) => s + a.score.overall, 0) / scoredAccounts.length))} detail="Calculated score" />
+          <MetricCard icon={TrendingDown} label="Attention Need" value={String(scoredAccounts.filter((a: ScoredAccount) => a.score.overall < 72).length)} detail="Relationships to review" />
+        </div>
+      </DesktopOnly>
 
-      <div className="mt-8 grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
+      <MobileSection
+        title="Snapshot"
+        open={mobileSectionsOpen.metrics}
+        onToggle={() =>
+          setMobileSectionsOpen({
+            ...mobileSectionsOpen,
+            metrics: !mobileSectionsOpen.metrics,
+          })
+        }
+      >
+        <div className="grid gap-4">
+          <MetricCard icon={Users} label="Tracked Accounts" value={String(accounts.length)} detail="Sandbox relationships" />
+          <MetricCard icon={Clock} label="Relationship Touches" value={String(touches.length)} detail="Emails, calls, meetings" />
+          <MetricCard icon={CheckCircle2} label="Average Pulse" value={String(Math.round(scoredAccounts.reduce((s: number, a: ScoredAccount) => s + a.score.overall, 0) / scoredAccounts.length))} detail="Calculated score" />
+        </div>
+      </MobileSection>
+
+      <DesktopOnly>
+        <div className="mt-8 grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
+          <AccountList accounts={scoredAccounts} selectedAccountId={selectedAccount.id} setSelectedAccountId={setSelectedAccountId} />
+          <AccountPulse account={selectedAccount} />
+        </div>
+      </DesktopOnly>
+
+      <MobileSection
+        title="Accounts"
+        open={mobileSectionsOpen.accounts}
+        onToggle={() =>
+          setMobileSectionsOpen({
+            ...mobileSectionsOpen,
+            accounts: !mobileSectionsOpen.accounts,
+          })
+        }
+      >
         <AccountList accounts={scoredAccounts} selectedAccountId={selectedAccount.id} setSelectedAccountId={setSelectedAccountId} />
         <AccountPulse account={selectedAccount} />
-      </div>
+      </MobileSection>
     </>
   );
 }
-
 function AccountsTab(props: any) {
   return (
     <div className="space-y-6">
@@ -658,11 +916,51 @@ function AccountsTab(props: any) {
         <AccountPulse account={props.selectedAccount} touches={props.accountTouches} />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1fr_.8fr]">
-        <LogTouchPanel {...props} />
-        <AddAccountPanel {...props} />
+<div className="grid gap-6 xl:grid-cols-[1fr_.8fr]">
+  <CompactAccountList
+    accounts={props.filteredAccounts}
+    selectedAccountId={props.selectedAccountId}
+    setSelectedAccountId={props.setSelectedAccountId}
+  />
+  <AddAccountPanel {...props} />
+</div>    </div>
+  );
+}
+
+function CompactAccountList({ accounts, selectedAccountId, setSelectedAccountId }: any) {
+  return (
+    <Panel title="Account List" subtitle="Quick account lookup">
+      <div className="max-h-[420px] overflow-y-auto rounded-3xl border border-white/8">
+        {accounts.map((account: ScoredAccount) => (
+          <button
+            key={account.id}
+            onClick={() => setSelectedAccountId(account.id)}
+            className={`grid w-full grid-cols-[1.4fr_.8fr_.55fr_42px] items-center gap-3 border-b border-white/8 px-4 py-3 text-left text-sm transition last:border-b-0 ${
+              selectedAccountId === account.id
+                ? "bg-[#d8a5b8]/10"
+                : "bg-white/[0.035] hover:bg-white/[0.07]"
+            }`}
+          >
+            <div>
+              <p className="font-medium text-white">{account.name}</p>
+              <p className="mt-0.5 text-xs text-[#d8c8dc]/55">{account.stage}</p>
+            </div>
+
+            <div className="hidden sm:block">
+              <p className="text-xs text-[#d8c8dc]/45">Owner</p>
+              <p className="text-xs text-[#d8c8dc]/75">{account.owner}</p>
+            </div>
+
+            <div className="hidden sm:block">
+              <p className="text-xs text-[#d8c8dc]/45">Pulse</p>
+              <p className="text-xs text-white">{account.score.overall}</p>
+            </div>
+
+            <PulseMark health={account.score.overall} />
+          </button>
+        ))}
       </div>
-    </div>
+    </Panel>
   );
 }
 
@@ -727,8 +1025,7 @@ function AITab({ aiPrompt, setAiPrompt, aiResponse, runAI }: any) {
 
 function ReportsTab({ accounts, touches }: { accounts: ScoredAccount[]; touches: Touch[] }) {
   return (
-    <Panel title="Reports" subtitle="Calm executive summaries">
-      <textarea placeholder="Describe the report you want to make..." className="min-h-28 w-full max-w-3xl rounded-[2rem] border border-[#d8a5b8]/15 bg-[linear-gradient(180deg,#f8f3f7_0%,#ece6ef_100%)] p-5 text-[#17141c] outline-none" />
+<Panel title="Describe the report you want to make:" subtitle="AI-generated relationship intelligence reporting">      <textarea placeholder="Example: Create an executive relationship health report with charts showing churn risk, engagement trends, and accounts requiring attention." className="min-h-28 w-full max-w-3xl rounded-[2rem] border border-[#d8a5b8]/15 bg-[linear-gradient(180deg,#f8f3f7_0%,#ece6ef_100%)] p-5 text-[#17141c] outline-none" />
       <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5 text-sm leading-7 text-[#d8c8dc]/75">
         Average Pulse: {Math.round(accounts.reduce((s, a) => s + a.score.overall, 0) / accounts.length)} · Logged touches: {touches.length}
       </div>
@@ -736,8 +1033,19 @@ function ReportsTab({ accounts, touches }: { accounts: ScoredAccount[]; touches:
   );
 }
 
-function AdminTab({ resetSandbox }: { resetSandbox: () => void }) {
-  const [themeChoice, setThemeChoice] = useState("Purple graphite");
+function AdminTab({
+  resetSandbox,
+  theme,
+  setTheme,
+  density,
+  setDensity,
+}: {
+  resetSandbox: () => void;
+  theme: string;
+  setTheme: (value: string) => void;
+  density: string;
+  setDensity: (value: string) => void;
+}) {  const [themeChoice, setThemeChoice] = useState("Purple graphite");
   const [densityChoice, setDensityChoice] = useState("Comfortable");
 
   return (
@@ -757,30 +1065,77 @@ function AdminTab({ resetSandbox }: { resetSandbox: () => void }) {
             <UserPlus className="h-4 w-4" />
             Invite Team Member
           </button>
-          <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">Danielle Hart · Admin</div>
-          <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">James Carter · Relationship Lead</div>
-        </Panel>
+<div className="space-y-3">
+  <div className="flex items-center justify-between rounded-3xl border border-white/8 bg-white/[0.045] p-5">
+    <div className="flex items-center gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#f1dbe5_0%,#d8a5b8_55%,#b98bb1_100%)] text-sm font-semibold text-[#17141c] shadow-[0_10px_30px_rgba(216,165,184,0.20)]">
+        DH
+      </div>
+      <div>
+        <p className="font-medium text-white">Danielle Hart</p>
+        <p className="mt-1 text-sm text-[#d8c8dc]/68">
+          Workspace Admin · Enterprise Accounts
+        </p>
+      </div>
+    </div>
+    <div className="rounded-full border border-[#d8a5b8]/18 bg-[#d8a5b8]/10 px-3 py-1 text-xs text-[#f1d6e2]">
+      Active
+    </div>
+  </div>
+
+  <div className="flex items-center justify-between rounded-3xl border border-white/8 bg-white/[0.045] p-5">
+    <div className="flex items-center gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#d7d9df_0%,#aab0ba_55%,#7d8693_100%)] text-sm font-semibold text-[#17141c]">
+        JC
+      </div>
+      <div>
+        <p className="font-medium text-white">James Carter</p>
+        <p className="mt-1 text-sm text-[#d8c8dc]/68">
+          Relationship Lead · Strategic Accounts
+        </p>
+      </div>
+    </div>
+    <div className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs text-[#d8c8dc]/75">
+      Online
+    </div>
+  </div>
+
+  <div className="flex items-center justify-between rounded-3xl border border-white/8 bg-white/[0.045] p-5">
+    <div className="flex items-center gap-4">
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#c7a7e8_0%,#9e82c9_55%,#725f9d_100%)] text-sm font-semibold text-white">
+        NP
+      </div>
+      <div>
+        <p className="font-medium text-white">Nora Patel</p>
+        <p className="mt-1 text-sm text-[#d8c8dc]/68">
+          Viewer · Customer Success
+        </p>
+      </div>
+    </div>
+    <div className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs text-[#d8c8dc]/75">
+      Invited
+    </div>
+  </div>
+</div>        </Panel>
       </div>
 
       <Panel title="Preferences" subtitle="Demo workspace customization">
-        <PreferenceButtons
-          label="Theme"
-          value={themeChoice}
-          setValue={setThemeChoice}
-          options={["Purple graphite", "Soft graphite", "Deep blush"]}
-        />
+<PreferenceButtons
+  label="Theme"
+  value={theme}
+  setValue={setTheme}
+  options={["Purple graphite", "Soft graphite", "Deep blush"]}
+/>
 
-        <PreferenceButtons
-          label="Density"
-          value={densityChoice}
-          setValue={setDensityChoice}
-          options={["Compact", "Comfortable", "Spacious"]}
-        />
-
+<PreferenceButtons
+  label="Density"
+  value={density}
+  setValue={setDensity}
+  options={["Compact", "Comfortable", "Spacious"]}
+/>
         <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
           <p className="text-sm text-[#d8c8dc]/70">Preview</p>
-          <p className="mt-2 text-lg font-medium">{themeChoice} · {densityChoice}</p>
-          <p className="mt-2 text-sm text-[#d8c8dc]/70">
+<p className="mt-2 text-lg font-medium">{theme} · {density}</p>          <p className="mt-2 text-sm text-[#d8c8dc]/70">
             These controls are ready to connect to the global theme system in the next architecture pass.
           </p>
         </div>
@@ -802,10 +1157,21 @@ function MobileHeader({ activeTab, goTab, mobileMenu, setMobileMenu }: any) {
           <h1 className="text-3xl font-semibold tracking-[-0.04em]">pulse</h1>
           <p className="text-xs tracking-wide text-[#d8c8dc]/65">Relationship Intelligence</p>
         </div>
-        <button onClick={() => setMobileMenu(!mobileMenu)} className="rounded-2xl border border-white/10 bg-white/[0.06] p-3">
-          {mobileMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
-      </div>
+<div className="flex items-center gap-2">
+  <button className="relative rounded-2xl border border-white/10 bg-white/[0.06] p-3 text-[#f1d6e2]">
+    <Bell className="h-5 w-5" />
+    <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#d8a5b8] text-[11px] font-semibold text-[#17141c]">
+      3
+    </span>
+  </button>
+
+  <button
+    onClick={() => setMobileMenu(!mobileMenu)}
+    className="rounded-2xl border border-white/10 bg-white/[0.06] p-3"
+  >
+    {mobileMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+  </button>
+</div>      </div>
       {mobileMenu && (
         <div className="space-y-2 px-5 pb-5">
           {navItems.map((item) => (
@@ -857,9 +1223,8 @@ function AccountList({ accounts, selectedAccountId, setSelectedAccountId, query,
           <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search accounts" className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-10 pr-4 text-sm outline-none" />
         </div>
       )}
-      <div className="max-h-[500px] space-y-3 overflow-y-auto pr-2">
-        {accounts.map((account: ScoredAccount) => (
-          <button key={account.id} onClick={() => setSelectedAccountId(account.id)} className={`w-full rounded-3xl border p-5 text-left transition ${selectedAccountId === account.id ? "border-[#d8a5b8]/24 bg-[#d8a5b8]/10" : "border-white/8 bg-white/[0.045] hover:bg-white/[0.08]"}`}>
+<div className="max-h-[560px] space-y-3 overflow-y-auto pr-1 pb-1">        {accounts.map((account: ScoredAccount) => (
+          <button key={account.id} onClick={() => setSelectedAccountId(account.id)} className={`w-full rounded-3xl border p-4 text-left transition ${selectedAccountId === account.id ? "border-[#d8a5b8]/24 bg-[#d8a5b8]/10" : "border-white/8 bg-white/[0.045] hover:bg-white/[0.08]"}`}>
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-lg font-medium">{account.name}</p>
@@ -1075,4 +1440,37 @@ function PreferenceButtons({ label, value, setValue, options }: any) {
       </div>
     </div>
   );
+}
+function MobileSection({
+  title,
+  open,
+  onToggle,
+  children,
+}: {
+  title: string;
+  open: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="lg:hidden">
+      <button
+        onClick={onToggle}
+        className="mb-3 flex w-full items-center justify-between rounded-2xl border border-[#d8a5b8]/12 bg-white/[0.045] px-4 py-3 text-left"
+      >
+        <span className="text-sm font-medium text-[#f1e9f4]">{title}</span>
+        <ChevronRight
+          className={`h-4 w-4 text-[#d8c8dc]/70 transition ${
+            open ? "rotate-90" : ""
+          }`}
+        />
+      </button>
+
+      {open && <div className="space-y-5">{children}</div>}
+    </div>
+  );
+}
+
+function DesktopOnly({ children }: { children: React.ReactNode }) {
+  return <div className="hidden lg:block">{children}</div>;
 }
