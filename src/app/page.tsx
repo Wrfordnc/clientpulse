@@ -52,7 +52,7 @@ type ScoredAccount = Account & {
   score: ReturnType<typeof calculateScore>;
 };
 
-const navItems = ["Overview", "Accounts", "Activity", "Intelligence", "AI", "Reports", "Admin"];
+const navItems = ["Overview", "Accounts", "Activity", "Intelligence", "AI Task Manager", "Reports", "Admin"];
 
 const starterAccounts: Account[] = [
   { id: "northstar", name: "Northstar Logistics", owner: "Danielle Hart", value: 142000, stage: "Expansion review" },
@@ -197,6 +197,11 @@ export default function Page() {
     summary: "",
     content: "",
   });
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+const [theme, setTheme] = useState("Purple graphite");
+const [density, setDensity] = useState("Comfortable");
+const [showScores, setShowScores] = useState(true);
+const [showTimeline, setShowTimeline] = useState(true);
 
   useEffect(() => {
     if (localStorage.getItem(SIGNIN_KEY) === "true") setAuthState("dashboard");
@@ -290,14 +295,32 @@ export default function Page() {
   if (authState === "loading") return <LoadingScreen />;
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,#30203b_0%,#13141a_44%,#040406_100%)] text-white">
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(216,165,184,0.10),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(190,150,220,0.10),transparent_30%)]" />
+<main
+  className={`min-h-screen text-white ${
+    theme === "Soft graphite"
+      ? "bg-[radial-gradient(circle_at_top_left,#2b2b35_0%,#13141a_44%,#040406_100%)]"
+      : theme === "Deep blush"
+      ? "bg-[radial-gradient(circle_at_top_left,#3a1c33_0%,#18111d_44%,#040406_100%)]"
+      : "bg-[radial-gradient(circle_at_top_left,#30203b_0%,#13141a_44%,#040406_100%)]"
+  }`}
+>      <div className="fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(216,165,184,0.10),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(190,150,220,0.10),transparent_30%)]" />
 
       <MobileHeader activeTab={activeTab} goTab={goTab} mobileMenu={mobileMenu} setMobileMenu={setMobileMenu} />
       <DesktopSidebar activeTab={activeTab} goTab={goTab} logout={logout} />
 
       <section className="relative px-5 pb-32 pt-6 lg:ml-64 lg:px-10 lg:pb-10 lg:pt-8">
-        <TopHero />
+        <TopHero
+
+  attention={attention}
+
+  notificationsOpen={notificationsOpen}
+
+  setNotificationsOpen={setNotificationsOpen}
+
+  setSelectedAccountId={setSelectedAccountId}
+
+  goTab={goTab}
+  />
 
         {activeTab === "Overview" && (
           <OverviewTab scoredAccounts={scoredAccounts} accounts={accounts} touches={touches} attention={attention} setSelectedAccountId={setSelectedAccountId} goTab={goTab} selectedAccount={selectedAccount} />
@@ -327,8 +350,7 @@ export default function Page() {
 
         {activeTab === "Intelligence" && <IntelligenceTab accounts={scoredAccounts} />}
 
-        {activeTab === "AI" && (
-          <AITab aiPrompt={aiPrompt} setAiPrompt={setAiPrompt} aiResponse={aiResponse} runAI={runAI} />
+{activeTab === "AI Task Manager" && (          <AITab aiPrompt={aiPrompt} setAiPrompt={setAiPrompt} aiResponse={aiResponse} runAI={runAI} />
         )}
 
         {activeTab === "Reports" && <ReportsTab accounts={scoredAccounts} touches={touches} />}
@@ -336,6 +358,67 @@ export default function Page() {
         {activeTab === "Admin" && <AdminTab resetSandbox={resetSandbox} />}
       </section>
     </main>
+  );
+}
+
+function TopHero({ attention, notificationsOpen, setNotificationsOpen, setSelectedAccountId, goTab }: any) {
+  return (
+    <div className="relative mb-8 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+      <div>
+        <p className="text-lg text-[#d8c8dc]/75">{getGreeting()}, Danielle.</p>
+        <h1 className="mt-3 max-w-4xl text-[2.75rem] font-medium leading-[1.02] tracking-[-0.055em] sm:text-5xl lg:text-[4rem]">
+          Relationship continuity at a glance.
+        </h1>
+        <p className="mt-5 max-w-2xl text-base leading-8 text-[#d8c8dc]/70">
+          Pulse helps account teams interpret relationship patterns, maintain continuity, and identify attention needs before they become churn risk.
+        </p>
+      </div>
+
+      <div className="shrink-0 self-start lg:self-start">
+        <div className="flex items-center gap-2 rounded-[1.35rem] border border-[#d8a5b8]/12 bg-[#15111d]/75 p-1.5 shadow-[0_18px_60px_rgba(0,0,0,0.24)] backdrop-blur-xl">
+          <button
+            onClick={() => setNotificationsOpen(!notificationsOpen)}
+            className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#d8a5b8]/12 bg-white/[0.055] text-[#f1d6e2] transition hover:bg-[#d8a5b8]/12"
+          >
+            <Bell className="h-5 w-5" />
+            <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#d8a5b8] text-[11px] font-semibold text-[#17141c] shadow-[0_8px_24px_rgba(216,165,184,0.35)]">
+              {attention.length}
+            </span>
+          </button>
+
+          <div className="hidden h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#f1dbe5_0%,#d8a5b8_55%,#b98bb1_100%)] text-sm font-semibold text-[#17141c] shadow-[0_12px_35px_rgba(216,165,184,0.20)] sm:flex">
+            DH
+          </div>
+        </div>
+
+        {notificationsOpen && (
+          <div className="absolute right-0 top-20 z-50 w-[340px] rounded-[2rem] border border-[#d8a5b8]/12 bg-[#15111d] p-4 shadow-[0_30px_100px_rgba(0,0,0,0.45)]">
+            <p className="text-sm text-[#d8c8dc]/70">Important updates</p>
+            <h3 className="mt-1 text-xl font-medium">Attention items</h3>
+
+            <div className="mt-4 space-y-3">
+              {attention.map((account: ScoredAccount) => (
+                <button
+                  key={account.id}
+                  onClick={() => {
+                    setSelectedAccountId(account.id);
+                    setNotificationsOpen(false);
+                    goTab("Accounts");
+                  }}
+                  className="w-full rounded-2xl border border-white/8 bg-white/[0.045] p-4 text-left hover:bg-white/[0.08]"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="font-medium">{account.name}</p>
+                    <ScorePill score={account.score.overall} />
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-[#d8c8dc]/70">{account.score.action}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -428,32 +511,83 @@ function LoadingScreen() {
   );
 }
 
-function TopHero() {
+function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch }: any) {
+  if (selectedTouch) {
+    return (
+      <Panel title={selectedTouch.summary} subtitle={selectedTouch.type}>
+        <button onClick={() => setSelectedTouch(null)} className="text-sm text-[#d8c8dc]/75">
+          Back to activity
+        </button>
+
+        <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
+          <p className="text-sm text-[#d8c8dc]/70">Sentiment: {selectedTouch.sentiment}</p>
+          <p className="mt-4 whitespace-pre-line text-sm leading-7 text-white">
+            {selectedTouch.content || selectedTouch.summary}
+          </p>
+        </div>
+
+        <div className="rounded-3xl border border-[#d8a5b8]/12 bg-[#d8a5b8]/8 p-5 text-sm leading-7 text-[#f1e9f4]">
+          AI summary: This touch contributes to the account’s current relationship pulse through recency, sentiment, engagement, and continuity.
+        </div>
+      </Panel>
+    );
+  }
+
+  const rows = touches.map((touch: Touch) => ({
+    ...touch,
+    account: accounts.find((a: ScoredAccount) => a.id === touch.accountId),
+  }));
+
+  const upcoming = [...accounts].sort((a: ScoredAccount, b: ScoredAccount) => a.score.overall - b.score.overall);
+
   return (
-    <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-      <div>
-        <p className="text-lg text-[#d8c8dc]/75">{getGreeting()}, Danielle.</p>
-        <h1 className="mt-3 max-w-4xl text-[2.75rem] font-medium leading-[1.02] tracking-[-0.055em] sm:text-5xl lg:text-[4rem]">
-          Relationship continuity at a glance.
-        </h1>
-        <p className="mt-5 max-w-2xl text-base leading-8 text-[#d8c8dc]/70">
-          Pulse helps account teams interpret relationship patterns, maintain continuity, and identify attention needs before they become churn risk.
-        </p>
+    <div className="space-y-6">
+      <div className="grid gap-6 xl:grid-cols-[1.05fr_.95fr]">
+        <Panel title="Upcoming Activity" subtitle="Recommended actions based on relationship signals">
+          <div className="max-h-[360px] space-y-3 overflow-y-auto pr-2">
+            {upcoming.map((account: ScoredAccount) => (
+              <div key={account.id} className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-medium">{account.name}</p>
+                    <p className="mt-2 text-sm leading-6 text-[#d8c8dc]/70">{account.score.action}</p>
+                  </div>
+                  <ScorePill score={account.score.overall} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </Panel>
+
+        <Panel title="Traction" subtitle="Engagement performance snapshot">
+          <Dimension label="Email engagement" value={68} suffix="%" />
+          <Dimension label="Response efficiency" value={74} suffix="%" />
+          <Dimension label="Meeting acceptance" value={81} suffix="%" />
+          <Dimension label="Follow-up completion" value={72} suffix="%" />
+
+          <div className="rounded-3xl border border-[#d8a5b8]/12 bg-[#d8a5b8]/8 p-5 text-sm leading-7 text-[#f1e9f4]">
+            Engagement is steady overall, but the lowest-scoring relationships should be reviewed before the next customer touchpoint.
+          </div>
+        </Panel>
       </div>
 
-      <div className="shrink-0 self-start lg:self-start">
-        <div className="flex items-center gap-2 rounded-[1.35rem] border border-[#d8a5b8]/12 bg-[#15111d]/75 p-1.5 shadow-[0_18px_60px_rgba(0,0,0,0.24)] backdrop-blur-xl">
-          <button className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#d8a5b8]/12 bg-white/[0.055] text-[#f1d6e2] transition hover:bg-[#d8a5b8]/12">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#d8a5b8] text-[11px] font-semibold text-[#17141c] shadow-[0_8px_24px_rgba(216,165,184,0.35)]">
-              3
-            </span>
+      <Panel title="Recent Activity" subtitle="Click into activity for details">
+        {rows.map((row: any) => (
+          <button
+            key={row.id}
+            onClick={() => setSelectedTouch(row)}
+            className="flex w-full items-center justify-between rounded-3xl border border-white/8 bg-white/[0.045] p-5 text-left hover:bg-white/[0.08]"
+          >
+            <div>
+              <p className="font-medium">
+                {row.account?.name || "Unknown"} · {row.type}
+              </p>
+              <p className="mt-1 text-sm text-[#d8c8dc]/65">{row.summary}</p>
+            </div>
+            <ArrowUpRight className="h-5 w-5 text-[#d8c8dc]/55" />
           </button>
-          <div className="hidden h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#f1dbe5_0%,#d8a5b8_55%,#b98bb1_100%)] text-sm font-semibold text-[#17141c] shadow-[0_12px_35px_rgba(216,165,184,0.20)] sm:flex">
-            DH
-          </div>
-        </div>
-      </div>
+        ))}
+      </Panel>
     </div>
   );
 }
@@ -532,39 +666,6 @@ function AccountsTab(props: any) {
   );
 }
 
-function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch }: any) {
-  if (selectedTouch) {
-    return (
-      <Panel title={selectedTouch.summary} subtitle={selectedTouch.type}>
-        <button onClick={() => setSelectedTouch(null)} className="text-sm text-[#d8c8dc]/75">Back to activity</button>
-        <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
-          <p className="text-sm text-[#d8c8dc]/70">Sentiment: {selectedTouch.sentiment}</p>
-          <p className="mt-4 whitespace-pre-line text-sm leading-7 text-white">{selectedTouch.content || selectedTouch.summary}</p>
-        </div>
-        <div className="rounded-3xl border border-[#d8a5b8]/12 bg-[#d8a5b8]/8 p-5 text-sm leading-7 text-[#f1e9f4]">
-          AI summary: This touch contributes to the account’s current relationship pulse through recency, sentiment, and engagement pattern.
-        </div>
-      </Panel>
-    );
-  }
-
-  const rows = touches.map((touch: Touch) => ({ ...touch, account: accounts.find((a: ScoredAccount) => a.id === touch.accountId) }));
-
-  return (
-    <Panel title="Recent Activity" subtitle="Communication activity with contextual drill-down">
-      {rows.map((row: any) => (
-        <button key={row.id} onClick={() => setSelectedTouch(row)} className="flex w-full items-center justify-between rounded-3xl border border-white/8 bg-white/[0.045] p-5 text-left hover:bg-white/[0.08]">
-          <div>
-            <p className="font-medium">{row.account?.name || "Unknown"} · {row.type}</p>
-            <p className="mt-1 text-sm text-[#d8c8dc]/65">{row.summary}</p>
-          </div>
-          <ArrowUpRight className="h-5 w-5 text-[#d8c8dc]/55" />
-        </button>
-      ))}
-    </Panel>
-  );
-}
-
 function IntelligenceTab({ accounts }: { accounts: ScoredAccount[] }) {
   const sorted = [...accounts].sort((a, b) => a.score.overall - b.score.overall);
   return (
@@ -636,22 +737,54 @@ function ReportsTab({ accounts, touches }: { accounts: ScoredAccount[]; touches:
 }
 
 function AdminTab({ resetSandbox }: { resetSandbox: () => void }) {
-  return (
-    <div className="grid gap-6 xl:grid-cols-2">
-      <Panel title="Integrations" subtitle="Demo integration controls">
-        <button className="w-fit rounded-2xl bg-white px-4 py-3 text-sm font-medium text-[#17141c]">Connect Integration</button>
-        <Integration name="Outlook" status="Demo connected" icon={Mail} />
-        <Integration name="Zoom" status="Demo connected" icon={Video} />
-        <Integration name="Teams" status="Pending" icon={MessageSquare} />
-      </Panel>
+  const [themeChoice, setThemeChoice] = useState("Purple graphite");
+  const [densityChoice, setDensityChoice] = useState("Comfortable");
 
-      <Panel title="Manage Team" subtitle="Workspace people and permissions">
-        <button className="flex w-fit items-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-medium text-[#17141c]">
-          <UserPlus className="h-4 w-4" />
-          Invite Team Member
-        </button>
-        <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">Danielle Hart · Admin</div>
-        <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">James Carter · Relationship Lead</div>
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-6 xl:grid-cols-2">
+        <Panel title="Integrations" subtitle="Demo integration controls">
+          <button className="w-fit rounded-2xl bg-white px-4 py-3 text-sm font-medium text-[#17141c]">
+            Connect Integration
+          </button>
+          <Integration name="Outlook" status="Demo connected" icon={Mail} />
+          <Integration name="Zoom" status="Demo connected" icon={Video} />
+          <Integration name="Teams" status="Pending" icon={MessageSquare} />
+        </Panel>
+
+        <Panel title="Manage Team" subtitle="Workspace people and permissions">
+          <button className="flex w-fit items-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-medium text-[#17141c]">
+            <UserPlus className="h-4 w-4" />
+            Invite Team Member
+          </button>
+          <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">Danielle Hart · Admin</div>
+          <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">James Carter · Relationship Lead</div>
+        </Panel>
+      </div>
+
+      <Panel title="Preferences" subtitle="Demo workspace customization">
+        <PreferenceButtons
+          label="Theme"
+          value={themeChoice}
+          setValue={setThemeChoice}
+          options={["Purple graphite", "Soft graphite", "Deep blush"]}
+        />
+
+        <PreferenceButtons
+          label="Density"
+          value={densityChoice}
+          setValue={setDensityChoice}
+          options={["Compact", "Comfortable", "Spacious"]}
+        />
+
+        <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
+          <p className="text-sm text-[#d8c8dc]/70">Preview</p>
+          <p className="mt-2 text-lg font-medium">{themeChoice} · {densityChoice}</p>
+          <p className="mt-2 text-sm text-[#d8c8dc]/70">
+            These controls are ready to connect to the global theme system in the next architecture pass.
+          </p>
+        </div>
+
         <button onClick={resetSandbox} className="flex w-fit items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-sm">
           <RefreshCcw className="h-4 w-4" />
           Reset Sandbox
@@ -917,6 +1050,28 @@ function Integration({ name, status, icon: Icon }: any) {
           <p className="font-medium">{name}</p>
           <p className="text-sm text-[#d8c8dc]/65">{status}</p>
         </div>
+      </div>
+    </div>
+  );
+}
+function PreferenceButtons({ label, value, setValue, options }: any) {
+  return (
+    <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
+      <p className="text-sm text-[#d8c8dc]/70">{label}</p>
+      <div className="mt-4 grid gap-2 sm:grid-cols-3">
+        {options.map((option: string) => (
+          <button
+            key={option}
+            onClick={() => setValue(option)}
+            className={`rounded-2xl px-4 py-3 text-sm transition ${
+              value === option
+                ? "bg-white text-[#17141c]"
+                : "bg-white/[0.05] text-white hover:bg-white/[0.09]"
+            }`}
+          >
+            {option}
+          </button>
+        ))}
       </div>
     </div>
   );
