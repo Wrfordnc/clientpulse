@@ -645,12 +645,78 @@ function LoadingScreen() {
         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-[2rem] bg-[linear-gradient(145deg,#17101f_0%,#4a334f_55%,#c79eb3_100%)] shadow-[0_24px_80px_rgba(216,165,184,0.22)]">
           <Activity className="h-10 w-10 animate-pulse" />
         </div>
-        <h1 className="mt-10 text-4xl font-medium tracking-[-0.03em]">Reading relationship signals…</h1>
+
+        <div className="relative mt-12 h-24 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_24px_90px_rgba(0,0,0,0.35)]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(216,165,184,0.10),transparent_60%)]" />
+
+          <svg
+            viewBox="0 0 600 120"
+            className="absolute left-0 top-0 h-full w-[1200px] animate-heartbeat-trail"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0 60 L70 60 L88 20 L105 92 L125 60 L210 60 L230 45 L245 75 L260 60 L350 60 L370 20 L388 92 L405 60 L490 60 L510 45 L525 75 L540 60 L600 60"
+              fill="none"
+              stroke="rgba(216,165,184,0.22)"
+              strokeWidth="10"
+              strokeLinecap="round"
+              filter="url(#softGlow)"
+            />
+
+            <path
+              d="M0 60 L70 60 L88 20 L105 92 L125 60 L210 60 L230 45 L245 75 L260 60 L350 60 L370 20 L388 92 L405 60 L490 60 L510 45 L525 75 L540 60 L600 60"
+              fill="none"
+              stroke="#d8a5b8"
+              strokeWidth="4"
+              strokeLinecap="round"
+            />
+
+            <defs>
+              <filter id="softGlow" x="-20%" y="-50%" width="140%" height="200%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+          </svg>
+
+          <div className="absolute inset-y-0 left-0 w-24 bg-[linear-gradient(90deg,#121119_0%,transparent_100%)]" />
+          <div className="absolute inset-y-0 right-0 w-24 bg-[linear-gradient(270deg,#121119_0%,transparent_100%)]" />
+        </div>
+
+        <h1 className="mt-10 text-4xl font-medium tracking-[-0.03em]">
+          Reading relationship signals…
+        </h1>
+
+        <p className="mt-3 text-sm text-[#d8c8dc]/65">
+          Building your relationship pulse.
+        </p>
+
+        <style jsx>{`
+          @keyframes heartbeatTrail {
+            0% {
+              transform: translateX(0);
+              opacity: 0.72;
+            }
+            50% {
+              opacity: 1;
+            }
+            100% {
+              transform: translateX(-600px);
+              opacity: 0.72;
+            }
+          }
+
+          .animate-heartbeat-trail {
+            animation: heartbeatTrail 4.2s linear infinite;
+          }
+        `}</style>
       </div>
     </main>
   );
 }
-
 function ActivityTab({
   touches,
   accounts,
@@ -689,8 +755,7 @@ function ActivityTab({
 
   <div className="grid gap-6 xl:grid-cols-[1fr_.8fr]">
   <Panel title="Upcoming Activity" subtitle="Recommended actions based on relationship signals">
-    <div className="max-h-[360px] space-y-3 overflow-y-auto pr-2">
-      {[...accounts]
+<div className="max-h-[560px] space-y-3 overflow-y-auto pr-1 pb-3">      {[...accounts]
         .sort((a: ScoredAccount, b: ScoredAccount) => a.score.overall - b.score.overall)
         .map((account: ScoredAccount) => (
           <div key={account.id} className="rounded-3xl border border-white/8 bg-white/[0.045] p-5">
@@ -1044,16 +1109,138 @@ function AITab({ aiPrompt, setAiPrompt, aiResponse, runAI }: any) {
 }
 
 function ReportsTab({ accounts, touches }: { accounts: ScoredAccount[]; touches: Touch[] }) {
+  const [reportPrompt, setReportPrompt] = useState("");
+  const [reportResponse, setReportResponse] = useState("");
+
+  function generateReport() {
+    const lowerPrompt = reportPrompt.toLowerCase();
+
+    const wantsChart =
+      lowerPrompt.includes("chart") ||
+      lowerPrompt.includes("graph") ||
+      lowerPrompt.includes("visual");
+
+    const wantsTable =
+      lowerPrompt.includes("table") ||
+      lowerPrompt.includes("spreadsheet");
+
+    const avgScore = Math.round(
+      accounts.reduce((s, a) => s + a.score.overall, 0) / accounts.length
+    );
+
+    const attentionAccounts = accounts
+      .filter((a) => a.score.overall < 75)
+      .slice(0, 5);
+
+    let report = `Relationship Intelligence Report
+
+Portfolio Summary
+• Average Pulse Score: ${avgScore}
+• Logged Relationship Touches: ${touches.length}
+• Accounts Requiring Attention: ${attentionAccounts.length}
+
+Key Observations
+• Engagement is generally steady across the sandbox portfolio.
+• Lower-scoring accounts should receive proactive follow-up.
+• Stronger accounts show healthy trust, momentum, and continuity.
+
+Recommended Actions
+1. Review accounts below 75 Pulse Score.
+2. Prioritize relationships showing lower engagement or momentum.
+3. Use follow-up messaging tied to recent client context.
+`;
+
+    if (wantsChart) {
+      report += `
+
+Chart View
+90–100  ███████████████
+80–89   ███████████
+70–79   ██████
+Below 70 ███
+
+Trend Note
+Momentum appears strongest in high-trust accounts with recent inbound activity.
+`;
+    }
+
+    if (wantsTable) {
+      report += `
+
+Priority Accounts Table
+Account                 | Pulse | Recommended Action
+------------------------------------------------------
+${attentionAccounts
+  .map(
+    (a) =>
+      `${a.name.padEnd(23)} | ${String(a.score.overall).padEnd(5)} | ${a.score.action}`
+  )
+  .join("\n")}
+`;
+    }
+
+    setReportResponse(report);
+  }
+
   return (
-<Panel title="Describe the report you want to make:" subtitle="AI-generated relationship intelligence reporting">      <textarea placeholder="Example: Create an executive relationship health report with charts showing churn risk, engagement trends, and accounts requiring attention." className="min-h-28 w-full max-w-3xl rounded-[2rem] border border-[#d8a5b8]/15 bg-[linear-gradient(180deg,#f8f3f7_0%,#ece6ef_100%)] p-5 text-[#17141c] outline-none" />
-      <div className="rounded-3xl border border-white/8 bg-white/[0.045] p-5 text-sm leading-7 text-[#d8c8dc]/75">
-        Average Pulse: {Math.round(accounts.reduce((s, a) => s + a.score.overall, 0) / accounts.length)} · Logged touches: {touches.length}
+    <Panel title="Describe the report you want to make:" subtitle="AI-generated relationship intelligence reporting">
+      <div className="space-y-5">
+        <div>
+          <textarea
+            value={reportPrompt}
+            onChange={(e) => setReportPrompt(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                generateReport();
+              }
+            }}
+            placeholder="Example: Create an executive relationship health report with charts showing churn risk, engagement trends, and accounts requiring attention."
+            className="mt-3 min-h-[140px] w-full rounded-[2rem] border border-[#d8a5b8]/15 bg-[linear-gradient(180deg,#f8f3f7_0%,#ece6ef_100%)] p-5 text-sm leading-7 text-[#17141c] outline-none shadow-[0_18px_50px_rgba(0,0,0,0.08)] placeholder:text-[#6f6474]"
+          />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={generateReport}
+            className="rounded-2xl bg-[linear-gradient(135deg,#f1dbe5_0%,#d8a5b8_45%,#b98bb1_100%)] px-5 py-3 text-sm font-semibold text-[#17141c] shadow-[0_18px_60px_rgba(216,165,184,0.22)] transition hover:scale-[1.015]"
+          >
+            Generate Report
+          </button>
+
+          <div className="rounded-2xl border border-white/10 bg-white/[0.045] px-4 py-3 text-xs text-[#d8c8dc]/65">
+            Press Enter to generate · Shift+Enter for newline
+          </div>
+        </div>
+
+        {reportResponse && (
+          <div className="rounded-[2rem] border border-white/10 bg-[#15111d]/88 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.34)]">
+            <div className="mb-5 flex items-center justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.22em] text-[#d8c8dc]/45">
+                  AI Relationship Intelligence
+                </p>
+                <h3 className="mt-2 text-2xl font-medium tracking-[-0.03em] text-white">
+                  Generated Executive Report
+                </h3>
+              </div>
+
+              <div className="rounded-full border border-[#d8a5b8]/15 bg-[#d8a5b8]/10 px-3 py-1 text-xs text-[#f1d6e2]">
+                Sandbox Output
+              </div>
+            </div>
+
+            <div className="overflow-x-auto rounded-3xl border border-white/8 bg-black/20 p-5">
+              <pre className="whitespace-pre-wrap text-sm leading-7 text-[#f3edf5]">
+                {reportResponse}
+              </pre>
+            </div>
+          </div>
+        )}
       </div>
     </Panel>
   );
-}
-
-function AdminTab({
+}function AdminTab({
   resetSandbox,
   theme,
   setTheme,
