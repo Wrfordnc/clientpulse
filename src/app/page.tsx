@@ -269,8 +269,14 @@ function calculateScore(account: any, touches: any[]) {
 }
 
 export default function PulseDashboard() {
-  const [authState, setAuthState] = useState<"login" | "loading" | "dashboard">("login");
-  const [accounts, setAccounts] = useState<any[]>(starterAccounts);
+const [authState, setAuthState] = useState<"login" | "loading" | "dashboard">("login");
+
+useEffect(() => {
+  const signedIn = localStorage.getItem("pulse-signed-in");
+  if (signedIn === "true") {
+    setAuthState("dashboard");
+  }
+}, []);  const [accounts, setAccounts] = useState<any[]>(starterAccounts);
   const [touches, setTouches] = useState<any[]>(starterTouches);
   const [activeTab, setActiveTab] = useState("Overview");
   const [selectedAccountId, setSelectedAccountId] = useState("northstar");
@@ -339,8 +345,10 @@ export default function PulseDashboard() {
 
   function signIn(mode: "sandbox" | "standard") {
     setAuthState("loading");
-    setTimeout(() => setAuthState("dashboard"), 1600);
-  }
+setTimeout(() => {
+  localStorage.setItem("pulse-signed-in", "true");
+  setAuthState("dashboard");
+}, 1600);  }
 
   function goToTab(tab: string) {
     setActiveTab(tab);
@@ -421,22 +429,24 @@ export default function PulseDashboard() {
       }`}
       style={{ fontFamily: "Satoshi, Inter, sans-serif" }}
     >
-      <div className="pointer-events-none fixed inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.045),transparent_30%,rgba(157,90,181,0.055)_72%,transparent)]" />
+<div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(216,165,184,0.18),transparent_32%),radial-gradient(circle_at_82%_8%,rgba(199,158,179,0.16),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.035),transparent_40%)]" /><aside className="fixed left-0 top-0 hidden h-screen w-60 border-r border-[#d8a5b8]/15 bg-[linear-gradient(180deg,#34223f_0%,#251b31_45%,#15111d_100%)] px-4 py-5 text-[#e8ddeb] shadow-2xl shadow-black/45 lg:block">
+  <button
+    onClick={() => goToTab("Overview")}
+    className="flex w-full items-center gap-3 rounded-3xl p-2 text-left transition hover:bg-white/5"
+  >
+    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#17101f_0%,#4a334f_52%,#c79eb3_100%)] text-white shadow-lg shadow-[#d8a5b8]/15 ring-1 ring-[#d8a5b8]/20">
+      <Activity className="h-6 w-6" />
+    </div>
 
-      <aside className="fixed left-0 top-0 hidden h-screen w-60 border-r border-white/10 bg-gradient-to-b from-[#3a2449] via-[#2c2038] to-[#17131f] px-4 py-5 text-purple-100 shadow-2xl shadow-black/40 lg:block">
-        <button onClick={() => goToTab("Overview")} className="flex w-full items-center gap-3 rounded-3xl p-2 text-left transition hover:bg-white/5">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#130b19] via-[#3b2448] to-[#a35c9f] text-white shadow-lg shadow-black/20">
-            <Activity className="h-6 w-6" />
-          </div>
-          <div>
-            <h1 className="text-[2.35rem] font-semibold leading-none tracking-[0.015em] text-white">
-              pulse
-            </h1>
-            <p className="mt-1.5 text-[11px] font-medium tracking-wide text-purple-200">
-              Relationship Intelligence
-            </p>
-          </div>
-        </button>
+    <div>
+      <h1 className="text-[2.35rem] font-semibold leading-none tracking-[0.015em] text-white">
+        pulse
+      </h1>
+      <p className="mt-1.5 text-[11px] font-medium tracking-wide text-purple-200">
+        Relationship Intelligence
+      </p>
+    </div>
+  </button>
 
         <nav className="mt-7 space-y-2">
           {navItems.map((item) => {
@@ -636,8 +646,7 @@ export default function PulseDashboard() {
 
 function LoginScreen({ onSignIn }: any) {
   return (
-    <main className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_50%_0%,#2e203b_0%,#111118_45%,#030305_100%)] px-5 py-8 text-white">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(173,112,176,0.16),transparent_32%),radial-gradient(circle_at_80%_0%,rgba(112,87,164,0.16),transparent_30%)]" />
+<main className="min-h-screen overflow-hidden bg-[radial-gradient(circle_at_50%_0%,#34223f_0%,#111118_46%,#030305_100%)] px-5 py-8 text-white">      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(173,112,176,0.16),transparent_32%),radial-gradient(circle_at_80%_0%,rgba(112,87,164,0.16),transparent_30%)]" />
       <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] max-w-6xl items-center gap-10 lg:grid-cols-[1.15fr_.85fr]">
         <section className="hidden lg:block">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.07] px-4 py-2 text-xs tracking-wide text-purple-100">
@@ -670,9 +679,12 @@ function LoginScreen({ onSignIn }: any) {
           <div className="mt-8 space-y-4">
             <input defaultValue="danielle@pulse.com" className="h-14 w-full rounded-2xl border border-white/15 bg-white/[0.10] px-4 text-white outline-none" />
             <input defaultValue="relationshipintel" type="password" className="h-14 w-full rounded-2xl border border-white/15 bg-white/[0.10] px-4 text-white outline-none" />
-            <button onClick={() => onSignIn("sandbox")} className="mt-5 h-14 w-full rounded-2xl bg-[#d8c9df] px-5 text-sm font-semibold text-[#17141c] shadow-lg shadow-black/25 transition hover:scale-[1.01] hover:bg-white">
-              Try Sandbox Demo
-            </button>
+<button
+  onClick={() => onSignIn("sandbox")}
+  className="mt-6 h-14 w-full rounded-2xl bg-[linear-gradient(135deg,#f1dbe5_0%,#d8a5b8_45%,#b98bb1_100%)] px-5 text-sm font-semibold text-[#17141c] shadow-[0_18px_50px_rgba(216,165,184,0.22)] transition hover:scale-[1.015] hover:shadow-[0_22px_70px_rgba(216,165,184,0.32)]"
+>
+  Try Sandbox Demo
+</button>
             <button onClick={() => onSignIn("standard")} className="h-12 w-full rounded-2xl border border-white/15 bg-white/[0.08] text-sm font-medium text-purple-100 transition hover:bg-white/[0.13]">
               Sign In
             </button>
@@ -717,10 +729,22 @@ function LoadingScreen() {
 
 function Panel({ title, subtitle, children, pad = "p-5" }: any) {
   return (
-    <div className={`rounded-[1.65rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.095),rgba(255,255,255,0.040))] ${pad} text-white shadow-xl shadow-black/25 backdrop-blur-sm`}>
-      <h3 className="text-[1.35rem] font-medium tracking-[-0.015em]">{title}</h3>
-      {subtitle && <p className="mt-1.5 text-sm text-purple-200/85">{subtitle}</p>}
-      <div className="mt-5 space-y-4">{children}</div>
+    <div
+      className={`rounded-[1.85rem] border border-[#d8a5b8]/14 bg-[linear-gradient(145deg,rgba(42,32,55,0.92),rgba(22,18,30,0.86))] ${pad} text-white shadow-[0_24px_80px_rgba(0,0,0,0.34)] backdrop-blur-sm`}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-[1.45rem] font-medium tracking-[-0.025em] text-[#fbf7fb]">
+            {title}
+          </h3>
+          {subtitle && (
+            <p className="mt-2 text-[13px] font-normal leading-5 text-[#d8c8dc]/80">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="mt-6 space-y-4">{children}</div>
     </div>
   );
 }
@@ -739,14 +763,18 @@ function SummaryButton({ label, value, onClick, showAlert = false }: any) {
 
 function MetricCard({ icon: Icon, label, value, detail }: any) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.105),rgba(255,255,255,0.045))] p-5 text-white shadow-xl shadow-black/25">
+    <div className="rounded-[1.65rem] border border-[#d8a5b8]/14 bg-[linear-gradient(145deg,rgba(49,38,61,0.86),rgba(20,17,27,0.88))] p-5 text-white shadow-[0_22px_70px_rgba(0,0,0,0.32)]">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.16em] text-purple-200/80">{label}</p>
-          <p className="mt-2 text-3xl font-medium">{value}</p>
-          <p className="mt-1 text-sm text-purple-100">{detail}</p>
+          <p className="text-[11px] uppercase tracking-[0.18em] text-[#d8a5b8]/75">
+            {label}
+          </p>
+          <p className="mt-3 text-3xl font-medium tracking-[-0.03em] text-[#fbf7fb]">
+            {value}
+          </p>
+          <p className="mt-1.5 text-sm text-[#d8c8dc]/75">{detail}</p>
         </div>
-        <div className="rounded-2xl bg-white/10 p-3 text-white">
+        <div className="rounded-2xl border border-[#d8a5b8]/15 bg-[#d8a5b8]/10 p-3 text-[#f1d6e2]">
           <Icon className="h-6 w-6" />
         </div>
       </div>
@@ -777,8 +805,8 @@ function HealthScoreGrid({ accounts, selectAccount }: any) {
 }
 
 function ScoreRing({ score }: any) {
-  const color = score >= 82 ? "#86efac" : score >= 68 ? "#facc15" : score >= 56 ? "#c4b5fd" : "#f9a8d4";
-  const dash = `${score}, 100`;
+const color =
+  score >= 82 ? "#9FE6C0" : score >= 68 ? "#E7C873" : score >= 56 ? "#C7A7E8" : "#D8A5B8";  const dash = `${score}, 100`;
   return (
     <div className="relative h-20 w-20">
       <svg viewBox="0 0 36 36" className="h-20 w-20 -rotate-90">
@@ -1222,8 +1250,8 @@ function RiskBadge({ risk }: any) {
 }
 
 function PulseMark({ health }: any) {
-  const color = health >= 82 ? "#86efac" : health >= 68 ? "#facc15" : health >= 56 ? "#c4b5fd" : "#f9a8d4";
-  return (
+const color =
+  health >= 82 ? "#9FE6C0" : health >= 68 ? "#E7C873" : health >= 56 ? "#C7A7E8" : "#D8A5B8";  return (
     <svg viewBox="0 0 60 28" className="h-8 w-12">
       <path d="M2 14 H12 L16 7 L22 22 L28 14 H38 L42 10 L47 18 L52 14 H58" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
