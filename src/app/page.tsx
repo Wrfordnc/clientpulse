@@ -299,11 +299,36 @@ export default function Page() {
               </h1>
 
               <p className="mt-8 max-w-xl text-lg leading-9 text-[#d8c8dc]/78">
-                Pulse centralizes relationship signals,
-                interprets engagement momentum, and
-                surfaces continuity insights without
-                turning relationships into workflow noise.
-              </p>
+  Pulse centralizes relationship signals, interprets engagement momentum,
+  and surfaces continuity insights before small gaps become churn risk.
+</p>
+
+<div className="mt-10 grid max-w-xl gap-4 sm:grid-cols-3">
+  <div className="rounded-3xl border border-[#d8a5b8]/12 bg-white/[0.055] p-4 backdrop-blur">
+    <p className="text-3xl font-medium tracking-[-0.04em] text-white">84</p>
+    <p className="mt-2 text-xs uppercase tracking-[0.16em] text-[#d8a5b8]/70">Avg Pulse</p>
+  </div>
+
+  <div className="rounded-3xl border border-[#d8a5b8]/12 bg-white/[0.055] p-4 backdrop-blur">
+    <p className="text-3xl font-medium tracking-[-0.04em] text-white">3</p>
+    <p className="mt-2 text-xs uppercase tracking-[0.16em] text-[#d8a5b8]/70">Need Attention</p>
+  </div>
+
+  <div className="rounded-3xl border border-[#d8a5b8]/12 bg-white/[0.055] p-4 backdrop-blur">
+    <p className="text-3xl font-medium tracking-[-0.04em] text-white">18%</p>
+    <p className="mt-2 text-xs uppercase tracking-[0.16em] text-[#d8a5b8]/70">Less Drift</p>
+  </div>
+</div>
+
+<div className="mt-8 rounded-[2rem] border border-[#d8a5b8]/12 bg-[linear-gradient(145deg,rgba(216,165,184,0.12),rgba(255,255,255,0.04))] p-5 shadow-[0_24px_90px_rgba(0,0,0,0.28)] backdrop-blur">
+  <div className="flex items-center justify-between">
+    <div>
+      <p className="text-sm text-[#d8c8dc]/70">Live relationship signal</p>
+      <p className="mt-1 text-lg font-medium text-white">HarborTech may need a thoughtful check-in.</p>
+    </div>
+    <PulseMark health={61} />
+  </div>
+</div>
             </section>
 
             <section className="mx-auto w-full max-w-md rounded-[2.2rem] border border-[#d8a5b8]/16 bg-[linear-gradient(145deg,rgba(42,32,55,0.92),rgba(20,16,27,0.88))] p-8 shadow-[0_30px_120px_rgba(0,0,0,0.45)] backdrop-blur-xl">
@@ -510,9 +535,9 @@ export default function Page() {
               {getGreeting()}, Danielle.
             </p>
 
-            <h1 className="mt-2 max-w-3xl text-5xl font-medium leading-[0.98] tracking-[-0.05em] lg:text-6xl">
-              Relationship continuity at a glance.
-            </h1>
+            <h1 className="mt-3 max-w-4xl text-[2.75rem] font-medium leading-[1.02] tracking-[-0.055em] sm:text-5xl lg:text-[4rem]">
+  Relationship continuity at a glance.
+</h1>
 
             <p className="mt-5 max-w-2xl text-base leading-8 text-[#d8c8dc]/70">
               Pulse helps account teams interpret
@@ -522,19 +547,20 @@ export default function Page() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button className="relative rounded-2xl border border-white/10 bg-white/[0.06] p-4 backdrop-blur">
-              <Bell className="h-5 w-5" />
+          
+            <div className="flex items-center gap-3 rounded-3xl border border-[#d8a5b8]/12 bg-white/[0.045] p-2 shadow-[0_18px_60px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+  <button className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#d8a5b8]/12 bg-[#d8a5b8]/8 text-[#f1d6e2] transition hover:bg-[#d8a5b8]/14">
+    <Bell className="h-5 w-5" />
 
-              <span className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#d8a5b8] text-xs font-semibold text-[#17141c]">
-                3
-              </span>
-            </button>
+    <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#d8a5b8] text-[11px] font-semibold text-[#17141c] shadow-[0_8px_24px_rgba(216,165,184,0.35)]">
+      3
+    </span>
+  </button>
 
-            <div className="hidden h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] lg:flex">
-              DH
-            </div>
-          </div>
+  <div className="hidden h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#f1dbe5_0%,#d8a5b8_55%,#b98bb1_100%)] text-sm font-semibold text-[#17141c] shadow-[0_12px_35px_rgba(216,165,184,0.20)] lg:flex">
+    DH
+  </div>
+</div>
         </div>
 
         {/* EXECUTIVE */}
