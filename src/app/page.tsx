@@ -211,44 +211,64 @@ const [mobileSectionsOpen, setMobileSectionsOpen] = useState({
 });
 
 
-  useEffect(() => {
-    if (localStorage.getItem(SIGNIN_KEY) === "true") setAuthState("dashboard");
-    const savedTheme = localStorage.getItem("pulse-theme");
-const savedDensity = localStorage.getItem("pulse-density");
+useEffect(() => {
+  if (localStorage.getItem(SIGNIN_KEY) === "true") {
+    setAuthState("dashboard");
+  }
+
+  const savedTheme = localStorage.getItem("pulse-theme");
+  const savedDensity = localStorage.getItem("pulse-density");
+
+  if (savedTheme) setTheme(savedTheme);
+  if (savedDensity) setDensity(savedDensity);
+
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      setAccounts(parsed.accounts || starterAccounts);
+      setTouches(parsed.touches || starterTouches);
+    } catch {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }
+}, []);
 
 useEffect(() => {
   localStorage.setItem("pulse-theme", theme);
   localStorage.setItem("pulse-density", density);
 }, [theme, density]);
 
-if (savedTheme) setTheme(savedTheme);
-if (savedDensity) setDensity(savedDensity);
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        setAccounts(parsed.accounts || starterAccounts);
-        setTouches(parsed.touches || starterTouches);
-      } catch {
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    }
-  }, []);
+useEffect(() => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ accounts, touches }));
+}, [accounts, touches]);
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ accounts, touches }));
-  }, [accounts, touches]);
+const scoredAccounts: ScoredAccount[] = useMemo(
+  () =>
+    accounts.map((account) => ({
+      ...account,
+      score: calculateScore(account, touches),
+    })),
+  [accounts, touches]
+);
 
-  const scoredAccounts: ScoredAccount[] = useMemo(
-    () => accounts.map((account) => ({ ...account, score: calculateScore(account, touches) })),
-    [accounts, touches]
+const selectedAccount =
+  scoredAccounts.find((a) => a.id === selectedAccountId) || scoredAccounts[0];
+
+const accountTouches = touches
+  .filter((t) => t.accountId === selectedAccount?.id)
+  .sort(
+    (a, b) =>
+      new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime()
   );
 
-  const selectedAccount = scoredAccounts.find((a) => a.id === selectedAccountId) || scoredAccounts[0];
-  const accountTouches = touches.filter((t) => t.accountId === selectedAccount?.id).sort((a, b) => new Date(b.occurredAt).getTime() - new Date(a.occurredAt).getTime());
-  const attention = [...scoredAccounts].sort((a, b) => a.score.overall - b.score.overall).slice(0, 3);
-  const filteredAccounts = scoredAccounts.filter((a) => `${a.name} ${a.owner} ${a.stage}`.toLowerCase().includes(query.toLowerCase()));
+const attention = [...scoredAccounts]
+  .sort((a, b) => a.score.overall - b.score.overall)
+  .slice(0, 3);
 
+const filteredAccounts = scoredAccounts.filter((a) =>
+  `${a.name} ${a.owner} ${a.stage}`.toLowerCase().includes(query.toLowerCase())
+);
   function signIn() {
     setAuthState("loading");
     setTimeout(() => {
