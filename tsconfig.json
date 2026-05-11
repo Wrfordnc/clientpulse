@@ -18,8 +18,14 @@
         "name": "next"
       }
     ],
+<<<<<<< HEAD
     "paths": {
       "@/*": ["./src/*"]
+=======
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+>>>>>>> f2ae362 (feat: initial commit)
     }
   },
   "include": [
@@ -27,8 +33,12 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
+<<<<<<< HEAD
     ".next/dev/types/**/*.ts",
     "**/*.mts"
+=======
+    ".next/dev/types/**/*.ts"
+>>>>>>> f2ae362 (feat: initial commit)
   ],
   "exclude": ["node_modules"]
 }

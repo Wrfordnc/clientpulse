@@ -5,7 +5,11 @@
   "tsx": true,
   "tailwind": {
     "config": "",
+<<<<<<< HEAD
     "css": "src/app/globals.css",
+=======
+    "css": "app/globals.css",
+>>>>>>> f2ae362 (feat: initial commit)
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
