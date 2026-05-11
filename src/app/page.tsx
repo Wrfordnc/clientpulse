@@ -876,32 +876,35 @@ function DesktopSidebar({ activeTab, goTab, logout }: any) {
 }
 
 // ─── Mobile Header + Bottom Nav ────────────────────────────────────────────
-function MobileHeader({ attention, goTab }: any) {
+function MobileHeader({ activeTab, attention, goTab }: any) {
   const [notiOpen, setNotiOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <div className="sticky top-0 z-50 border-b border-white/8 bg-[rgba(10,7,16,0.88)] backdrop-blur-2xl lg:hidden">
       <div className="flex items-center justify-between px-5 py-4">
-        <h1 className="text-3xl font-semibold tracking-[-0.04em]" style={{ fontFamily: "Cormorant Garamond, serif" }}>pulse</h1>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 rounded-full border border-[#E7C873]/20 bg-[#E7C873]/8 px-2.5 py-1 text-[10px] text-[#E7C873]/80 uppercase tracking-wider">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-[-0.04em]" style={{ fontFamily: "Cormorant Garamond, serif" }}>pulse</h1>
+          <div className="mt-0.5 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-[#E7C873]/70">
             <div className="h-1.5 w-1.5 rounded-full bg-[#E7C873] animate-pulse" /> Sandbox
           </div>
+        </div>
+        <div className="flex items-center gap-2">
           <div className="relative">
-            <button onClick={() => setNotiOpen(!notiOpen)} className="relative flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] text-[#f1d6e2]">
-              <Bell className="h-4.5 w-4.5" />
+            <button onClick={() => { setNotiOpen(!notiOpen); setMenuOpen(false); }} className="relative flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] text-[#f1d6e2]">
+              <Bell className="h-5 w-5" />
               {attention.length > 0 && <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#d8a5b8] text-[11px] font-semibold text-[#17141c]">{attention.length}</span>}
             </button>
             {notiOpen && (
-              <div className="absolute right-0 top-14 z-50 w-72 rounded-[1.8rem] border border-[#d8a5b8]/12 bg-[#0e0a18] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.50)]">
-                <p className="text-sm font-medium text-white mb-3">Attention items</p>
+              <div className="absolute right-0 top-14 w-72 rounded-[1.8rem] border border-[#d8a5b8]/12 bg-[#0e0a18] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.50)]" style={{ zIndex: 300 }}>
+                <p className="mb-3 text-sm font-medium text-white">Attention items</p>
                 <div className="space-y-2">
                   {attention.map((a: ScoredAccount) => (
                     <button key={a.id} onClick={() => { goTab("Accounts"); setNotiOpen(false); }} className="w-full rounded-2xl border border-white/8 bg-white/[0.04] p-3 text-left hover:bg-white/[0.08]">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mb-1">
                         <p className="text-sm font-medium">{a.name}</p>
                         <StatusBadge label={a.score.priority} score={a.score.overall} />
                       </div>
-                      <p className="mt-1 text-xs text-[#d8c8dc]/55">{a.score.action}</p>
+                      <p className="text-xs text-[#d8c8dc]/55">{a.score.action}</p>
                     </button>
                   ))}
                 </div>
@@ -909,8 +912,20 @@ function MobileHeader({ attention, goTab }: any) {
             )}
           </div>
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#f1dbe5,#d8a5b8,#b98bb1)] text-xs font-semibold text-[#17141c]">DH</div>
+          <button onClick={() => { setMenuOpen(!menuOpen); setNotiOpen(false); }} className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06]">
+            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
+      {menuOpen && (
+        <div className="space-y-1 px-5 pb-4">
+          {NAV_ITEMS.map(item => (
+            <button key={item} onClick={() => { goTab(item); setMenuOpen(false); }} className={`w-full rounded-2xl px-4 py-3 text-left text-sm transition ${activeTab === item ? "bg-white font-medium text-[#17141c]" : "bg-white/[0.05] text-white hover:bg-white/[0.09]"}`}>
+              {item}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -963,26 +978,74 @@ function MobileBottomNav({ activeTab, goTab }: any) {
 
 // ─── Top Hero ──────────────────────────────────────────────────────────────
 function TopHero({ attention, setSelectedAccountId, goTab }: any) {
+  const [notiOpen, setNotiOpen] = useState(false);
   return (
-    <div className="mb-8">
-      <p className="text-base text-[#d8c8dc]/55">{getGreeting()}, Danielle.</p>
-      <h1 className="mt-2 max-w-4xl text-[2.8rem] font-medium leading-[1.02] tracking-[-0.05em] lg:text-[3.8rem]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
-        Relationship continuity at a glance.
-      </h1>
-      <p className="mt-4 max-w-2xl text-sm leading-8 text-[#d8c8dc]/58">
-        Pulse helps account teams interpret relationship patterns, maintain continuity, and identify attention needs before they become churn risk.
-      </p>
-      {attention.length > 0 && (
-        <div className="mt-5 flex flex-wrap gap-3">
-          {attention.slice(0, 3).map((a: ScoredAccount) => (
-            <button key={a.id} onClick={() => { setSelectedAccountId(a.id); goTab("Accounts"); }} className="flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/[0.05] px-4 py-2.5 text-sm transition hover:bg-white/[0.08]">
-              <div className="h-2 w-2 rounded-full" style={{ background: a.score.priorityColor }} />
-              {a.name}
-              <span className="text-xs text-[#d8c8dc]/45">{a.score.overall}</span>
+    <div className="relative mb-8 flex items-start justify-between gap-6">
+      <div className="flex-1">
+        <p className="text-base text-[#d8c8dc]/55">{getGreeting()}, Danielle.</p>
+        <h1 className="mt-2 max-w-4xl text-[2.8rem] font-medium leading-[1.02] tracking-[-0.05em] lg:text-[3.8rem]" style={{ fontFamily: "Cormorant Garamond, serif" }}>
+          Relationship continuity at a glance.
+        </h1>
+        <p className="mt-4 max-w-2xl text-sm leading-8 text-[#d8c8dc]/58">
+          Pulse helps account teams interpret relationship patterns, maintain continuity, and identify attention needs before they become churn risk.
+        </p>
+        {attention.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-3">
+            {attention.slice(0, 3).map((a: ScoredAccount) => (
+              <button key={a.id} onClick={() => { setSelectedAccountId(a.id); goTab("Accounts"); }} className="flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/[0.05] px-4 py-2.5 text-sm transition hover:bg-white/[0.08]">
+                <div className="h-2 w-2 rounded-full" style={{ background: a.score.priorityColor }} />
+                {a.name}
+                <span className="text-xs text-[#d8c8dc]/45">{a.score.overall}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Bell + Avatar — desktop only */}
+      <div className="hidden shrink-0 lg:block" style={{ position: "relative", zIndex: 200 }}>
+        <div className="flex items-center gap-2 rounded-[1.35rem] border border-[#d8a5b8]/12 bg-[#0e0b18]/75 p-1.5 shadow-[0_18px_60px_rgba(0,0,0,0.24)] backdrop-blur-xl">
+          <div className="relative">
+            <button
+              onClick={() => setNotiOpen(!notiOpen)}
+              className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-[#d8a5b8]/12 bg-white/[0.055] text-[#f1d6e2] transition hover:bg-[#d8a5b8]/12"
+            >
+              <Bell className="h-5 w-5" />
+              {attention.length > 0 && (
+                <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#d8a5b8] text-[11px] font-semibold text-[#17141c] shadow-[0_6px_18px_rgba(216,165,184,0.35)]">
+                  {attention.length}
+                </span>
+              )}
             </button>
-          ))}
+
+            {notiOpen && (
+              <div className="absolute right-0 top-14 w-[320px] rounded-[2rem] border border-[#d8a5b8]/12 bg-[#0e0b18] p-4 shadow-[0_30px_100px_rgba(0,0,0,0.60)]" style={{ zIndex: 300 }}>
+                <p className="text-xs uppercase tracking-widest text-[#d8c8dc]/40 mb-1">Notifications</p>
+                <h3 className="text-lg font-medium text-white mb-4">Attention items</h3>
+                <div className="space-y-2">
+                  {attention.map((a: ScoredAccount) => (
+                    <button
+                      key={a.id}
+                      onClick={() => { setSelectedAccountId(a.id); goTab("Accounts"); setNotiOpen(false); }}
+                      className="w-full rounded-2xl border border-white/8 bg-white/[0.04] p-4 text-left transition hover:bg-white/[0.08]"
+                    >
+                      <div className="flex items-center justify-between gap-3 mb-1">
+                        <p className="font-medium text-white">{a.name}</p>
+                        <StatusBadge label={a.score.priority} score={a.score.overall} />
+                      </div>
+                      <p className="text-xs text-[#d8c8dc]/55 leading-5">{a.score.action}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#f1dbe5,#d8a5b8,#b98bb1)] text-sm font-semibold text-[#17141c] shadow-[0_10px_30px_rgba(216,165,184,0.20)]">
+            DH
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -997,37 +1060,42 @@ function AccountList({ accounts, selectedAccountId, setSelectedAccountId, query,
           <input value={query ?? ""} onChange={e => setQuery(e.target.value)} placeholder="Search accounts…" className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-10 pr-4 text-sm outline-none placeholder:text-[#d8c8dc]/35 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
         </div>
       )}
-      <div className="max-h-[560px] space-y-2 overflow-y-auto pr-1">
-        {accounts.map((account: ScoredAccount, idx: number) => {
+      <div className="max-h-[560px] overflow-y-auto rounded-2xl border border-white/6">
+        {accounts.length === 0 && (
+          <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-white/[0.04]">
+              <Users className="h-5 w-5 text-[#d8c8dc]/40" />
+            </div>
+            <p className="text-sm font-medium text-white">No accounts yet</p>
+            <p className="mt-1 text-xs text-[#d8c8dc]/45">Add your first account below to get started.</p>
+          </div>
+        )}
+        {accounts.map((account: ScoredAccount) => {
           const hist = history?.[account.id] ?? [];
           const prevScore = hist.length >= 2 ? hist[hist.length - 2]?.overall : null;
           const scoreDelta = prevScore !== null ? account.score.overall - prevScore : 0;
+          const isSelected = selectedAccountId === account.id;
           return (
             <button
               key={account.id}
               onClick={() => setSelectedAccountId(account.id)}
-              className={`w-full rounded-3xl border p-4 text-left transition ${selectedAccountId === account.id ? "border-[#d8a5b8]/22 bg-[#d8a5b8]/8" : "border-white/8 bg-white/[0.04] hover:bg-white/[0.07]"}`}
-              style={{ animationDelay: `${idx * 0.04}s` }}
+              className={`flex w-full items-center gap-3 border-b border-white/6 px-4 py-3 text-left transition last:border-b-0 ${isSelected ? "bg-[#d8a5b8]/10" : "bg-white/[0.02] hover:bg-white/[0.055]"}`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="truncate font-medium">{account.name}</p>
-                    <StatusBadge label={account.score.priority} score={account.score.overall} />
-                  </div>
-                  <p className="mt-1 truncate text-sm text-[#d8c8dc]/52">{account.owner} · {account.stage}</p>
-                  <p className="mt-1 text-xs text-[#d8c8dc]/38">
-                    {account.score.lastTouchDays === 0 ? "Touch logged today" : `Last touch: ${account.score.lastTouchDays}d ago`}
-                    {scoreDelta !== 0 && <span className={`ml-2 ${scoreDelta > 0 ? "text-[#9FE6C0]" : "text-[#F4A7B9]"}`}>{scoreDelta > 0 ? "↑" : "↓"}{Math.abs(Math.round(scoreDelta))}</span>}
-                  </p>
+              <div className="h-8 w-1 shrink-0 rounded-full" style={{ background: account.score.priorityColor, opacity: isSelected ? 1 : 0.45 }} />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <p className="truncate text-sm font-medium text-white">{account.name}</p>
+                  <StatusBadge label={account.score.priority} score={account.score.overall} />
                 </div>
-                <div className="flex shrink-0 flex-col items-end gap-1">
-                  <PulseMark health={account.score.overall} />
-                  <div className="flex items-center gap-1">
-                    <TrendIcon trend={account.score.trend} compact />
-                    <span className="text-xs text-[#d8c8dc]/40">{account.score.overall}</span>
-                  </div>
-                </div>
+                <p className="mt-0.5 truncate text-xs text-[#d8c8dc]/45">{account.owner} · {account.stage}</p>
+                <p className="mt-0.5 text-xs text-[#d8c8dc]/30">
+                  {account.score.lastTouchDays === 0 ? "Today" : `${account.score.lastTouchDays}d ago`}
+                  {scoreDelta !== 0 && <span className={`ml-1.5 ${scoreDelta > 0 ? "text-[#9FE6C0]" : "text-[#F4A7B9]"}`}>{scoreDelta > 0 ? "↑" : "↓"}{Math.abs(Math.round(scoreDelta))}</span>}
+                </p>
+              </div>
+              <div className="flex shrink-0 flex-col items-end gap-0.5">
+                <p className="text-sm font-semibold" style={{ color: account.score.priorityColor }}>{account.score.overall}</p>
+                <TrendIcon trend={account.score.trend} compact />
               </div>
             </button>
           );
@@ -1642,11 +1710,10 @@ export default function Page() {
       <main className="min-h-screen text-white" style={{ background: bgGradient, fontFamily: "Sora, sans-serif" }}>
         <div className="fixed inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(216,165,184,0.09),transparent_32%),radial-gradient(circle_at_84%_6%,rgba(190,150,220,0.08),transparent_30%)]" />
         <GrainOverlay />
-        <MobileHeader attention={attention} goTab={goTab} />
+        <MobileHeader activeTab={activeTab} attention={attention} goTab={goTab} />
         <DesktopSidebar activeTab={activeTab} goTab={goTab} logout={logout} />
-        <MobileBottomNav activeTab={activeTab} goTab={goTab} />
 
-        <section className="relative px-5 pb-28 pt-5 lg:ml-64 lg:px-10 lg:pb-10 lg:pt-8">
+        <section className="relative px-5 pb-10 pt-5 lg:ml-64 lg:px-10 lg:pb-10 lg:pt-8">
           <TopHero attention={attention} setSelectedAccountId={setSelectedAccountId} goTab={goTab} />
 
           {activeTab === "Overview"     && <OverviewTab scoredAccounts={scoredAccounts} accounts={accounts} touches={touches} attention={attention} setSelectedAccountId={setSelectedAccountId} goTab={goTab} selectedAccount={selectedAccount} history={history} />}

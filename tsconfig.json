@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,27 +22,21 @@
         "name": "next"
       }
     ],
-<<<<<<< HEAD
     "paths": {
-      "@/*": ["./src/*"]
-=======
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./*"]
->>>>>>> f2ae362 (feat: initial commit)
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.mts",
     ".next/types/**/*.ts",
-<<<<<<< HEAD
-    ".next/dev/types/**/*.ts",
-    "**/*.mts"
-=======
     ".next/dev/types/**/*.ts"
->>>>>>> f2ae362 (feat: initial commit)
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
