@@ -151,7 +151,7 @@ function GrainOverlay() {
 // ─── Chart Components ─────────────────────────────────────────────────────
 function PulseBarChart({ data }: { data: { name: string; score: number }[] }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
+    <div className="rounded-3xl border border-white/10 bg-white/4 p-5">
       <p className="mb-5 text-xs uppercase tracking-[0.18em] text-[#d8a5b8]/70">Pulse Score Comparison</p>
       <div className="space-y-3">
         {data.map((item, i) => {
@@ -159,7 +159,7 @@ function PulseBarChart({ data }: { data: { name: string; score: number }[] }) {
           return (
             <div key={i} className="flex items-center gap-3">
               <p className="w-24 shrink-0 truncate text-right text-xs text-[#d8c8dc]/65">{item.name}</p>
-              <div className="h-7 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
+              <div className="h-7 flex-1 overflow-hidden rounded-full bg-white/6">
                 <div
                   className="h-full rounded-full"
                   style={{ width: `${item.score}%`, background: `linear-gradient(90deg, ${color}60, ${color})`, transition: "width 1s ease" }}
@@ -184,7 +184,7 @@ function PulseRadarChart({ data }: { data: { name: string; trust: number; engage
   const scorePts = values.map((v, i) => pt((v / 100) * R, i));
   const toPath   = (pts: { x: number; y: number }[]) => pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ") + " Z";
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
+    <div className="rounded-3xl border border-white/10 bg-white/4 p-5">
       <p className="mb-3 text-xs uppercase tracking-[0.18em] text-[#d8a5b8]/70">Dimension Radar — {data.name}</p>
       <div className="flex items-center justify-center">
         <svg viewBox="0 0 240 240" className="w-64">
@@ -223,7 +223,7 @@ function PulseTrendChart({ data }: { data: { name: string; history: ScoreSnapsho
   const xScale = (i: number, len: number) => PAD + (i / (len - 1)) * (W - PAD * 2);
   const yScale = (v: number) => H - PAD - ((v - minS) / (maxS - minS)) * (H - PAD * 2);
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
+    <div className="rounded-3xl border border-white/10 bg-white/4 p-5">
       <p className="mb-3 text-xs uppercase tracking-[0.18em] text-[#d8a5b8]/70">Score Trend Over Time</p>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full">
         {[40, 60, 80].map(v => (
@@ -252,7 +252,7 @@ function PulseTrendChart({ data }: { data: { name: string; history: ScoreSnapsho
 
 function PulseTable({ data }: { data: { name: string; score: number; status: string; owner: string; trend: string }[] }) {
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/[0.04] overflow-hidden">
+    <div className="rounded-3xl border border-white/10 bg-white/4 overflow-hidden">
       <p className="px-5 pt-4 pb-3 text-xs uppercase tracking-[0.18em] text-[#d8a5b8]/70">Account Intelligence Table</p>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -269,7 +269,7 @@ function PulseTable({ data }: { data: { name: string; score: number; status: str
             {data.map((row, i) => {
               const color = row.score >= 84 ? "#9FE6C0" : row.score >= 74 ? "#E7C873" : row.score >= 64 ? "#C7A7E8" : "#F4A7B9";
               return (
-                <tr key={i} className="border-b border-white/5 hover:bg-white/[0.03]">
+                <tr key={i} className="border-b border-white/5 hover:bg-white/3">
                   <td className="px-5 py-3 font-medium text-white">{row.name}</td>
                   <td className="px-5 py-3 text-[#d8c8dc]/65">{row.owner}</td>
                   <td className="px-5 py-3 font-semibold" style={{ color }}>{row.score}</td>
@@ -396,7 +396,7 @@ function Panel({ title, subtitle, children, className = "" }: { title?: string; 
 function Dimension({ label, value, suffix = "" }: { label: string; value: number; suffix?: string }) {
   const color = value >= 84 ? "#9FE6C0" : value >= 70 ? "#E7C873" : "#C7A7E8";
   return (
-    <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+    <div className="rounded-3xl border border-white/8 bg-white/4 p-4">
       <div className="flex items-center justify-between">
         <p className="text-sm text-[#d8c8dc]/65">{label}</p>
         <p className="text-lg font-medium" style={{ color }}>{value}{suffix}</p>
@@ -417,7 +417,7 @@ function MetricCard({ icon: Icon, label, value, detail, color = "#d8a5b8" }: any
           <p className="mt-3 text-4xl font-medium tracking-[-0.04em]" style={{ fontFamily: "Cormorant Garamond, serif" }}>{value}</p>
           <p className="mt-2 text-sm text-[#d8c8dc]/58">{detail}</p>
         </div>
-        <div className="rounded-2xl border border-white/8 bg-white/[0.06] p-3" style={{ color }}>
+        <div className="rounded-2xl border border-white/8 bg-white/6 p-3" style={{ color }}>
           <Icon className="h-5 w-5" />
         </div>
       </div>
@@ -497,7 +497,7 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
               <button onClick={onSignIn} className="rounded-2xl bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] px-7 py-4 text-sm font-semibold text-[#17141c] shadow-[0_18px_55px_rgba(216,165,184,0.28)] transition hover:scale-[1.02]">
                 Try Sandbox Demo
               </button>
-              <button onClick={() => setShowAuth(true)} className="rounded-2xl border border-white/12 bg-white/[0.06] px-7 py-4 text-sm text-white backdrop-blur transition hover:bg-white/[0.10]">
+              <button onClick={() => setShowAuth(true)} className="rounded-2xl border border-white/12 bg-white/6 px-7 py-4 text-sm text-white backdrop-blur transition hover:bg-white/[0.10]">
                 Sign In to Workspace
               </button>
             </div>
@@ -549,7 +549,7 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
                 </div>
               </div>
               <p className="mt-5 text-xs leading-6 text-[#d8c8dc]/55">Northstar remains a high-trust partner with good forward momentum. A light check-in on their upcoming initiatives would help maintain engagement.</p>
-              <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-3">
+              <div className="mt-4 flex items-center justify-between rounded-2xl border border-white/8 bg-white/4 px-4 py-3">
                 <p className="text-xs text-[#d8c8dc]/55">Last touch: 1 day ago</p>
                 <span className="text-xs font-medium text-[#9FE6C0]">↑ Improving</span>
               </div>
@@ -557,7 +557,7 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
               {/* Mini attention cards */}
               <div className="mt-4 space-y-2">
                 {[["HarborTech Services", "61", "Needs attention"], ["Atlas Retail", "71", "Follow up"]].map(([n, s, p]) => (
-                  <div key={String(n)} className="flex items-center justify-between rounded-2xl border border-white/6 bg-white/[0.03] px-4 py-2.5">
+                  <div key={String(n)} className="flex items-center justify-between rounded-2xl border border-white/6 bg-white/3 px-4 py-2.5">
                     <p className="text-xs text-[#d8c8dc]/70">{n}</p>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-medium text-[#F4A7B9]">{s}</span>
@@ -572,7 +572,7 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
       </section>
 
       {/* ── Trust bar ── */}
-      <section className="border-y border-white/6 bg-white/[0.02] py-6">
+      <section className="border-y border-white/6 bg-white/2 py-6">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex flex-wrap items-center justify-center gap-8 lg:justify-between">
             <p className="text-xs tracking-[0.14em] text-[#d8c8dc]/38 uppercase">Trusted by relationship-driven teams at</p>
@@ -613,7 +613,7 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
       </section>
 
       {/* ── How it works ── */}
-      <section className="border-y border-white/6 bg-white/[0.015] py-24">
+      <section className="border-y border-white/6 bg-white/1.5 py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center">
             <p className="text-xs uppercase tracking-[0.18em] text-[#d8a5b8]/70">How Pulse works</p>
@@ -678,7 +678,7 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
       </section>
 
       {/* ── Testimonials ── */}
-      <section className="border-y border-white/6 bg-white/[0.015] py-24">
+      <section className="border-y border-white/6 bg-white/1.5 py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="text-center">
             <p className="text-xs uppercase tracking-[0.18em] text-[#d8a5b8]/70">What teams say</p>
@@ -735,7 +735,7 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
                   </div>
                 ))}
               </div>
-              <button onClick={plan.name === "Enterprise" ? undefined : onSignIn} className={`mt-8 w-full rounded-2xl py-3.5 text-sm font-semibold transition ${plan.highlight ? "bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] text-[#17141c] shadow-[0_12px_40px_rgba(216,165,184,0.25)] hover:scale-[1.01]" : "border border-white/12 bg-white/[0.06] text-white hover:bg-white/[0.10]"}`}>
+              <button onClick={plan.name === "Enterprise" ? undefined : onSignIn} className={`mt-8 w-full rounded-2xl py-3.5 text-sm font-semibold transition ${plan.highlight ? "bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] text-[#17141c] shadow-[0_12px_40px_rgba(216,165,184,0.25)] hover:scale-[1.01]" : "border border-white/12 bg-white/6 text-white hover:bg-white/[0.10]"}`}>
                 {plan.name === "Enterprise" ? "Contact Sales" : "Get Started"}
               </button>
             </div>
@@ -778,7 +778,7 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
 
       {/* ── Sign In Overlay ── */}
       {showAuth && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-5 backdrop-blur-md" onClick={() => setShowAuth(false)}>
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 px-5 backdrop-blur-md" onClick={() => setShowAuth(false)}>
           <div className="w-full max-w-md rounded-[2.2rem] border border-[#d8a5b8]/18 bg-[linear-gradient(145deg,rgba(42,28,58,0.98),rgba(12,9,18,0.99))] p-8 shadow-[0_40px_140px_rgba(0,0,0,0.60)]" onClick={e => e.stopPropagation()}>
             <div className="text-center">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-3xl bg-[linear-gradient(145deg,#17101f,#4a334f,#c79eb3)] shadow-[0_14px_50px_rgba(216,165,184,0.22)]">
@@ -787,16 +787,16 @@ function LandingPage({ onSignIn }: { onSignIn: () => void }) {
               <h2 className="mt-5 text-4xl font-medium tracking-[-0.04em]" style={{ fontFamily: "Cormorant Garamond, serif" }}>Sign in to Pulse</h2>
             </div>
             <div className="mt-8 space-y-3">
-              <input placeholder="Email address" className="h-14 w-full rounded-2xl border border-[#d8a5b8]/12 bg-white/[0.06] px-4 text-white outline-none placeholder:text-[#d8c8dc]/40 focus:border-[#d8a5b8]/30" />
-              <input type="password" placeholder="Password" className="h-14 w-full rounded-2xl border border-[#d8a5b8]/12 bg-white/[0.06] px-4 text-white outline-none placeholder:text-[#d8c8dc]/40 focus:border-[#d8a5b8]/30" />
+              <input placeholder="Email address" className="h-14 w-full rounded-2xl border border-[#d8a5b8]/12 bg-white/6 px-4 text-white outline-none placeholder:text-[#d8c8dc]/40 focus:border-[#d8a5b8]/30" />
+              <input type="password" placeholder="Password" className="h-14 w-full rounded-2xl border border-[#d8a5b8]/12 bg-white/6 px-4 text-white outline-none placeholder:text-[#d8c8dc]/40 focus:border-[#d8a5b8]/30" />
               <button onClick={onSignIn} className="mt-4 h-14 w-full rounded-2xl bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] text-sm font-semibold text-[#17141c] shadow-[0_14px_50px_rgba(216,165,184,0.24)] transition hover:scale-[1.01]">
                 Sign In
               </button>
-              <button onClick={onSignIn} className="h-12 w-full rounded-2xl border border-white/10 bg-white/[0.05] text-sm text-white transition hover:bg-white/[0.08]">
+              <button onClick={onSignIn} className="h-12 w-full rounded-2xl border border-white/10 bg-white/5 text-sm text-white transition hover:bg-white/8">
                 Try Sandbox Demo Instead
               </button>
             </div>
-            <button onClick={() => setShowAuth(false)} className="absolute right-5 top-5 rounded-full border border-white/10 bg-white/[0.06] p-2">
+            <button onClick={() => setShowAuth(false)} className="absolute right-5 top-5 rounded-full border border-white/10 bg-white/6 p-2">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -823,9 +823,9 @@ function LoadingScreen() {
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-[2rem] bg-[linear-gradient(145deg,#17101f,#4a334f,#c79eb3)] shadow-[0_20px_70px_rgba(216,165,184,0.22)]">
           <Activity className="h-10 w-10 beat" />
         </div>
-        <div className="relative fu delay-1 mt-10 h-20 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
+        <div className="relative fu delay-1 mt-10 h-20 overflow-hidden rounded-[2rem] border border-white/10 bg-white/4 shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(216,165,184,0.08),transparent_60%)]" />
-          <svg viewBox="0 0 600 80" className="hb-trail absolute left-0 top-0 h-full w-[1200px]" preserveAspectRatio="none">
+          <svg viewBox="0 0 600 80" className="hb-trail absolute left-0 top-0 h-full w-300" preserveAspectRatio="none">
             <path d="M0 40 L60 40 L75 15 L92 65 L110 40 H185 L200 30 L215 52 L228 40 H300 L315 15 L332 65 L350 40 H425 L440 30 L455 52 L468 40 H540 L555 15 L572 65 L590 40 H600" fill="none" stroke="rgba(216,165,184,0.18)" strokeWidth="8" strokeLinecap="round" filter="url(#glow)" />
             <path d="M0 40 L60 40 L75 15 L92 65 L110 40 H185 L200 30 L215 52 L228 40 H300 L315 15 L332 65 L350 40 H425 L440 30 L455 52 L468 40 H540 L555 15 L572 65 L590 40 H600" fill="none" stroke="#d8a5b8" strokeWidth="2.5" strokeLinecap="round" />
             <defs><filter id="glow"><feGaussianBlur stdDeviation="5" result="b" /><feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge></filter></defs>
@@ -861,14 +861,14 @@ function DesktopSidebar({ activeTab, goTab, logout }: any) {
 
       <nav className="mt-8 space-y-1">
         {NAV_ITEMS.map(item => (
-          <button key={item} onClick={() => goTab(item)} className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-sm transition ${activeTab === item ? "bg-[linear-gradient(135deg,rgba(216,165,184,0.18),rgba(216,165,184,0.08))] text-white border border-[#d8a5b8]/15" : "text-[#d8c8dc]/62 hover:bg-white/[0.06] hover:text-white"}`}>
+          <button key={item} onClick={() => goTab(item)} className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-sm transition ${activeTab === item ? "bg-[linear-gradient(135deg,rgba(216,165,184,0.18),rgba(216,165,184,0.08))] text-white border border-[#d8a5b8]/15" : "text-[#d8c8dc]/62 hover:bg-white/6 hover:text-white"}`}>
             {item}
             {activeTab === item && <ChevronRight className="h-4 w-4 text-[#d8a5b8]" />}
           </button>
         ))}
       </nav>
 
-      <button onClick={logout} className="absolute bottom-6 left-5 right-5 rounded-2xl border border-white/8 bg-white/[0.04] py-3 text-sm text-[#d8c8dc]/55 transition hover:bg-white/[0.08] hover:text-white">
+      <button onClick={logout} className="absolute bottom-6 left-5 right-5 rounded-2xl border border-white/8 bg-white/4 py-3 text-sm text-[#d8c8dc]/55 transition hover:bg-white/8 hover:text-white">
         Sign Out
       </button>
     </aside>
@@ -890,7 +890,7 @@ function MobileHeader({ activeTab, attention, goTab }: any) {
         </div>
         <div className="flex items-center gap-2">
           <div className="relative">
-            <button onClick={() => { setNotiOpen(!notiOpen); setMenuOpen(false); }} className="relative flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] text-[#f1d6e2]">
+            <button onClick={() => { setNotiOpen(!notiOpen); setMenuOpen(false); }} className="relative flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/6 text-[#f1d6e2]">
               <Bell className="h-5 w-5" />
               {attention.length > 0 && <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#d8a5b8] text-[11px] font-semibold text-[#17141c]">{attention.length}</span>}
             </button>
@@ -899,7 +899,7 @@ function MobileHeader({ activeTab, attention, goTab }: any) {
                 <p className="mb-3 text-sm font-medium text-white">Attention items</p>
                 <div className="space-y-2">
                   {attention.map((a: ScoredAccount) => (
-                    <button key={a.id} onClick={() => { goTab("Accounts"); setNotiOpen(false); }} className="w-full rounded-2xl border border-white/8 bg-white/[0.04] p-3 text-left hover:bg-white/[0.08]">
+                    <button key={a.id} onClick={() => { goTab("Accounts"); setNotiOpen(false); }} className="w-full rounded-2xl border border-white/8 bg-white/4 p-3 text-left hover:bg-white/8">
                       <div className="flex items-center justify-between mb-1">
                         <p className="text-sm font-medium">{a.name}</p>
                         <StatusBadge label={a.score.priority} score={a.score.overall} />
@@ -912,7 +912,7 @@ function MobileHeader({ activeTab, attention, goTab }: any) {
             )}
           </div>
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#f1dbe5,#d8a5b8,#b98bb1)] text-xs font-semibold text-[#17141c]">DH</div>
-          <button onClick={() => { setMenuOpen(!menuOpen); setNotiOpen(false); }} className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06]">
+          <button onClick={() => { setMenuOpen(!menuOpen); setNotiOpen(false); }} className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-white/6">
             {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
@@ -920,7 +920,7 @@ function MobileHeader({ activeTab, attention, goTab }: any) {
       {menuOpen && (
         <div className="space-y-1 px-5 pb-4">
           {NAV_ITEMS.map(item => (
-            <button key={item} onClick={() => { goTab(item); setMenuOpen(false); }} className={`w-full rounded-2xl px-4 py-3 text-left text-sm transition ${activeTab === item ? "bg-white font-medium text-[#17141c]" : "bg-white/[0.05] text-white hover:bg-white/[0.09]"}`}>
+            <button key={item} onClick={() => { goTab(item); setMenuOpen(false); }} className={`w-full rounded-2xl px-4 py-3 text-left text-sm transition ${activeTab === item ? "bg-white font-medium text-[#17141c]" : "bg-white/5 text-white hover:bg-white/9"}`}>
               {item}
             </button>
           ))}
@@ -949,7 +949,7 @@ function MobileBottomNav({ activeTab, goTab }: any) {
             <p className="mb-3 text-xs uppercase tracking-widest text-[#d8c8dc]/40 px-1">More</p>
             <div className="space-y-1">
               {moreTabs.map(tab => (
-                <button key={tab} onClick={() => { goTab(tab); setMoreOpen(false); }} className={`flex w-full items-center justify-between rounded-2xl px-4 py-3.5 text-sm transition ${activeTab === tab ? "bg-[#d8a5b8]/12 text-white border border-[#d8a5b8]/15" : "text-[#d8c8dc]/70 hover:bg-white/[0.06]"}`}>
+                <button key={tab} onClick={() => { goTab(tab); setMoreOpen(false); }} className={`flex w-full items-center justify-between rounded-2xl px-4 py-3.5 text-sm transition ${activeTab === tab ? "bg-[#d8a5b8]/12 text-white border border-[#d8a5b8]/15" : "text-[#d8c8dc]/70 hover:bg-white/6"}`}>
                   {tab}
                   <ChevronRight className="h-4 w-4 text-[#d8c8dc]/35" />
                 </button>
@@ -992,7 +992,7 @@ function TopHero({ attention, setSelectedAccountId, goTab }: any) {
         {attention.length > 0 && (
           <div className="mt-5 flex flex-wrap gap-3">
             {attention.slice(0, 3).map((a: ScoredAccount) => (
-              <button key={a.id} onClick={() => { setSelectedAccountId(a.id); goTab("Accounts"); }} className="flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/[0.05] px-4 py-2.5 text-sm transition hover:bg-white/[0.08]">
+              <button key={a.id} onClick={() => { setSelectedAccountId(a.id); goTab("Accounts"); }} className="flex items-center gap-2.5 rounded-2xl border border-white/8 bg-white/5 px-4 py-2.5 text-sm transition hover:bg-white/8">
                 <div className="h-2 w-2 rounded-full" style={{ background: a.score.priorityColor }} />
                 {a.name}
                 <span className="text-xs text-[#d8c8dc]/45">{a.score.overall}</span>
@@ -1027,7 +1027,7 @@ function TopHero({ attention, setSelectedAccountId, goTab }: any) {
                     <button
                       key={a.id}
                       onClick={() => { setSelectedAccountId(a.id); goTab("Accounts"); setNotiOpen(false); }}
-                      className="w-full rounded-2xl border border-white/8 bg-white/[0.04] p-4 text-left transition hover:bg-white/[0.08]"
+                      className="w-full rounded-2xl border border-white/8 bg-white/4 p-4 text-left transition hover:bg-white/8"
                     >
                       <div className="flex items-center justify-between gap-3 mb-1">
                         <p className="font-medium text-white">{a.name}</p>
@@ -1057,13 +1057,13 @@ function AccountList({ accounts, selectedAccountId, setSelectedAccountId, query,
       {setQuery !== undefined && (
         <div className="relative">
           <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#d8c8dc]/40" />
-          <input value={query ?? ""} onChange={e => setQuery(e.target.value)} placeholder="Search accounts…" className="w-full rounded-2xl border border-white/10 bg-white/[0.05] py-3 pl-10 pr-4 text-sm outline-none placeholder:text-[#d8c8dc]/35 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
+          <input value={query ?? ""} onChange={e => setQuery(e.target.value)} placeholder="Search accounts…" className="w-full rounded-2xl border border-white/10 bg-white/5 py-3 pl-10 pr-4 text-sm outline-none placeholder:text-[#d8c8dc]/35 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
         </div>
       )}
       <div className="max-h-[560px] overflow-y-auto rounded-2xl border border-white/6">
         {accounts.length === 0 && (
           <div className="flex flex-col items-center justify-center px-6 py-12 text-center">
-            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-white/[0.04]">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/8 bg-white/4">
               <Users className="h-5 w-5 text-[#d8c8dc]/40" />
             </div>
             <p className="text-sm font-medium text-white">No accounts yet</p>
@@ -1079,7 +1079,7 @@ function AccountList({ accounts, selectedAccountId, setSelectedAccountId, query,
             <button
               key={account.id}
               onClick={() => setSelectedAccountId(account.id)}
-              className={`flex w-full items-center gap-3 border-b border-white/6 px-4 py-3 text-left transition last:border-b-0 ${isSelected ? "bg-[#d8a5b8]/10" : "bg-white/[0.02] hover:bg-white/[0.055]"}`}
+              className={`flex w-full items-center gap-3 border-b border-white/6 px-4 py-3 text-left transition last:border-b-0 ${isSelected ? "bg-[#d8a5b8]/10" : "bg-white/2 hover:bg-white/[0.055]"}`}
             >
               <div className="h-8 w-1 shrink-0 rounded-full" style={{ background: account.score.priorityColor, opacity: isSelected ? 1 : 0.45 }} />
               <div className="min-w-0 flex-1">
@@ -1138,13 +1138,13 @@ function AccountPulse({ account, touches = [], history = [] }: { account: Scored
       )}
 
       {touches.length > 0 && (
-        <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+        <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
           <p className="font-medium text-white mb-4" style={{ fontFamily: "Cormorant Garamond, serif" }}>Relationship timeline</p>
           <div className="space-y-3">
             {touches.map(touch => {
               const sColor = touch.sentiment === "positive" ? "#9FE6C0" : touch.sentiment === "concerned" ? "#E7C873" : touch.sentiment === "negative" ? "#F4A7B9" : "#d8c8dc";
               return (
-                <div key={touch.id} className="flex items-start gap-3 rounded-2xl bg-white/[0.04] p-4">
+                <div key={touch.id} className="flex items-start gap-3 rounded-2xl bg-white/4 p-4">
                   <div className="mt-1 h-2 w-2 shrink-0 rounded-full" style={{ background: sColor }} />
                   <div>
                     <p className="text-sm font-medium text-white">{touch.type} · <span className="text-xs font-normal text-[#d8c8dc]/55 capitalize">{touch.sentiment}</span></p>
@@ -1167,22 +1167,22 @@ function LogTouchPanel({ selectedAccount, newTouch, setNewTouch, logTouch }: any
     <Panel title={`Log touch — ${selectedAccount?.name ?? "Select an account"}`} subtitle="Record a relationship interaction">
       <div className="grid gap-3 sm:grid-cols-3">
         {(["Email", "Call", "Meeting", "Note"] as const).map(type => (
-          <button key={type} onClick={() => setNewTouch({ ...newTouch, type })} className={`rounded-2xl border px-3 py-2.5 text-sm transition ${newTouch.type === type ? "border-[#d8a5b8]/25 bg-[#d8a5b8]/12 text-white" : "border-white/8 bg-white/[0.04] text-[#d8c8dc]/65 hover:bg-white/[0.07]"}`}>{type}</button>
+          <button key={type} onClick={() => setNewTouch({ ...newTouch, type })} className={`rounded-2xl border px-3 py-2.5 text-sm transition ${newTouch.type === type ? "border-[#d8a5b8]/25 bg-[#d8a5b8]/12 text-white" : "border-white/8 bg-white/4 text-[#d8c8dc]/65 hover:bg-white/[0.07]"}`}>{type}</button>
         ))}
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         {(["positive", "neutral", "concerned", "negative"] as const).map(s => {
           const color = s === "positive" ? "#9FE6C0" : s === "concerned" ? "#E7C873" : s === "negative" ? "#F4A7B9" : "#d8c8dc";
-          return <button key={s} onClick={() => setNewTouch({ ...newTouch, sentiment: s })} className={`rounded-2xl border px-3 py-2.5 text-sm capitalize transition ${newTouch.sentiment === s ? "border-white/20 text-white" : "border-white/8 bg-white/[0.04] text-[#d8c8dc]/55 hover:bg-white/[0.07]"}`} style={newTouch.sentiment === s ? { borderColor: `${color}40`, background: `${color}12`, color } : {}}>{s}</button>;
+          return <button key={s} onClick={() => setNewTouch({ ...newTouch, sentiment: s })} className={`rounded-2xl border px-3 py-2.5 text-sm capitalize transition ${newTouch.sentiment === s ? "border-white/20 text-white" : "border-white/8 bg-white/4 text-[#d8c8dc]/55 hover:bg-white/[0.07]"}`} style={newTouch.sentiment === s ? { borderColor: `${color}40`, background: `${color}12`, color } : {}}>{s}</button>;
         })}
       </div>
       <div className="grid gap-3 sm:grid-cols-3">
         {(["inbound", "outbound", "internal"] as const).map(dir => (
-          <button key={dir} onClick={() => setNewTouch({ ...newTouch, direction: dir })} className={`rounded-2xl border px-3 py-2.5 text-sm capitalize transition ${newTouch.direction === dir ? "border-[#d8a5b8]/25 bg-[#d8a5b8]/12 text-white" : "border-white/8 bg-white/[0.04] text-[#d8c8dc]/55 hover:bg-white/[0.07]"}`}>{dir}</button>
+          <button key={dir} onClick={() => setNewTouch({ ...newTouch, direction: dir })} className={`rounded-2xl border px-3 py-2.5 text-sm capitalize transition ${newTouch.direction === dir ? "border-[#d8a5b8]/25 bg-[#d8a5b8]/12 text-white" : "border-white/8 bg-white/4 text-[#d8c8dc]/55 hover:bg-white/[0.07]"}`}>{dir}</button>
         ))}
       </div>
-      <input value={newTouch.summary} onChange={e => setNewTouch({ ...newTouch, summary: e.target.value })} placeholder="Summary (required)" className="w-full rounded-2xl border border-white/10 bg-white/[0.05] p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
-      <textarea value={newTouch.content} onChange={e => setNewTouch({ ...newTouch, content: e.target.value })} placeholder="Details or notes (optional)" className="min-h-24 w-full rounded-2xl border border-white/10 bg-white/[0.05] p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
+      <input value={newTouch.summary} onChange={e => setNewTouch({ ...newTouch, summary: e.target.value })} placeholder="Summary (required)" className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
+      <textarea value={newTouch.content} onChange={e => setNewTouch({ ...newTouch, content: e.target.value })} placeholder="Details or notes (optional)" className="min-h-24 w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
       <button onClick={logTouch} disabled={!newTouch.summary.trim()} className="flex w-fit items-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] px-5 py-3 text-sm font-semibold text-[#17141c] shadow-[0_10px_35px_rgba(216,165,184,0.22)] transition hover:scale-[1.02] disabled:opacity-50 disabled:scale-100">
         <Plus className="h-4 w-4" /> Log Touch
       </button>
@@ -1219,13 +1219,13 @@ function OverviewTab({ scoredAccounts, accounts, touches, attention, setSelected
           </p>
           <div className="flex flex-wrap gap-3">
             <button onClick={() => goTab("Intelligence")} className="rounded-2xl bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] px-5 py-3 text-sm font-semibold text-[#17141c] shadow-[0_10px_35px_rgba(216,165,184,0.22)] transition hover:scale-[1.02]">Review Intelligence</button>
-            <button onClick={() => goTab("Accounts")} className="rounded-2xl border border-white/10 bg-white/[0.05] px-5 py-3 text-sm text-white transition hover:bg-white/[0.09]">Open Accounts</button>
+            <button onClick={() => goTab("Accounts")} className="rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm text-white transition hover:bg-white/9">Open Accounts</button>
           </div>
         </Panel>
         <Panel title="Attention queue" subtitle="Lowest-scoring relationships">
           <div className="space-y-2">
             {attention.map((account: ScoredAccount) => (
-              <button key={account.id} onClick={() => { setSelectedAccountId(account.id); goTab("Accounts"); }} className="w-full rounded-3xl border border-white/8 bg-white/[0.04] p-4 text-left transition hover:bg-white/[0.08]">
+              <button key={account.id} onClick={() => { setSelectedAccountId(account.id); goTab("Accounts"); }} className="w-full rounded-3xl border border-white/8 bg-white/4 p-4 text-left transition hover:bg-white/8">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="font-medium text-white">{account.name}</p>
@@ -1258,9 +1258,9 @@ function AccountsTab({ query, setQuery, filteredAccounts, selectedAccount, selec
       <div className="grid gap-6 xl:grid-cols-[1fr_.75fr]">
         <LogTouchPanel selectedAccount={selectedAccount} newTouch={newTouch} setNewTouch={setNewTouch} logTouch={logTouch} />
         <Panel title="Add account" subtitle="Creates a persistent sandbox account">
-          <input value={newAccount.name} onChange={e => setNewAccount({ ...newAccount, name: e.target.value })} placeholder="Account name (required)" className="w-full rounded-2xl border border-white/10 bg-white/[0.05] p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
-          <input value={newAccount.owner} onChange={e => setNewAccount({ ...newAccount, owner: e.target.value })} placeholder="Account owner" className="w-full rounded-2xl border border-white/10 bg-white/[0.05] p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
-          <input value={newAccount.value} onChange={e => setNewAccount({ ...newAccount, value: e.target.value })} placeholder="Annual value (e.g. 120000)" className="w-full rounded-2xl border border-white/10 bg-white/[0.05] p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
+          <input value={newAccount.name} onChange={e => setNewAccount({ ...newAccount, name: e.target.value })} placeholder="Account name (required)" className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
+          <input value={newAccount.owner} onChange={e => setNewAccount({ ...newAccount, owner: e.target.value })} placeholder="Account owner" className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
+          <input value={newAccount.value} onChange={e => setNewAccount({ ...newAccount, value: e.target.value })} placeholder="Annual value (e.g. 120000)" className="w-full rounded-2xl border border-white/10 bg-white/5 p-3 text-sm outline-none placeholder:text-[#d8c8dc]/30 focus:border-[#d8a5b8]/25" style={{ fontFamily: "Sora, sans-serif" }} />
           <button onClick={addAccount} disabled={!newAccount.name.trim()} className="flex w-fit items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-medium text-[#17141c] transition hover:scale-[1.02] disabled:opacity-50">
             <Plus className="h-4 w-4" /> Add Account
           </button>
@@ -1280,7 +1280,7 @@ function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch, selec
           <ChevronRight className="h-4 w-4 rotate-180" /> Back to activity
         </button>
         <Panel title={selectedTouch.summary} subtitle={`${relatedAccount?.name ?? "Account"} · ${selectedTouch.type} · ${daysSince(selectedTouch.occurredAt) === 0 ? "Today" : `${daysSince(selectedTouch.occurredAt)}d ago`}`}>
-          <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <p className="text-xs uppercase tracking-[0.18em] text-[#d8a5b8]/65 mb-3">Original {selectedTouch.type}</p>
             <div className="rounded-3xl border border-black/10 bg-[#f8f3f7] p-5 text-[#17141c]">
               <div className="border-b border-black/8 pb-4 space-y-1 text-sm">
@@ -1297,7 +1297,7 @@ function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch, selec
               This {selectedTouch.type.toLowerCase()} contributes to {relatedAccount?.name}'s current Relationship Pulse through recency, sentiment, and engagement signals.{" "}
               {selectedTouch.sentiment === "positive" ? "The positive tone reinforces trust and engagement momentum." : selectedTouch.sentiment === "concerned" ? "The concerned tone suggests an attention need — a thoughtful, direct follow-up is recommended." : selectedTouch.sentiment === "negative" ? "This signal elevates relationship risk and may require direct account-owner intervention." : "This neutral signal should be read in the context of recent activity."}
             </p>
-            <div className="mt-3 rounded-2xl border border-white/8 bg-white/[0.04] p-3 text-sm text-[#d8c8dc]/65">Suggested next step: {relatedAccount?.score?.action ?? "Review recent context and determine next steps."}</div>
+            <div className="mt-3 rounded-2xl border border-white/8 bg-white/4 p-3 text-sm text-[#d8c8dc]/65">Suggested next step: {relatedAccount?.score?.action ?? "Review recent context and determine next steps."}</div>
           </div>
         </Panel>
       </div>
@@ -1310,7 +1310,7 @@ function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch, selec
         <Panel title="Upcoming Activity" subtitle="Recommended actions based on relationship signals">
           <div className="max-h-[380px] space-y-2 overflow-y-auto pr-1">
             {[...accounts].sort((a: ScoredAccount, b: ScoredAccount) => a.score.overall - b.score.overall).map((account: ScoredAccount) => (
-              <div key={account.id} className="rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+              <div key={account.id} className="rounded-3xl border border-white/8 bg-white/4 p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2">
@@ -1333,7 +1333,7 @@ function ActivityTab({ touches, accounts, selectedTouch, setSelectedTouch, selec
             const acct = accounts.find((a: ScoredAccount) => a.id === touch.accountId);
             const sColor = touch.sentiment === "positive" ? "#9FE6C0" : touch.sentiment === "concerned" ? "#E7C873" : touch.sentiment === "negative" ? "#F4A7B9" : "#d8c8dc";
             return (
-              <button key={touch.id} onClick={() => setSelectedTouch(touch)} className="flex w-full items-center justify-between rounded-3xl border border-white/8 bg-white/[0.04] p-4 text-left transition hover:bg-white/[0.08]">
+              <button key={touch.id} onClick={() => setSelectedTouch(touch)} className="flex w-full items-center justify-between rounded-3xl border border-white/8 bg-white/4 p-4 text-left transition hover:bg-white/8">
                 <div className="flex items-start gap-3">
                   <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: sColor }} />
                   <div>
@@ -1361,7 +1361,7 @@ function IntelligenceTab({ accounts, history }: { accounts: ScoredAccount[]; his
         <Panel title="Relationship Intelligence" subtitle="Pattern interpretation, not judgment">
           <div className="space-y-3">
             {sorted.map(account => (
-              <div key={account.id} className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+              <div key={account.id} className="rounded-3xl border border-white/8 bg-white/4 p-5">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
@@ -1421,7 +1421,7 @@ function AITab({ aiPrompt, setAiPrompt, aiReport, setAiReport, accounts, touches
           {aiReport && (
             <div className="space-y-4">
               <ChartOutput type={aiReport.chartType} data={aiReport.chartData} />
-              <div className="rounded-[1.8rem] border border-white/8 bg-white/[0.04] p-5">
+              <div className="rounded-[1.8rem] border border-white/8 bg-white/4 p-5">
                 <pre className="whitespace-pre-wrap text-sm leading-7 text-[#f1e9f4]" style={{ fontFamily: "Sora, sans-serif" }}>{aiReport.text}</pre>
               </div>
             </div>
@@ -1435,7 +1435,7 @@ function AITab({ aiPrompt, setAiPrompt, aiReport, setAiReport, accounts, touches
             { title: "Account table",       detail: "List all accounts with status and recommended action", tag: "Table"   },
             { title: "Attention priorities",detail: "Which accounts need thoughtful follow-up this week?", tag: "AI report" },
           ].map((p, i) => (
-            <button key={i} onClick={() => { setAiPrompt(p.detail); }} className="w-full rounded-3xl border border-white/8 bg-white/[0.04] p-4 text-left transition hover:bg-white/[0.08]">
+            <button key={i} onClick={() => { setAiPrompt(p.detail); }} className="w-full rounded-3xl border border-white/8 bg-white/4 p-4 text-left transition hover:bg-white/8">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-medium text-white">{p.title}</p>
@@ -1468,7 +1468,7 @@ function ReportsTab({ accounts, touches, history }: { accounts: ScoredAccount[];
         <div className="flex flex-wrap gap-3">
           <button onClick={generate} className="rounded-2xl bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] px-5 py-3 text-sm font-semibold text-[#17141c] shadow-[0_10px_35px_rgba(216,165,184,0.22)] transition hover:scale-[1.02]">Generate Report</button>
           {["Bar chart", "Radar", "Trend lines", "Table"].map(hint => (
-            <button key={hint} onClick={() => setPrompt(`Show me a ${hint.toLowerCase()} of portfolio health`)} className="rounded-2xl border border-white/8 bg-white/[0.04] px-4 py-2.5 text-xs text-[#d8c8dc]/55 transition hover:bg-white/[0.08] hover:text-white">{hint}</button>
+            <button key={hint} onClick={() => setPrompt(`Show me a ${hint.toLowerCase()} of portfolio health`)} className="rounded-2xl border border-white/8 bg-white/4 px-4 py-2.5 text-xs text-[#d8c8dc]/55 transition hover:bg-white/8 hover:text-white">{hint}</button>
           ))}
         </div>
       </Panel>
@@ -1533,28 +1533,28 @@ function AdminTab({ resetSandbox, theme, setTheme, density, setDensity, weights,
           </div>
           <div className="flex gap-3">
             <button onClick={normalize} className="rounded-2xl bg-white px-4 py-2.5 text-sm font-medium text-[#17141c] transition hover:scale-[1.01]">Auto-Normalize to 100%</button>
-            <button onClick={resetWeights} className="rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white transition hover:bg-white/[0.09]">Reset Defaults</button>
+            <button onClick={resetWeights} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white transition hover:bg-white/9">Reset Defaults</button>
           </div>
         </Panel>
 
         <Panel title="Display preferences" subtitle="Sandbox workspace customization">
-          <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <p className="mb-3 text-sm text-[#d8c8dc]/60">Theme</p>
             <div className="grid grid-cols-3 gap-2">
               {["Purple graphite", "Soft graphite", "Deep blush"].map(t => (
-                <button key={t} onClick={() => setTheme(t)} className={`rounded-2xl px-3 py-2.5 text-xs transition ${theme === t ? "bg-white text-[#17141c]" : "bg-white/[0.05] text-white hover:bg-white/[0.09]"}`}>{t}</button>
+                <button key={t} onClick={() => setTheme(t)} className={`rounded-2xl px-3 py-2.5 text-xs transition ${theme === t ? "bg-white text-[#17141c]" : "bg-white/5 text-white hover:bg-white/9"}`}>{t}</button>
               ))}
             </div>
           </div>
-          <div className="rounded-3xl border border-white/8 bg-white/[0.04] p-5">
+          <div className="rounded-3xl border border-white/8 bg-white/4 p-5">
             <p className="mb-3 text-sm text-[#d8c8dc]/60">Density</p>
             <div className="grid grid-cols-3 gap-2">
               {["Compact", "Comfortable", "Spacious"].map(d => (
-                <button key={d} onClick={() => setDensity(d)} className={`rounded-2xl px-3 py-2.5 text-xs transition ${density === d ? "bg-white text-[#17141c]" : "bg-white/[0.05] text-white hover:bg-white/[0.09]"}`}>{d}</button>
+                <button key={d} onClick={() => setDensity(d)} className={`rounded-2xl px-3 py-2.5 text-xs transition ${density === d ? "bg-white text-[#17141c]" : "bg-white/5 text-white hover:bg-white/9"}`}>{d}</button>
               ))}
             </div>
           </div>
-          <button onClick={resetSandbox} className="flex w-fit items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-white transition hover:bg-white/[0.09]">
+          <button onClick={resetSandbox} className="flex w-fit items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white transition hover:bg-white/9">
             <RefreshCcw className="h-4 w-4" /> Reset All Sandbox Data
           </button>
         </Panel>
@@ -1564,12 +1564,12 @@ function AdminTab({ resetSandbox, theme, setTheme, density, setDensity, weights,
         <Panel title="Integrations" subtitle="Demo integration status">
           <button className="w-fit rounded-2xl bg-white px-4 py-2.5 text-sm font-medium text-[#17141c]">Connect Integration</button>
           {[{ name: "Outlook", icon: Mail, status: "Demo connected" }, { name: "Zoom", icon: Video, status: "Demo connected" }, { name: "Teams", icon: MessageSquare, status: "Pending" }].map(({ name, icon: Icon, status }) => (
-            <div key={name} className="flex items-center justify-between rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+            <div key={name} className="flex items-center justify-between rounded-3xl border border-white/8 bg-white/4 p-4">
               <div className="flex items-center gap-3">
                 <div className="rounded-2xl border border-[#d8a5b8]/12 bg-[#d8a5b8]/8 p-2.5 text-[#f1d6e2]"><Icon className="h-4 w-4" /></div>
                 <div><p className="font-medium text-white">{name}</p><p className="text-sm text-[#d8c8dc]/50">{status}</p></div>
               </div>
-              <div className={`rounded-full px-2.5 py-1 text-xs ${status === "Pending" ? "border border-white/10 bg-white/[0.04] text-[#d8c8dc]/55" : "border border-[#9FE6C0]/20 bg-[#9FE6C0]/10 text-[#9FE6C0]"}`}>{status === "Pending" ? "Connect" : "Active"}</div>
+              <div className={`rounded-full px-2.5 py-1 text-xs ${status === "Pending" ? "border border-white/10 bg-white/4 text-[#d8c8dc]/55" : "border border-[#9FE6C0]/20 bg-[#9FE6C0]/10 text-[#9FE6C0]"}`}>{status === "Pending" ? "Connect" : "Active"}</div>
             </div>
           ))}
         </Panel>
@@ -1581,7 +1581,7 @@ function AdminTab({ resetSandbox, theme, setTheme, density, setDensity, weights,
             { initials: "JC", name: "James Carter",   role: "Relationship Lead · Strategic Accounts", badge: "Online",  gradient: "linear-gradient(145deg,#d7d9df,#aab0ba,#7d8693)",  badgeColor: "#9FE6C0" },
             { initials: "NP", name: "Nora Patel",     role: "Viewer · Customer Success",              badge: "Invited", gradient: "linear-gradient(145deg,#c7a7e8,#9e82c9,#725f9d)",  badgeColor: "#C7A7E8" },
           ].map(({ initials, name, role, badge, gradient, badgeColor }) => (
-            <div key={name} className="flex items-center justify-between rounded-3xl border border-white/8 bg-white/[0.04] p-4">
+            <div key={name} className="flex items-center justify-between rounded-3xl border border-white/8 bg-white/4 p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl text-sm font-semibold text-[#17141c]" style={{ background: gradient }}>{initials}</div>
                 <div><p className="font-medium text-white">{name}</p><p className="text-xs text-[#d8c8dc]/50 mt-0.5">{role}</p></div>
