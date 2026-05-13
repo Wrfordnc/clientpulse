@@ -1480,153 +1480,162 @@ function AITab({
 
   const lower = prompt.toLowerCase();
 
-  // 1. Navigate
-  if (
-    lower.includes("go to reports") ||
-    lower.includes("open reports") ||
-    lower.includes("take me to reports")
-  ) {
-    goTab("Reports");
-    setAiReport({
-      text: "Opened Reports.",
-      chartType: null,
-      chartData: null,
-    });
-    return;
-  }
+  // Clear the prior result first so repeated clicks still visibly refresh.
+  setAiReport(null);
 
-  if (
-    lower.includes("go to accounts") ||
-    lower.includes("open accounts") ||
-    lower.includes("take me to accounts")
-  ) {
-    goTab("Accounts");
-    setAiReport({
-      text: "Opened Accounts.",
-      chartType: null,
-      chartData: null,
-    });
-    return;
-  }
-
-  if (
-    lower.includes("go to activity") ||
-    lower.includes("open activity") ||
-    lower.includes("take me to activity")
-  ) {
-    goTab("Activity");
-    setAiReport({
-      text: "Opened Activity.",
-      chartType: null,
-      chartData: null,
-    });
-    return;
-  }
-
-  if (
-    lower.includes("go to intelligence") ||
-    lower.includes("open intelligence") ||
-    lower.includes("take me to intelligence")
-  ) {
-    goTab("Intelligence");
-    setAiReport({
-      text: "Opened Intelligence.",
-      chartType: null,
-      chartData: null,
-    });
-    return;
-  }
-
-  if (
-    lower.includes("go to admin") ||
-    lower.includes("open admin") ||
-    lower.includes("take me to admin")
-  ) {
-    goTab("Admin");
-    setAiReport({
-      text: "Opened Admin.",
-      chartType: null,
-      chartData: null,
-    });
-    return;
-  }
-
-  // 2. Add account
-  if (
-    lower.includes("add account") ||
-    lower.includes("add an account") ||
-    lower.includes("create account") ||
-    lower.includes("create an account") ||
-    lower.includes("new account")
-  ) {
-    const name = extractAccountName(prompt);
-    const owner = extractOwner(prompt);
-    const value = extractValue(prompt);
-
-    if (!name) {
+  setTimeout(() => {
+    // Navigate
+    if (
+      lower.includes("go to reports") ||
+      lower.includes("open reports") ||
+      lower.includes("take me to reports")
+    ) {
+      goTab("Reports");
       setAiReport({
-        text:
-          "I can add the account, but I need the account name. Try: “Add an account called Acme Logistics owned by Danielle with value 120000.”",
+        text: "Opened Reports.",
         chartType: null,
         chartData: null,
       });
       return;
     }
 
-    const newAccount = addAccountFromAI({
-      name,
-      owner: owner || "Unassigned",
-      value: value || 0,
-    });
-
-    setAiReport({
-      text: `Added ${newAccount.name} to Accounts.${
-        newAccount.owner ? ` Owner: ${newAccount.owner}.` : ""
-      }${newAccount.value ? ` Value: $${newAccount.value.toLocaleString()}.` : ""}`,
-      chartType: null,
-      chartData: null,
-    });
-
-    goTab("Accounts");
-    return;
-  }
-
-  // 3. Select/show account
-  if (
-    lower.includes("show me") ||
-    lower.includes("open account") ||
-    lower.includes("select account") ||
-    lower.includes("pull up") ||
-    lower.includes("find account")
-  ) {
-    const account = findAccountByPrompt(prompt, accounts);
-
-    if (account) {
-      setSelectedAccountId(account.id);
+    if (
+      lower.includes("go to accounts") ||
+      lower.includes("open accounts") ||
+      lower.includes("take me to accounts")
+    ) {
       goTab("Accounts");
-
       setAiReport({
-        text: `Opened ${account.name}. Current Pulse Score: ${account.score.overall}. ${account.score.narrative}`,
+        text: "Opened Accounts.",
         chartType: null,
         chartData: null,
       });
       return;
     }
-  }
 
-  // 4. Explain account
-  if (
-    lower.includes("explain") ||
-    lower.includes("why") ||
-    lower.includes("what is going on") ||
-    lower.includes("at risk") ||
-    lower.includes("health")
-  ) {
-    const account = findAccountByPrompt(prompt, accounts);
-
-    if (account) {
+    if (
+      lower.includes("go to activity") ||
+      lower.includes("open activity") ||
+      lower.includes("take me to activity")
+    ) {
+      goTab("Activity");
       setAiReport({
-        text: `${account.name} currently has a Pulse Score of ${account.score.overall}.
+        text: "Opened Activity.",
+        chartType: null,
+        chartData: null,
+      });
+      return;
+    }
+
+    if (
+      lower.includes("go to intelligence") ||
+      lower.includes("open intelligence") ||
+      lower.includes("take me to intelligence")
+    ) {
+      goTab("Intelligence");
+      setAiReport({
+        text: "Opened Intelligence.",
+        chartType: null,
+        chartData: null,
+      });
+      return;
+    }
+
+    if (
+      lower.includes("go to admin") ||
+      lower.includes("open admin") ||
+      lower.includes("take me to admin")
+    ) {
+      goTab("Admin");
+      setAiReport({
+        text: "Opened Admin.",
+        chartType: null,
+        chartData: null,
+      });
+      return;
+    }
+
+    // Add account
+    if (
+      lower.includes("add account") ||
+      lower.includes("add an account") ||
+      lower.includes("create account") ||
+      lower.includes("create an account") ||
+      lower.includes("new account")
+    ) {
+      const name = extractAccountName(prompt);
+      const owner = extractOwner(prompt);
+      const value = extractValue(prompt);
+
+      if (!name) {
+        setAiReport({
+          text:
+            "I can add the account, but I need the account name. Try: “Add an account called Blue Ridge Parts owned by Sarah with value 90000.”",
+          chartType: null,
+          chartData: null,
+        });
+        return;
+      }
+
+      const newAccount = addAccountFromAI({
+        name,
+        owner: owner || "Unassigned",
+        value: value || 0,
+      });
+
+      setAiReport({
+        text: `Added ${newAccount.name} to Accounts. Owner: ${newAccount.owner}. Value: $${newAccount.value.toLocaleString()}.`,
+        chartType: null,
+        chartData: null,
+      });
+
+      goTab("Accounts");
+      return;
+    }
+
+    // Select/open account
+    if (
+      lower.includes("show me") ||
+      lower.includes("open account") ||
+      lower.includes("select account") ||
+      lower.includes("pull up") ||
+      lower.includes("find account")
+    ) {
+      const account = findAccountByPrompt(prompt, accounts);
+
+      if (account) {
+        setSelectedAccountId(account.id);
+        goTab("Accounts");
+
+        setAiReport({
+          text: `Opened ${account.name}. Current Pulse Score: ${account.score.overall}. ${account.score.narrative}`,
+          chartType: null,
+          chartData: null,
+        });
+        return;
+      }
+
+      setAiReport({
+        text: "I could not find that account in the sandbox.",
+        chartType: null,
+        chartData: null,
+      });
+      return;
+    }
+
+    // Explain account
+    if (
+      lower.includes("explain") ||
+      lower.includes("why") ||
+      lower.includes("what is going on") ||
+      lower.includes("at risk") ||
+      lower.includes("health")
+    ) {
+      const account = findAccountByPrompt(prompt, accounts);
+
+      if (account) {
+        setAiReport({
+          text: `${account.name} currently has a Pulse Score of ${account.score.overall}.
 
 Trust: ${account.score.trust}
 Engagement: ${account.score.engagement}
@@ -1639,96 +1648,133 @@ ${account.score.narrative}
 
 Recommended action:
 ${account.score.action}`,
-        chartType: "radar",
-        chartData: {
-          name: account.name,
-          trust: account.score.trust,
-          engagement: account.score.engagement,
-          momentum: account.score.momentum,
-          stability: account.score.stability,
-          opportunity: account.score.opportunity,
-        },
+          chartType: "radar",
+          chartData: {
+            name: account.name,
+            trust: account.score.trust,
+            engagement: account.score.engagement,
+            momentum: account.score.momentum,
+            stability: account.score.stability,
+            opportunity: account.score.opportunity,
+          },
+        });
+        return;
+      }
+
+      setAiReport({
+        text: "I could not find that account to explain.",
+        chartType: null,
+        chartData: null,
       });
       return;
     }
-  }
 
-  // 5. Draft response
-  if (
-    lower.includes("draft") ||
-    lower.includes("write an email") ||
-    lower.includes("write a response") ||
-    lower.includes("follow-up email") ||
-    lower.includes("follow up email")
-  ) {
-    const account = findAccountByPrompt(prompt, accounts) || accounts[0];
+    // Draft response
+    if (
+      lower.includes("draft") ||
+      lower.includes("write an email") ||
+      lower.includes("write a response") ||
+      lower.includes("follow-up email") ||
+      lower.includes("follow up email")
+    ) {
+      const account = findAccountByPrompt(prompt, accounts) || accounts[0];
 
-    setAiReport({
-      text: `Draft response for ${account.name}:
+      setAiReport({
+        text: `Draft response for ${account.name}:
 
 ${buildDraftResponse(account)}`,
+        chartType: null,
+        chartData: null,
+      });
+      return;
+    }
+
+    // Only generate report/chart/table if specifically requested
+    if (
+      lower.includes("report") ||
+      lower.includes("chart") ||
+      lower.includes("graph") ||
+      lower.includes("table") ||
+      lower.includes("trend")
+    ) {
+      const output = buildReport(prompt, accounts, touches, history);
+      setAiReport(output);
+      return;
+    }
+
+    // General fallback
+    setAiReport({
+      text:
+        "I can help navigate the app, add sandbox accounts, select accounts, explain account health, draft follow-ups, or generate reports when requested. Try: “Show me HarborTech” or “Draft a follow-up email for Northstar.”",
       chartType: null,
       chartData: null,
     });
-    return;
-  }
-
-  // 6. Report only when prompted
-  if (
-    lower.includes("report") ||
-    lower.includes("chart") ||
-    lower.includes("graph") ||
-    lower.includes("table") ||
-    lower.includes("trend")
-  ) {
-    const output = buildReport(prompt, accounts, touches, history);
-    setAiReport(output);
-    return;
-  }
-
-  // 7. General answer fallback
-  setAiReport({
-    text:
-      "I can help navigate the app, add accounts, select accounts, explain account health, draft follow-ups, or generate reports. Try: “Add an account called Acme Logistics owned by Danielle with value 120000.”",
-    chartType: null,
-    chartData: null,
-  });
+  }, 50);
 }
-
   return (
     <div className="space-y-6">
       <div className="grid gap-6 xl:grid-cols-[1fr_.75fr]">
-        <Panel title="AI Relationship Assistant" subtitle="Describe what you need — Pulse will generate intelligence and a matching visualization.">
-          <textarea value={aiPrompt} onChange={e => setAiPrompt(e.target.value)} onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); runAI(); } }} placeholder="Try: 'Show me a chart of all pulse scores' or 'Radar breakdown for the highest risk account' or 'Trend lines for the last 60 days' or 'Table of all accounts with status'" className="min-h-[160px] w-full rounded-[1.8rem] border border-[#d8a5b8]/15 bg-[linear-gradient(180deg,#f8f3f7,#ece6ef)] p-5 text-sm leading-7 text-[#17141c] outline-none placeholder:text-[#8a7a8e]" style={{ fontFamily: "Sora, sans-serif" }} />
+        <Panel
+          title="AI Relationship Assistant"
+          subtitle="Ask Pulse to navigate, add sandbox accounts, explain account health, draft follow-ups, or generate reports when requested."
+        >
+          <textarea
+            value={aiPrompt}
+            onChange={(e) => setAiPrompt(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                runAI();
+              }
+            }}
+            placeholder="Try: “Show me HarborTech”, “Explain Northstar”, “Add an account called Blue Ridge Parts owned by Sarah with value 90000”, or “Draft a follow-up email for Summit.”"
+            className="min-h-[160px] w-full rounded-[1.8rem] border border-[#d8a5b8]/15 bg-[linear-gradient(180deg,#f8f3f7,#ece6ef)] p-5 text-sm leading-7 text-[#17141c] outline-none placeholder:text-[#8a7a8e]"
+            style={{ fontFamily: "Sora, sans-serif" }}
+          />
+
           <div className="flex items-center gap-3">
-            <button onClick={runAI} className="rounded-2xl bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] px-5 py-3 text-sm font-semibold text-[#17141c] shadow-[0_10px_35px_rgba(216,165,184,0.22)] transition hover:scale-[1.02]">Generate Insight</button>
-            <p className="text-xs text-[#d8c8dc]/38">Enter to generate · Shift+Enter for newline</p>
+            <button
+              onClick={runAI}
+              className="rounded-2xl bg-[linear-gradient(135deg,#f1dbe5,#d8a5b8,#b98bb1)] px-5 py-3 text-sm font-semibold text-[#17141c] shadow-[0_10px_35px_rgba(216,165,184,0.22)] transition hover:scale-[1.02]"
+            >
+              Generate
+            </button>
+
+            <p className="text-xs text-[#d8c8dc]/38">
+              Enter to generate · Shift+Enter for newline
+            </p>
           </div>
+
           {aiReport && (
             <div className="space-y-4">
               <ChartOutput type={aiReport.chartType} data={aiReport.chartData} />
+
               <div className="rounded-[1.8rem] border border-white/8 bg-white/[0.04] p-5">
-                <pre className="whitespace-pre-wrap text-sm leading-7 text-[#f1e9f4]" style={{ fontFamily: "Sora, sans-serif" }}>{aiReport.text}</pre>
+                <pre
+                  className="whitespace-pre-wrap text-sm leading-7 text-[#f1e9f4]"
+                  style={{ fontFamily: "Sora, sans-serif" }}
+                >
+                  {aiReport.text}
+                </pre>
               </div>
             </div>
           )}
         </Panel>
-        <Panel title="Suggested prompts" subtitle="Relationship-focused queries with chart output">
+
+        <Panel title="Suggested tasks" subtitle="Examples of what Pulse can do">
           {[
-            { title: "Score comparison",    detail: "Show me a bar chart of all pulse scores",          tag: "Bar chart"   },
-            { title: "Dimension radar",     detail: "Radar breakdown for the highest risk account",     tag: "Radar chart" },
-            { title: "Score trends",        detail: "Show trend lines over the last 60 days",           tag: "Line chart"  },
-            { title: "Account table",       detail: "List all accounts with status and recommended action", tag: "Table"   },
-            { title: "Attention priorities",detail: "Which accounts need thoughtful follow-up this week?", tag: "AI report" },
-          ].map((p, i) => (
-            <button key={i} onClick={() => { setAiPrompt(p.detail); }} className="w-full rounded-3xl border border-white/8 bg-white/[0.04] p-4 text-left transition hover:bg-white/[0.08]">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-medium text-white">{p.title}</p>
-                  <p className="mt-1 text-sm text-[#d8c8dc]/58">{p.detail}</p>
-                </div>
-                <span className="shrink-0 rounded-full border border-[#d8a5b8]/15 bg-[#d8a5b8]/8 px-2.5 py-1 text-[10px] text-[#f1d6e2]">{p.tag}</span>
-              </div>
+            "Open Reports",
+            "Show me HarborTech",
+            "Explain Northstar",
+            "Draft a follow-up email for Summit",
+            "Add an account called Blue Ridge Parts owned by Sarah with value 90000",
+          ].map((prompt) => (
+            <button
+              key={prompt}
+              onClick={() => setAiPrompt(prompt)}
+              className="w-full rounded-3xl border border-white/8 bg-white/[0.04] p-4 text-left text-sm text-[#d8c8dc]/70 transition hover:bg-white/[0.08] hover:text-white"
+            >
+              {prompt}
             </button>
           ))}
         </Panel>
@@ -2024,10 +2070,55 @@ export default function Page() {
         <section className="relative px-5 pb-10 pt-5 lg:ml-64 lg:px-10 lg:pb-10 lg:pt-8">
           <TopHero attention={attention} setSelectedAccountId={setSelectedAccountId} goTab={goTab} />
 
-          {activeTab === "Overview"     && <OverviewTab scoredAccounts={scoredAccounts} accounts={accounts} touches={touches} attention={attention} setSelectedAccountId={setSelectedAccountId} goTab={goTab} selectedAccount={selectedAccount} history={history} />}
-          {activeTab === "Accounts"     && <AccountsTab query={query} setQuery={setQuery} filteredAccounts={filteredAccounts} selectedAccount={selectedAccount} selectedAccountId={selectedAccountId} setSelectedAccountId={setSelectedAccountId} accountTouches={accountTouches} newTouch={newTouch} setNewTouch={setNewTouch} logTouch={logTouch} newAccount={newAccount} setNewAccount={setNewAccount} addAccount={addAccount} history={history} />}
-          {activeTab === "Activity"     && <ActivityTab touches={touches} accounts={scoredAccounts} selectedTouch={selectedTouch} setSelectedTouch={setSelectedTouch} selectedAccount={selectedAccount} newTouch={newTouch} setNewTouch={setNewTouch} logTouch={logTouch} />}
-          {activeTab === "Intelligence" && <IntelligenceTab accounts={scoredAccounts} history={history} />}
+          {activeTab === "Overview" && (
+  <OverviewTab
+    scoredAccounts={scoredAccounts}
+    accounts={accounts}
+    touches={touches}
+    attention={attention}
+    setSelectedAccountId={setSelectedAccountId}
+    goTab={goTab}
+    selectedAccount={selectedAccount}
+    history={history}
+  />
+)}
+
+{activeTab === "Accounts" && (
+  <AccountsTab
+    query={query}
+    setQuery={setQuery}
+    filteredAccounts={filteredAccounts}
+    selectedAccount={selectedAccount}
+    selectedAccountId={selectedAccountId}
+    setSelectedAccountId={setSelectedAccountId}
+    accountTouches={accountTouches}
+    newTouch={newTouch}
+    setNewTouch={setNewTouch}
+    logTouch={logTouch}
+    newAccount={newAccount}
+    setNewAccount={setNewAccount}
+    addAccount={addAccount}
+    history={history}
+  />
+)}
+
+{activeTab === "Activity" && (
+  <ActivityTab
+    touches={touches}
+    accounts={scoredAccounts}
+    selectedTouch={selectedTouch}
+    setSelectedTouch={setSelectedTouch}
+    selectedAccount={selectedAccount}
+    newTouch={newTouch}
+    setNewTouch={setNewTouch}
+    logTouch={logTouch}
+  />
+)}
+
+{activeTab === "Intelligence" && (
+  <IntelligenceTab accounts={scoredAccounts} history={history} />
+)}
+
 {activeTab === "AI Assistant" && (
   <AITab
     aiPrompt={aiPrompt}
@@ -2041,8 +2132,27 @@ export default function Page() {
     setSelectedAccountId={setSelectedAccountId}
     addAccountFromAI={addAccountFromAI}
   />
-)}          {activeTab === "Reports"      && <ReportsTab accounts={scoredAccounts} touches={touches} history={history} />}
-          {activeTab === "Admin"        && <AdminTab resetSandbox={resetSandbox} theme={theme} setTheme={setTheme} density={density} setDensity={setDensity} weights={weights} setWeights={setWeights} />}
+)}
+
+{activeTab === "Reports" && (
+  <ReportsTab
+    accounts={scoredAccounts}
+    touches={touches}
+    history={history}
+  />
+)}
+
+{activeTab === "Admin" && (
+  <AdminTab
+    resetSandbox={resetSandbox}
+    theme={theme}
+    setTheme={setTheme}
+    density={density}
+    setDensity={setDensity}
+    weights={weights}
+    setWeights={setWeights}
+  />
+)}
         </section>
       </main>
     </>

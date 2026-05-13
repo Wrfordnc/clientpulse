@@ -1,16 +1,24 @@
 import Groq from "groq-sdk";
 
-const groq = new Groq({
-  apiKey: process.env.GROQ_API_KEY,
-});
-
 export async function POST(req: Request) {
   try {
+    const apiKey = process.env.GROQ_API_KEY;
+
+    if (!apiKey) {
+      return Response.json(
+        { error: "GROQ_API_KEY is missing from environment variables." },
+        { status: 500 }
+      );
+    }
+
+    const groq = new Groq({
+      apiKey,
+    });
+
     const body = await req.json();
 
     const completion = await groq.chat.completions.create({
       model: "llama-3.3-70b-versatile",
-
       messages: [
         {
           role: "system",
@@ -22,7 +30,6 @@ export async function POST(req: Request) {
           content: body.prompt,
         },
       ],
-
       temperature: 0.7,
     });
 
